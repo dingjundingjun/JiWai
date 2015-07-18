@@ -11,27 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-        <ImageButton
+        <com.org.great.world.Views.TabView
             android:id="@+id/btn_great_world"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_bottom_tab_button_bg"
             android:src="@drawable/tab_world_selector"
             android:layout_weight="1"/>
-        <ImageButton
+        <com.org.great.world.Views.TabView
             android:id="@+id/btn_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_bottom_tab_button_bg"
             android:src="@drawable/tab_me_selector"
             android:layout_weight="1"/>
-        <ImageButton
+        <com.org.great.world.Views.TabView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_bottom_tab_button_bg"
             android:src="@drawable/tab_world_selector"
             android:layout_weight="1"/>
-        <ImageButton
+        <com.org.great.world.Views.TabView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_bottom_tab_button_bg"

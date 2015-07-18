@@ -5,20 +5,23 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 
+import com.org.great.world.Views.TabView;
 import com.org.great.world.fragments.GreatWorldFragment;
 import com.org.great.world.fragments.MeFragment;
 import com.org.great.wrold.R;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private GreatWorldFragment mGreatWorldFragment;
     private MeFragment mMeFragment;
-    private ImageButton mGreatWorldBtn;
-    private ImageButton mMeBtn;
-    private FragmentManager mFragmentManager;
-    private FragmentTransaction mTransaction;
+    private TabView mGreatWorldBtn;
+    private TabView mMeBtn;
+    private List<TabView> mTabViewList = new ArrayList<TabView>();
+    private FragmentManager mFragmentManager = null;
+    private FragmentTransaction mTransaction = null;
     private int mFrontFragment = -1;
     private final int GREAT_WORLD = 0;
     private final int ME = 1;
@@ -32,19 +35,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void init() {
         mFragmentManager = getFragmentManager();
-        mTransaction = mFragmentManager.beginTransaction();
-        mGreatWorldBtn = (ImageButton) findViewById(R.id.btn_great_world);
-        mMeBtn = (ImageButton) findViewById(R.id.btn_me);
+        mGreatWorldBtn = (TabView) findViewById(R.id.btn_great_world);
+        mMeBtn = (TabView) findViewById(R.id.btn_me);
         mGreatWorldBtn.setOnClickListener(this);
         mMeBtn.setOnClickListener(this);
+        mTabViewList.add(mGreatWorldBtn);
+        mTabViewList.add(mMeBtn);
         setDefaultFragment();
     }
 
     private void setDefaultFragment() {
-        mGreatWorldFragment = new GreatWorldFragment();
-        mTransaction.replace(R.id.content, mGreatWorldFragment);
-        mTransaction.commit();
         mFrontFragment = GREAT_WORLD;
+        changeFragment();
     }
 
     private void changeFragment() {
@@ -53,15 +55,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             if (mGreatWorldFragment == null) {
                 mGreatWorldFragment = new GreatWorldFragment();
             }
-            mTransaction.replace(R.id.content,mGreatWorldFragment);
-        }
-        else if (mFrontFragment == ME)
-        {
-            if(mMeFragment == null)
-            {
+            mTransaction.replace(R.id.content, mGreatWorldFragment);
+            mGreatWorldBtn.setSelected(true);
+        } else if (mFrontFragment == ME) {
+            if (mMeFragment == null) {
                 mMeFragment = new MeFragment();
             }
-            mTransaction.replace(R.id.content,mMeFragment);
+            mTransaction.replace(R.id.content, mMeFragment);
+            mMeBtn.setSelected(true);
         }
         mTransaction.commit();
     }
@@ -78,12 +79,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             }
             case R.id.btn_me: {
-                if(mFrontFragment != ME) {
+                if (mFrontFragment != ME) {
                     mFrontFragment = ME;
                     changeFragment();
                 }
                 break;
             }
+        }
+        changeTabViewStatus(id);
+    }
+
+    public void changeTabViewStatus(int id) {
+        int len = mTabViewList.size();
+        for (int i = 0; i < len; i++) {
+            boolean bMatchId = mTabViewList.get(i).getId() == id;
+            mTabViewList.get(i).setSelector(bMatchId);
         }
     }
 }
