@@ -1,9 +1,10 @@
 package com.org.great.world.activities;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.org.great.world.Views.TabView;
@@ -14,7 +15,7 @@ import com.org.great.wrold.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private GreatWorldFragment mGreatWorldFragment;
     private MeFragment mMeFragment;
     private TabView mGreatWorldBtn;
@@ -34,7 +35,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-        mFragmentManager = getFragmentManager();
+        mFragmentManager = this.getSupportFragmentManager();
         mGreatWorldBtn = (TabView) findViewById(R.id.btn_great_world);
         mMeBtn = (TabView) findViewById(R.id.btn_me);
         mGreatWorldBtn.setOnClickListener(this);
