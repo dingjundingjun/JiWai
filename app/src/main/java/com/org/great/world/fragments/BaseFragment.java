@@ -48,6 +48,12 @@ public class BaseFragment extends Fragment {
         mTitleScroolView = (TitleScroolView)mParentView.findViewById(R.id.titlescrool);
         mTitleScroolView.setTitleList(mTitleListStr);
         mTitleScroolView.init();
+        mTitleScroolView.setOnTitleClickListener(new TitleScroolView.OnTitleClickListener() {
+            @Override
+            public void onClick(int id) {
+                mFragmentViewPaper.setCurrentItem(id);
+            }
+        });
         mFragmentViewPaper = (FragmentViewPaper)mParentView.findViewById(R.id.viewpager);
         mFragmentViewPaper.setAdapter(new ContentPaperAdapter(getChildFragmentManager(), mFragmentList));
         mFragmentViewPaper.setCurrentItem(0);
