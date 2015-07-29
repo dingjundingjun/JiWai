@@ -65,18 +65,17 @@ public class BaseFragment extends Fragment {
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
         public void onPageSelected(int arg0) {
-            // TODO Auto-generated method stub
+
+
 //            Animation animation = new TranslateAnimation(currIndex*one,arg0*one,0,0);//平移动画
 //            currIndex = arg0;
 //            animation.setFillAfter(true);//动画终止时停留在最后一帧，不然会回到没有执行前的状态
