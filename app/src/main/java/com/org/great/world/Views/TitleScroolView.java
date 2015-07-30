@@ -33,6 +33,9 @@ public class TitleScroolView extends LinearLayout{
     private final int ANIM_DURATION = 500;
     private final int LABEL_STATUS_NORMAL = 0;
     private final int LABEL_STATUS_PRESS = 100;
+    private float mTextSize;
+    private int mColorNormal;
+    private int mColorPress;
     public TitleScroolView(Context context) {
         super(context);
         mContext = context;
@@ -44,6 +47,9 @@ public class TitleScroolView extends LinearLayout{
     }
 
     public void init(){
+        mTextSize = mContext.getResources().getDimension(R.dimen.title_scrool_label_text_size);
+        mColorNormal = mContext.getResources().getColor(R.color.title_scrool_text_color_normal);
+        mColorPress = mContext.getResources().getColor(R.color.title_scrool_text_color_press);
         mParentView = View.inflate(mContext, R.layout.title_scroll_layout, null);
         mContentLayout = (LinearLayout)mParentView.findViewById(R.id.content_layout);
         initTitle();
@@ -58,7 +64,6 @@ public class TitleScroolView extends LinearLayout{
     public void setTitleList(List<String> list)
     {
         mTitleList = list;
-
     }
 
     private void initTitle()
@@ -70,19 +75,16 @@ public class TitleScroolView extends LinearLayout{
         mTitleViewList.clear();
         int len = mTitleList.size();
         Debug.d("mTitleList.size() = " + mTitleList.size());
-        final float textSize = mContext.getResources().getDimension(R.dimen.title_scrool_label_text_size);
         int textViewMinWidth = mContext.getResources().getDimensionPixelSize(R.dimen.title_scrool_label_text_min_width);
-        final int colorNormal = mContext.getResources().getColor(R.color.title_scrool_text_color_normal);
-        final int colorPress = mContext.getResources().getColor(R.color.title_scrool_text_color_press);
         for(int i = 0; i < len;i++)
         {
             Debug.d("title = " + mTitleList.get(i));
             TextView textView = new TextView(mContext);
-            textView.setTextSize(textSize);
+            textView.setTextSize(mTextSize);
             textView.setText(mTitleList.get(i));
             textView.setMinWidth(textViewMinWidth);
             textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(colorNormal);
+            textView.setTextColor(mColorNormal);
             textView.setId(i);
             textView.setTag(LABEL_STATUS_NORMAL);
             textView.setOnClickListener(new OnClickListener() {
@@ -96,8 +98,8 @@ public class TitleScroolView extends LinearLayout{
                             TextView tempView = mTitleViewList.get(j);
                             if(tempView.getId() != id)
                             {
-                                tempView.setTextSize(textSize);
-                                tempView.setTextColor(colorNormal);
+                                tempView.setTextSize(mTextSize);
+                                tempView.setTextColor(mColorNormal);
                                 if(((Integer)tempView.getTag()) == LABEL_STATUS_PRESS)
                                 {
                                     Animation am = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -111,7 +113,7 @@ public class TitleScroolView extends LinearLayout{
                             {
                                 mOnTitleClickListener.onClick(id);
                                 tempView.setTextSize(mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
-                                tempView.setTextColor(colorPress);
+                                tempView.setTextColor(mColorPress);
                                 Animation am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                                 am.setFillAfter(true);
                                 am.setDuration(ANIM_DURATION);
@@ -131,5 +133,30 @@ public class TitleScroolView extends LinearLayout{
     public interface OnTitleClickListener
     {
         public abstract void onClick(int id);
+    }
+
+    public void setTitlePressed(int id) {
+            for (int j = 0; j < mTitleViewList.size(); j++) {
+                TextView tempView = mTitleViewList.get(j);
+                if (tempView.getId() != id) {
+                    tempView.setTextSize(mTextSize);
+                    tempView.setTextColor(mColorNormal);
+                    if (((Integer) tempView.getTag()) == LABEL_STATUS_PRESS) {
+                        Animation am = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        am.setFillAfter(true);
+                        am.setDuration(ANIM_DURATION);
+                        tempView.setAnimation(am);
+                        tempView.setTag(LABEL_STATUS_NORMAL);
+                    }
+                } else {
+                    tempView.setTextSize(mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
+                    tempView.setTextColor(mColorPress);
+                    Animation am = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    am.setFillAfter(true);
+                    am.setDuration(ANIM_DURATION);
+                    tempView.setAnimation(am);
+                    tempView.setTag(LABEL_STATUS_PRESS);
+                }
+            }
     }
 }

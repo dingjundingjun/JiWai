@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
 import com.org.great.world.Views.ContentPaperAdapter;
@@ -57,6 +59,7 @@ public class BaseFragment extends Fragment {
         mFragmentViewPaper = (FragmentViewPaper)mParentView.findViewById(R.id.viewpager);
         mFragmentViewPaper.setAdapter(new ContentPaperAdapter(getChildFragmentManager(), mFragmentList));
         mFragmentViewPaper.setCurrentItem(0);
+        mTitleScroolView.setTitlePressed(0);
         mFragmentViewPaper.setOnPageChangeListener(new BaseOnPageChangeListener());
     }
 
@@ -64,26 +67,17 @@ public class BaseFragment extends Fragment {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
-            // TODO Auto-generated method stub
         }
 
         @Override
         public void onPageSelected(int arg0) {
 
-
-//            Animation animation = new TranslateAnimation(currIndex*one,arg0*one,0,0);//平移动画
-//            currIndex = arg0;
-//            animation.setFillAfter(true);//动画终止时停留在最后一帧，不然会回到没有执行前的状态
-//            animation.setDuration(200);//动画持续时间0.2秒
-//            image.startAnimation(animation);//是用ImageView来显示动画的
-//            int i = currIndex + 1;
+            mTitleScroolView.setTitlePressed(arg0);
             mCurrentIndex = arg0;
-//            Toast.makeText(mBaseActivity, "您选择了第"+mCurrentIndex+"个页卡", Toast.LENGTH_SHORT).show();
         }
     }
 }
