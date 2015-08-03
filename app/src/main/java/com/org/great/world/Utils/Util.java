@@ -95,4 +95,11 @@ public class Util
 			String currentTime = sdf.format(date);
 			return currentTime;
 		}
+
+    public static boolean isEmpty(CharSequence str) {
+        if (str == null || str.length() == 0)
+            return true;
+        else
+            return false;
+    }
 }

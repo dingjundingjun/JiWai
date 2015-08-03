@@ -15,7 +15,7 @@ import com.org.great.wrold.R;
  */
 public class Joke extends ChildBaseFragment {
     public Joke() {
-        mTitle = "Joke";
+        mTitle = "笑一校";
     }
 
     @Nullable

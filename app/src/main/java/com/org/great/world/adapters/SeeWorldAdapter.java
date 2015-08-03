@@ -8,19 +8,30 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.org.great.world.data.CatalogPojo;
+
+import java.util.List;
+
 /**
  * Created by dj on 2015/7/31.
  * email:dingjun0225@gmail.com
  */
 public class SeeWorldAdapter extends BAdapter
 {
+    private List<CatalogPojo> mCatalogList;
+
+    public void setList(List<CatalogPojo> list)
+    {
+        mCatalogList = list;
+    }
+
     public SeeWorldAdapter(Context mContext) {
         super(mContext);
     }
 
     @Override
     public int getCount() {
-        return 50;
+        return mCatalogList.size();
     }
 
     @Override
@@ -35,29 +46,19 @@ public class SeeWorldAdapter extends BAdapter
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null)
-        {
-            TextView view = new TextView(mContext);
-            view.setWidth(500);
-            view.setHeight(100);
-            view.setGravity(Gravity.CENTER);
-            view.setTextSize(50);
-            view.setText("" + position);
-            view.setBackgroundColor(Color.GREEN);
-            return view;
+        TextView view = null;
+        if (convertView == null) {
+            view = new TextView(mContext);
+        } else {
+            view = (TextView) convertView;
         }
-        else
-        {
-            TextView v = (TextView)convertView;
-            v.setText(""+position);
-            v.setBackgroundColor(Color.GREEN);
-            v.setWidth(500);
-            v.setHeight(100);
-            v.setGravity(Gravity.CENTER);
-            v.setTextSize(50);
-            return v;
-        }
+        view.setText(mCatalogList.get(position).getTitle());
+        view.setBackgroundColor(Color.GREEN);
+        view.setWidth(500);
+        view.setHeight(100);
+        view.setGravity(Gravity.CENTER);
+        view.setTextSize(30);
+        return view;
     }
-
 
 }
