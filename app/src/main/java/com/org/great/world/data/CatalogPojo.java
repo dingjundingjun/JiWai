@@ -1,10 +1,11 @@
 package com.org.great.world.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 public class CatalogPojo implements Serializable {
-
-	
 	/**
 	 * 
 	 */
@@ -45,6 +46,4 @@ public class CatalogPojo implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	
 }

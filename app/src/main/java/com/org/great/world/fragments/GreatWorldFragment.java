@@ -1,5 +1,6 @@
 package com.org.great.world.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,5 +35,12 @@ public class GreatWorldFragment extends BaseFragment{
         mTitleListStr.add(mSeeWorld.getTitle());
         mTitleListStr.add(mJoke.getTitle());
         updateFragmentList();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Debug.d("onActivityResult 11");
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

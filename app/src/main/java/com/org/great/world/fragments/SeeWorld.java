@@ -1,5 +1,6 @@
 package com.org.great.world.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -20,11 +21,16 @@ import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.AutoListView;
 import com.org.great.world.Views.Titanic;
 import com.org.great.world.Views.TitanicTextView;
+import com.org.great.world.activities.SeeWorldActivity;
 import com.org.great.world.adapters.SeeWorldAdapter;
 import com.org.great.world.data.BaseCatalogPojo;
+import com.org.great.world.data.CatalogPojo;
 import com.org.great.wrold.R;
 
 import org.apache.http.Header;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dj on 2015/7/19.
@@ -34,9 +40,12 @@ public class SeeWorld extends ChildBaseFragment{
     private AutoListView mAutoListView;
     private SeeWorldAdapter mSeeWorldAdapter;
     private TitanicTextView mTitanicTextView;
+    private ArrayList<CatalogPojo> mCatalogPojo;
+    private final int START_SEEWORLD_ACTIVITY_REQUESTCODE = 1;
     public SeeWorld() {
         mTitle = "看世界";
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = LayoutInflater.from(mBaseActivity).inflate(R.layout.reflash_list_layout, null);
@@ -64,14 +73,19 @@ public class SeeWorld extends ChildBaseFragment{
                 mAutoListView.noLoadDate();
             }
         });
-
         mSeeWorldAdapter = new SeeWorldAdapter(getActivity());
 //        mAutoListView.setAdapter(mSeeWorldAdapter);
 //        mSeeWorldAdapter.notifyDataSetChanged();
         mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("list", mCatalogPojo);
+                bundle.putInt("index_id",position);
+                Intent intent = new Intent(mBaseActivity, SeeWorldActivity.class);
+                intent.putExtra("bundle",bundle);
 
+                startActivityForResult(intent,START_SEEWORLD_ACTIVITY_REQUESTCODE);
             }
         });
         getCatalogList();
@@ -111,7 +125,8 @@ public class SeeWorld extends ChildBaseFragment{
                     if(pojo.getStatus().equals("success"))
                     {
                         Debug.d("json = " + arg2);
-                        mSeeWorldAdapter.setList(pojo.getMessage());
+                        mCatalogPojo = pojo.getMessage();
+                        mSeeWorldAdapter.setList(mCatalogPojo);
                         mAutoListView.setAdapter(mSeeWorldAdapter);
                         mSeeWorldAdapter.notifyDataSetChanged();
                         loadingComplete();
