@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.org.great.world.Views.ContentPaperAdapter;
 import com.org.great.world.Views.FragmentViewPaper;
@@ -19,21 +20,30 @@ import com.org.great.wrold.R;
 public class BaseContentFragment extends Fragment {
     private Activity mBaseActivity;
     private View mParentView;
+    private String mTitle;
+    private String mURL;
+    private TextView mTitleTextView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBaseActivity = getActivity();
         View view = LayoutInflater.from(mBaseActivity).inflate(R.layout.seeworld_layout, null);
         mParentView = view;
+        init();
         return mParentView;
     }
 
-    public void updateFragmentList()
+    public void setTitle(String title)
     {
-        init();
+        mTitle = title;
+    }
+
+    public void setURL(String url)
+    {
+        mURL = url;
     }
 
     private void init()
     {
-
+        mTitleTextView = (TextView)mParentView.findViewById(R.id.title);
     }
 }
