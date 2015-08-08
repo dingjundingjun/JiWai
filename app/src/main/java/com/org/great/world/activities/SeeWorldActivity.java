@@ -53,7 +53,9 @@ public class SeeWorldActivity extends FragmentActivity
 //            BaseContentFragment base = new BaseContentFragment();
 //            mBaseContentList.add(base);
 //        }
+        CatalogPojo catalogPojo = mCatalogPojo.get(mIndexId);
         BaseContentFragment base = new BaseContentFragment();
+        base.setCatalogPojo(catalogPojo);
         mBaseContentList.add(base);
 
         mFragmentManager = this.getSupportFragmentManager();

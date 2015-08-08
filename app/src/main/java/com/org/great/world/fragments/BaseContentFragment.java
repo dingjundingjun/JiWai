@@ -1,16 +1,22 @@
 package com.org.great.world.fragments;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.org.great.world.Views.ContentPaperAdapter;
 import com.org.great.world.Views.FragmentViewPaper;
 import com.org.great.world.Views.TitleScroolView;
+import com.org.great.world.data.CatalogPojo;
 import com.org.great.wrold.R;
 
 /**
@@ -20,9 +26,9 @@ import com.org.great.wrold.R;
 public class BaseContentFragment extends Fragment {
     private Activity mBaseActivity;
     private View mParentView;
-    private String mTitle;
-    private String mURL;
+    private WebView mWebView;
     private TextView mTitleTextView;
+    private CatalogPojo mCatalogPojo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBaseActivity = getActivity();
@@ -32,18 +38,90 @@ public class BaseContentFragment extends Fragment {
         return mParentView;
     }
 
-    public void setTitle(String title)
+    public void setCatalogPojo(CatalogPojo cp)
     {
-        mTitle = title;
-    }
+        mCatalogPojo = cp;
 
-    public void setURL(String url)
-    {
-        mURL = url;
     }
 
     private void init()
     {
         mTitleTextView = (TextView)mParentView.findViewById(R.id.title);
+        mWebView = (WebView)mParentView.findViewById(R.id.webview);
+        initWebView();
+        loadData();
+    }
+
+    public void loadData()
+    {
+        if(mCatalogPojo == null)
+        {
+            return;
+        }
+        mWebView.loadUrl(mCatalogPojo.getUrl());
+        mTitleTextView.setText(mCatalogPojo.getTitle());
+    }
+
+    private void initWebView() {
+        registerForContextMenu(mWebView);
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setSupportZoom(false);
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+        webSettings.setLoadWithOverviewMode(true);
+
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+        setWebClientListener();
+    }
+
+    void setWebClientListener()
+    {
+        mWebView.setWebViewClient(new WebViewClient(){
+
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon)
+            {
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode,
+                                        String description, String failingUrl)
+            {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+            }
+        });
+
+        mWebView.setWebChromeClient(new WebChromeClient(){
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                super.onProgressChanged(view, newProgress);
+            }
+
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mWebView != null) {
+            mWebView.removeAllViews();
+            mWebView.destroy();
+        }
     }
 }

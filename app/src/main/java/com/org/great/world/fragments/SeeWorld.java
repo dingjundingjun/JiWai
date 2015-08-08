@@ -2,6 +2,7 @@ package com.org.great.world.fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +39,13 @@ import java.util.List;
  * Created by dj on 2015/7/19.
  * email:dingjun0225@gmail.com
  */
-public class SeeWorld extends ChildBaseFragment{
+public class SeeWorld extends ChildBaseFragment implements View.OnClickListener{
     private AutoListView mAutoListView;
     private SeeWorldAdapter mSeeWorldAdapter;
     private TitanicTextView mTitanicTextView;
     private ArrayList<CatalogPojo> mCatalogPojo;
     private final int START_SEEWORLD_ACTIVITY_REQUESTCODE = 1;
+    private Button mReloadBtn;
     public SeeWorld() {
         mTitle = "看世界";
     }
@@ -56,6 +60,8 @@ public class SeeWorld extends ChildBaseFragment{
     private void init(View layout)
     {
         mTitanicTextView = (TitanicTextView)layout.findViewById(R.id.titanic_text);
+        mReloadBtn = (Button)layout.findViewById(R.id.reload);
+        mReloadBtn.setOnClickListener(this);
         mAutoListView = (AutoListView)layout.findViewById(R.id.auto_list);
         mAutoListView.setOnRefreshListener(new AutoListView.OnRefreshListener() {
             @Override
@@ -84,7 +90,6 @@ public class SeeWorld extends ChildBaseFragment{
                 bundle.putInt("index_id",position);
                 Intent intent = new Intent(mBaseActivity, SeeWorldActivity.class);
                 intent.putExtra("bundle",bundle);
-
                 startActivityForResult(intent,START_SEEWORLD_ACTIVITY_REQUESTCODE);
             }
         });
@@ -102,6 +107,16 @@ public class SeeWorld extends ChildBaseFragment{
     {
         mAutoListView.setVisibility(View.VISIBLE);
         hideLoading(mTitanicTextView);
+        if(mReloadBtn.isShown())
+        {
+            mReloadBtn.setVisibility(View.GONE);
+        }
+    }
+
+    private void loadingFailed()
+    {
+        hideLoading(mTitanicTextView);
+        mReloadBtn.setVisibility(View.VISIBLE);
     }
 
     public void getCatalogList()
@@ -111,8 +126,8 @@ public class SeeWorld extends ChildBaseFragment{
             @Override
             public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
             {
-                loadingComplete();
-                Toast.makeText(mBaseActivity,"获取数据列表失败",Toast.LENGTH_SHORT).show();
+                loadingFailed();
+                Toast.makeText(mBaseActivity,mBaseActivity.getResources().getString(R.string.get_list_failed),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -140,5 +155,21 @@ public class SeeWorld extends ChildBaseFragment{
                 return arg0;
             }
         });
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        int id = v.getId();
+        switch (id)
+        {
+            case R.id.reload:
+            {
+                mReloadBtn.setVisibility(View.GONE);
+                getCatalogList();
+                loading();
+                break;
+            }
+        }
     }
 }

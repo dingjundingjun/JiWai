@@ -9,7 +9,9 @@
     <string name="load_full">已加载全部</string>
     <string name="no_data">暂无数据</string>
     <string name="more">加载中</string>
-    <string name="loading">正在加载</string>
+    <string name="loading">给我片刻，许你芳华……</string>
+    <string name="get_list_failed">获取数据失败!</string>
+    <string name="reload_tip">再给我一次机会吧^_^</string>
 
     <string name="seeworld_title_name">看世界</string>
     <string name="joke_title_name">笑一校</string>

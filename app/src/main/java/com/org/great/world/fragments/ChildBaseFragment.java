@@ -58,7 +58,4 @@ public class ChildBaseFragment extends Fragment {
         mTitanic.cancel();
         view.setVisibility(View.GONE);
     }
-
-
-
 }
