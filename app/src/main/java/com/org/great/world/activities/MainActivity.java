@@ -1,12 +1,17 @@
 package com.org.great.world.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
 import com.org.great.world.fragments.GreatWorldFragment;
 import com.org.great.world.fragments.MeFragment;
@@ -66,6 +71,32 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mMeBtn.setSelected(true);
         }
         mTransaction.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkWifi();
+    }
+
+    private void checkWifi()
+    {
+        if(!Util.checkWifiConnected(this)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setTitle(R.string.tip_title)
+                    .setMessage(R.string.please_connect_network)
+                    .setPositiveButton(R.string.tip_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            return;
+        }
     }
 
     @Override

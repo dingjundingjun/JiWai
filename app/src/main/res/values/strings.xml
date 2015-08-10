@@ -12,7 +12,10 @@
     <string name="loading">给我片刻，许你芳华……</string>
     <string name="get_list_failed">获取数据失败!</string>
     <string name="reload_tip">再给我一次机会吧^_^</string>
-
+    <string name="tip_ok">确定</string>
+    <string name="tip_cancle">取消</string>
+    <string name="tip_title">温馨提示</string>
+    <string name="please_connect_network">请先连接网络!</string>
     <string name="seeworld_title_name">看世界</string>
     <string name="joke_title_name">笑一校</string>
 </resources>

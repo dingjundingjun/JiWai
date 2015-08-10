@@ -12,8 +12,13 @@ import java.util.Locale;
 import java.util.Map;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.view.Menu;
+
+import com.org.great.wrold.R;
 
 public class Util 
 {
@@ -101,5 +106,31 @@ public class Util
             return true;
         else
             return false;
+    }
+
+    public static boolean checkWifiConnected(Context context)
+    {
+        ConnectivityManager net = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ((net == null) || (net.getActiveNetworkInfo() == null) || (!net.getActiveNetworkInfo().isConnected()))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public static void showAlertDialog(Context context,String title,String msg)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton(R.string.tip_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
