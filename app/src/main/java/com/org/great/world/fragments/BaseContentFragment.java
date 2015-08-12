@@ -1,6 +1,7 @@
 package com.org.great.world.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.org.great.world.Utils.Debug;
 import com.org.great.world.Views.ContentPaperAdapter;
 import com.org.great.world.Views.FragmentViewPaper;
 import com.org.great.world.Views.TitleScroolView;
@@ -29,6 +31,7 @@ public class BaseContentFragment extends Fragment {
     private WebView mWebView;
     private TextView mTitleTextView;
     private CatalogPojo mCatalogPojo;
+    private ProgressDialog mProgressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBaseActivity = getActivity();
@@ -49,9 +52,16 @@ public class BaseContentFragment extends Fragment {
         mTitleTextView = (TextView)mParentView.findViewById(R.id.title);
         mWebView = (WebView)mParentView.findViewById(R.id.webview);
         initWebView();
+        initProgressDialog();
         loadData();
     }
 
+    private void initProgressDialog()
+    {
+        mProgressDialog = new ProgressDialog(mBaseActivity);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+    }
     public void loadData()
     {
         if(mCatalogPojo == null)
@@ -60,6 +70,7 @@ public class BaseContentFragment extends Fragment {
         }
         mWebView.loadUrl(mCatalogPojo.getUrl());
         mTitleTextView.setText(mCatalogPojo.getTitle());
+        mProgressDialog.show();
     }
 
     private void initWebView() {
@@ -89,6 +100,7 @@ public class BaseContentFragment extends Fragment {
             public void onPageFinished(WebView view, String url)
             {
                 super.onPageFinished(view, url);
+                Debug.d("onPageFinished url = " + url);
             }
 
             @Override
@@ -111,6 +123,11 @@ public class BaseContentFragment extends Fragment {
             public void onProgressChanged(WebView view, int newProgress)
             {
                 super.onProgressChanged(view, newProgress);
+                Debug.d("onProgressChanged  = " + newProgress);
+                if(newProgress >= 40)
+                {
+                    mProgressDialog.dismiss();
+                }
             }
 
         });
