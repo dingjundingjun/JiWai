@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':social_sdk_library_project'
+project(':social_sdk_library_project').projectDir = new File('libproject/social_sdk_library_project')

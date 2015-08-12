@@ -33,7 +33,15 @@
             android:id="@+id/comments_layout"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+        </LinearLayout>
+        <TextView
+            android:id="@+id/more_comment"
+            android:gravity="center"
+            android:textSize="@dimen/more_comment_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/more_comments"/>
      </LinearLayout>
     </ScrollView>
 </LinearLayout>

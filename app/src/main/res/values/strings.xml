@@ -16,6 +16,7 @@
     <string name="tip_cancle">取消</string>
     <string name="tip_title">温馨提示</string>
     <string name="please_connect_network">请先连接网络!</string>
+    <string name="more_comments">更多评论</string>
     <string name="seeworld_title_name">看世界</string>
     <string name="joke_title_name">笑一校</string>
 </resources>
