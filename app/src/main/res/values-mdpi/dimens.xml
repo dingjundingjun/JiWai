@@ -6,6 +6,8 @@
     <dimen name="comment_data_text_size">14sp</dimen>
     <dimen name="comment_content_text_size">18sp</dimen>
     <dimen name="more_comment_text_size">35sp</dimen>
+    <dimen name="like_text_size">14sp</dimen>
+    <dimen name="seeworld_layout_comment_text_size">12sp</dimen>
 
     <dimen name="title_scrool_label_text_view_height">50dip</dimen>
     <dimen name="title_scrool_label_text_min_width">200dip</dimen>
@@ -14,5 +16,12 @@
     <dimen name="comment_content_textview_margin_left">15dip</dimen>
     <dimen name="comment_content_textview_line_spacing">3dip</dimen>
     <dimen name="comment_content_textview_margin_top">5dip</dimen>
+    <dimen name="like_text_margin_right">10dip</dimen>
+    <dimen name="like_text_drawablePadding">2dip</dimen>
+    <dimen name="comment_text_margin_right">20dip</dimen>
+    <dimen name="share_text_margin_right">20dip</dimen>
+    <dimen name="comment_text_padding">3dip</dimen>
+    <dimen name="seeworld_layout_comment_text_margin_left">10dip</dimen>
+    <dimen name="seeworld_layout_relative_height">45dp</dimen>
 
 </resources>

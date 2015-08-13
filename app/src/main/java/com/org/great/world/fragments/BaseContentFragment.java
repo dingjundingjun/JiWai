@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.BaseListView;
+import com.org.great.world.Views.CustomShareBoard;
 import com.org.great.world.adapters.CommentAdapter;
 import com.org.great.world.data.CatalogPojo;
 import com.org.great.wrold.R;
@@ -47,7 +49,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     private Activity mBaseActivity;
     private View mParentView;
     private WebView mWebView;
-    private TextView mTitleTextView;
     private CatalogPojo mCatalogPojo;
     private ProgressDialog mProgressDialog;
     private UMSocialService mSocialService;
@@ -76,7 +77,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
 
     private void init()
     {
-        mTitleTextView = (TextView)mParentView.findViewById(R.id.title);
         mWebView = (WebView)mParentView.findViewById(R.id.webview);
         mMoreComment = (TextView)mParentView.findViewById(R.id.more_comment);
         mCommentLayout = (LinearLayout)mParentView.findViewById(R.id.comments_layout);
@@ -159,6 +159,15 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
 
     }
 
+    /**
+     * 调用postShare分享。跳转至分享编辑页，然后再分享。</br> [注意]<li>
+     * 对于新浪，豆瓣，人人，腾讯微博跳转到分享编辑页，其他平台直接跳转到对应的客户端
+     */
+    private void postShare() {
+        CustomShareBoard shareBoard = new CustomShareBoard(getActivity());
+        shareBoard.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
+
     private void getCommentFromUM(long sinceTime)
     {
         mSocialService.getComments(mBaseActivity, new SocializeListeners.FetchCommetsListener() {
@@ -232,7 +241,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             return;
         }
         mWebView.loadUrl(mCatalogPojo.getUrl());
-        mTitleTextView.setText(mCatalogPojo.getTitle());
         mProgressDialog.show();
     }
 

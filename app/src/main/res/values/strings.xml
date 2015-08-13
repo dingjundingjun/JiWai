@@ -19,4 +19,9 @@
     <string name="more_comments">更多评论</string>
     <string name="seeworld_title_name">看世界</string>
     <string name="joke_title_name">笑一校</string>
+    <string name="i_like">赞</string>
+    <string name="comment_string">评论</string>
+    <string name="share_string">分享</string>
+    <string name="user_comment_string">用户评论</string>
+
 </resources>
