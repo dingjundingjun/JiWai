@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.org.great.world.fragments.ChildBaseFragment;
+import com.org.great.world.fragments.SeeWorldChildBaseFragment;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import java.util.List;
  * email:dingjun0225@gmail.com
  */
 public class ContentPaperAdapter extends FragmentPagerAdapter {
-    private List<ChildBaseFragment> mList;
-    public ContentPaperAdapter(FragmentManager fm, List<ChildBaseFragment> list) {
+    private List<SeeWorldChildBaseFragment> mList;
+    public ContentPaperAdapter(FragmentManager fm, List<SeeWorldChildBaseFragment> list) {
         super(fm);
         mList = list;
     }

@@ -55,6 +55,8 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     private List<UMComment> mComments;
     private LinearLayout mCommentLayout;
     private TextView mMoreComment;
+    private TextView mLikeTextView;
+    private TextView mShareTextView;
     private final UMSocialService mController = UMServiceFactory
             .getUMSocialService(Util.Constants.DESCRIPTOR);
     public BaseContentFragment() {
@@ -81,6 +83,10 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         mMoreComment = (TextView)mParentView.findViewById(R.id.more_comment);
         mCommentLayout = (LinearLayout)mParentView.findViewById(R.id.comments_layout);
         mMoreComment.setOnClickListener(this);
+        mShareTextView = (TextView) mParentView.findViewById(R.id.share);
+        mLikeTextView = (TextView)mParentView.findViewById(R.id.like);
+        mShareTextView.setOnClickListener(this);
+        mLikeTextView.setOnClickListener(this);
         initWebView();
         initProgressDialog();
         addQQQZonePlatform();
@@ -226,6 +232,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
         }
         getCommentFromUM(-1);
+        requestLike();
     }
 
     private void initProgressDialog()
@@ -325,6 +332,39 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         mCommentLayout.addView(convertView);
     }
 
+    private void setLike(SocializeEntity entity) {
+
+        if(!isAdded()||isRemoving()){
+
+            return;
+        }
+        String str = String.format(mBaseActivity.getResources().getString(R.string.like_show),entity.getLikeCount());
+        mLikeTextView.setText(str);
+    }
+
+    private void requestLike() {
+
+        UMSocialService controller = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
+
+        if (!controller.getEntity().mInitialized) {
+            controller.initEntity(mBaseActivity, new SocializeListeners.SocializeClientListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onComplete(int status, SocializeEntity entity) {
+                    if(entity != null) {
+                        setLike(entity);
+                    }
+                }
+            });
+        } else {
+            setLike(controller.getEntity());
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -332,6 +372,30 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             case R.id.more_comment:
             {
                 gotoCommentActivity();
+                break;
+            }
+            case R.id.like:
+            {
+                mSocialService.likeChange(mBaseActivity,
+                        new SocializeListeners.SocializeClientListener() {
+                            @Override
+                            public void onStart() {
+
+                            }
+
+                            @Override
+                            public void onComplete(int status,
+                                                   SocializeEntity entity) {
+                                if (entity != null) {
+                                    requestLike();
+                                }
+                            }
+                        });
+                break;
+            }
+            case R.id.share:
+            {
+                postShare();
                 break;
             }
         }

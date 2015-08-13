@@ -1,6 +1,5 @@
 package com.org.great.world.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +9,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.org.great.world.Utils.Debug;
-import com.org.great.world.Views.ContentPaperAdapter;
 import com.org.great.world.Views.FragmentViewPaper;
 import com.org.great.world.data.CatalogPojo;
 import com.org.great.world.fragments.BaseContentFragment;
-import com.org.great.world.fragments.ChildBaseFragment;
 import com.org.great.wrold.R;
 
 import java.util.ArrayList;

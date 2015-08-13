@@ -8,9 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import com.org.great.world.Views.ContentPaperAdapter;
 import com.org.great.world.Views.FragmentViewPaper;
@@ -28,7 +25,7 @@ public class BaseFragment extends Fragment {
     private View mParentView;
     private Activity mBaseActivity;
     public FragmentViewPaper mFragmentViewPaper;
-    public List<ChildBaseFragment> mFragmentList = new ArrayList<ChildBaseFragment>();
+    public List<SeeWorldChildBaseFragment> mFragmentList = new ArrayList<SeeWorldChildBaseFragment>();
     public List<String> mTitleListStr = new ArrayList<String>();
     private TitleScroolView mTitleScroolView;
     public int mCurrentIndex = 0;

@@ -23,5 +23,5 @@
     <string name="comment_string">评论</string>
     <string name="share_string">分享</string>
     <string name="user_comment_string">用户评论</string>
-
+    <string name="like_show">赞(%1$d)</string>
 </resources>
