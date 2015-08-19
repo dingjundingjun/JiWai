@@ -9,4 +9,29 @@
         <item name="android:layout_height">21dip</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
+    <style name="radio">
+        <item name="android:button">@null</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:drawableLeft">@drawable/left_boyorgirl_selector</item>
+    </style>
+
+    <style name="register_edittext_style" parent="@android:style/Widget.EditText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/register_edit_height</item>
+        <item name="android:layout_margin">5dip</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxEms">24</item>
+        <item name="android:maxLength">24</item>
+        <item name="android:minEms">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:drawablePadding">10dip</item>
+        <item name="android:textCursorDrawable">@null</item>
+
+    </style>
 </resources>

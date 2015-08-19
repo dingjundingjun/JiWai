@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GreateWorld_Studio.iml" filepath="$PROJECT_DIR$/GreateWorld_Studio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libproject/CropLib/CropLib.iml" filepath="$PROJECT_DIR$/libproject/CropLib/CropLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JiWai.iml" filepath="$PROJECT_DIR$/JiWai.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libproject/jyfeekbacklib/jyfeekbacklib.iml" filepath="$PROJECT_DIR$/libproject/jyfeekbacklib/jyfeekbacklib.iml" />
       <module fileurl="file://$PROJECT_DIR$/libproject/social_sdk_library_project/social_sdk_library_project.iml" filepath="$PROJECT_DIR$/libproject/social_sdk_library_project/social_sdk_library_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libproject/view.customviewpager/view.customviewpager.iml" filepath="$PROJECT_DIR$/libproject/view.customviewpager/view.customviewpager.iml" />
     </modules>
   </component>
 </project>
-

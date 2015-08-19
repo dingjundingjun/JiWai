@@ -24,4 +24,21 @@
     <string name="share_string">分享</string>
     <string name="user_comment_string">用户评论</string>
     <string name="like_show">赞(%1$d)</string>
+
+
+    <!-- login -->
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="please_input_name">请输入您的用户名</string>
+    <string name="please_input_password">请输入您的密码</string>
+    <string name="user_name">昵称:</string>
+    <string name="password">密码:</string>
+    <string name="sex">性别:</string>
+    <string name="complete_register">完成注册</string>
+    <string name="is_registering">正在注册...请稍后</string>
+    <string name="is_logining">正在登陆....</string>
+    <string name="can_not_contain">用户名或密码不能包含特殊字符串!</string>
+    <string name="login_user_name_hit">请输入唯一ID注册（建议使用QQ）</string>
+    <string name="find_black_person">发现黑户</string>
+    <string name="forget_remaind">加客服MM QQ : 1950499049 找回密码\n不找密码的同学可以找客服MM聊天，不保证一定回复啊</string>
 </resources>

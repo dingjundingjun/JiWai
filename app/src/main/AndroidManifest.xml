@@ -30,7 +30,7 @@
             android:value="MuMaYi" />
 
         <activity
-            android:name="com.org.great.world.activities.MainActivity"
+            android:name="com.org.great.world.activities.ActivityWelcome"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,8 +39,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.org.great.world.activities.SeeWorldActivity"
-            >
+            android:name="com.org.great.world.activities.MainActivity">
+        </activity>
+
+        <activity
+            android:name="com.org.great.world.activities.ActivityRegister">
+        </activity>
+        <activity
+            android:name="com.org.great.world.activities.SeeWorldActivity">
         </activity>
         <activity
             android:name="com.umeng.socialize.view.ShareActivity"
@@ -71,6 +77,13 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

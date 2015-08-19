@@ -1,2 +1,5 @@
-include ':app', ':social_sdk_library_project'
+include ':app', ':social_sdk_library_project', ':view.customviewpager', ':CropLib', ':jyfeekbacklib'
 project(':social_sdk_library_project').projectDir = new File('libproject/social_sdk_library_project')
+project(':view.customviewpager').projectDir = new File('libproject/view.customviewpager')
+project(':CropLib').projectDir = new File('libproject/CropLib')
+project(':jyfeekbacklib').projectDir = new File('libproject/jyfeekbacklib')

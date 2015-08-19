@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <!--  
+    <include layout="@layout/login"/>
+    -->
+    <include layout="@layout/my_infomation"/>
+    <ScrollView 
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#f0f0f0">
+        
+         <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20dip"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:paddingTop="25dip" >
+
+                <TextView
+                    android:id="@+id/person_feedback"
+                    android:layout_width="fill_parent"
+                    android:layout_height="110dp"
+                    android:background="@drawable/person_info_item_bg"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:paddingLeft="35dp" 
+                    android:paddingRight="35dp"  
+                    android:text="  意见反馈"
+                    android:textColor="#5c9f18"
+                    android:textSize="24sp"
+                    android:drawableLeft="@drawable/me_feedback"
+                    android:gravity="left|center_vertical"/>
+
+                <LinearLayout 
+                    android:layout_width="fill_parent"
+                    android:layout_height="110dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/person_info_item_bg"
+                    android:layout_marginTop="20dp"  
+                    android:weightSum= "5"
+                    android:visibility="gone">
+	                  <TextView
+	                    android:id="@+id/person_picture"
+	                    android:layout_width="0dp"
+	                    android:layout_height="110dp"	                                      
+	                    android:clickable="true"
+	                    android:contentDescription="@string/app_name"
+	                    android:paddingLeft="35dp" 
+	                    android:text="  我的图片"
+	                    android:drawableLeft="@drawable/me_myphoto"
+	                    android:textColor="#5c9f18"
+	                    android:textSize="24sp"
+	                    android:layout_weight="4"
+	                    android:gravity="left|center_vertical"/>     
+	                    
+					<TextView
+	                    android:layout_width="0dp"
+	                    android:layout_height="110dp"
+	                    android:layout_marginTop="20dp"
+	                    android:clickable="true"
+	                    android:contentDescription="@string/app_name"
+	                    android:paddingLeft="35dp" 
+	                    android:text=" 长按图片保存"
+	                    android:textColor="#5c9f18"
+	                    android:layout_weight="1"
+	                    android:textSize="16sp"
+	                    android:gravity="left|center_vertical"/>   
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/person_set"
+                    android:layout_width="fill_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/person_info_item_bg"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:paddingLeft="35dp" 
+                    android:text=" 设置"
+                    android:textColor="#5c9f18"
+                    android:textSize="24sp"
+                    android:gravity="left|center_vertical"
+                    android:visibility="gone"/>
+                
+                <TextView
+                    android:id="@+id/person_exit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/person_info_item_bg"
+                    android:clickable="true"
+                    android:contentDescription="@string/app_name"
+                    android:paddingLeft="35dp" 
+                    android:text="  退出登录"
+                    android:drawableLeft="@drawable/me_exit"
+                    android:textColor="#5c9f18"
+                    android:textSize="24sp"
+                    android:gravity="left|center_vertical"/>
+            </LinearLayout>
+    </ScrollView>  
+</LinearLayout>
+
+
