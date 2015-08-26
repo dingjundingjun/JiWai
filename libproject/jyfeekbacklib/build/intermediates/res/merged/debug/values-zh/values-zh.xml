@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/dell390/Desktop/JY/new_jy_dm/JiWai/libproject/jyfeekbacklib/res/values-zh/umeng_fb_strings.xml -->
+    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/values-zh/umeng_fb_strings.xml -->
     <eat-comment/>
     <string-array name="umeng_fb_contact_key_array">
         <item>@string/umeng_fb_contact_key_email</item>

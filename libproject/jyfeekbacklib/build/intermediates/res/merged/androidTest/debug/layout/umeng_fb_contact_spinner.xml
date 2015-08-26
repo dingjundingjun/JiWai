@@ -5,4 +5,4 @@
     android:layout_height="wrap_content"
     android:textSize="@dimen/umeng_fb_item_content_size"
     android:gravity="center"
-    android:paddingBottom="0dp"/><!-- From: file:/C:/Users/dell390/Desktop/JY/new_jy_dm/JiWai/libproject/jyfeekbacklib/res/layout/umeng_fb_contact_spinner.xml --><!-- From: file:/C:/Users/dell390/Desktop/JY/new_jy_dm/JiWai/libproject/jyfeekbacklib/build/intermediates/bundles/debug/res/layout/umeng_fb_contact_spinner.xml -->
+    android:paddingBottom="0dp"/><!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/layout/umeng_fb_contact_spinner.xml --><!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/build/intermediates/bundles/debug/res/layout/umeng_fb_contact_spinner.xml -->
