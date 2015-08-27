@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/CropLib/res/values-sw720dp-land/dimens.xml -->
+    <!-- From: file:/E:/workspace/github/JiWai/libproject/CropLib/res/values-sw720dp-land/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">128dp</dimen>
 </resources>

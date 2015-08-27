@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/values/umeng_fb_strings.xml -->
+    <!-- From: file:/E:/workspace/github/JiWai/libproject/jyfeekbacklib/res/values/umeng_fb_strings.xml -->
     <eat-comment/>
     <string-array name="umeng_fb_contact_key_array">
         <item>@string/umeng_fb_contact_key_email</item>
@@ -14,7 +14,7 @@
         <item>@string/umeng_fb_contact_phone</item>
         <item>@string/umeng_fb_contact_other</item>
     </string-array>
-    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/values/umeng_fb_color.xml -->
+    <!-- From: file:/E:/workspace/github/JiWai/libproject/jyfeekbacklib/res/values/umeng_fb_color.xml -->
     <eat-comment/>
     <color name="umeng_fb_audo_dialog_bg">#F4F0745F</color>
     <color name="umeng_fb_gray">#FFD8D8D8</color>
@@ -22,7 +22,7 @@
     <color name="umeng_fb_line">#DCDCDC</color>
     <color name="umeng_fb_secondary_text_light">#8A000000</color>
     <color name="umeng_fb_white">#FFFFFF</color>
-    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/values/umeng_fb_dimens.xml -->
+    <!-- From: file:/E:/workspace/github/JiWai/libproject/jyfeekbacklib/res/values/umeng_fb_dimens.xml -->
     <eat-comment/>
     <dimen name="umeng_fb_item_content_size">14sp</dimen>
     <dimen name="umeng_fb_item_height">48dp</dimen>
@@ -30,7 +30,7 @@
     <dimen name="umeng_fb_item_time_size">12sp</dimen>
     <dimen name="umeng_fb_record_btn_text_size">20sp</dimen>
     <dimen name="umeng_fb_spinner_padding_left">12dp</dimen>
-    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/values/umeng_fb_strings.xml -->
+    <!-- From: file:/E:/workspace/github/JiWai/libproject/jyfeekbacklib/res/values/umeng_fb_strings.xml -->
     <eat-comment/>
     <string name="umeng_fb_back">Back</string>
     <string name="umeng_fb_change_contact_title">Change contact Info</string>
@@ -67,7 +67,7 @@
     <string name="umeng_fb_time_this_year_format">MM/dd HH:mm:ss</string>
     <string name="umeng_fb_title">Feedback</string>
     <string name="umeng_fb_write_contact_title">Write contact Info</string>
-    <!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/values/umeng_fb_style.xml -->
+    <!-- From: file:/E:/workspace/github/JiWai/libproject/jyfeekbacklib/res/values/umeng_fb_style.xml -->
     <eat-comment/>
     <style name="UmengFBSpeechStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground"> @android:color/transparent </item>

@@ -68,4 +68,4 @@
                 android:textSize="@dimen/umeng_fb_item_content_size" />
         </RelativeLayout>
     </LinearLayout>
-</LinearLayout><!-- From: file:/E:/workspace/projects/GreateWorld_Studio/libproject/jyfeekbacklib/res/layout/umeng_fb_input_conversation.xml -->
+</LinearLayout><!-- From: file:/E:/workspace/github/JiWai/libproject/jyfeekbacklib/res/layout/umeng_fb_input_conversation.xml -->

@@ -35,24 +35,26 @@ import java.util.ArrayList;
  * Created by dj on 2015/7/19.
  * email:dingjun0225@gmail.com
  */
-public class SeeWorldChildBaseFragment extends Fragment implements View.OnClickListener{
+public class SeeWorldChildBaseFragment extends Fragment{
     public Activity mBaseActivity;
     public String mTitle = "";
     public AsyncHttpClient mAsyncHttpClient;
     private Titanic mTitanic;
 
-    private AutoListView mAutoListView;
-    private SeeWorldAdapter mSeeWorldAdapter;
+    public AutoListView mAutoListView;
+
     private TitanicTextView mTitanicTextView;
-    private ArrayList<CatalogPojo> mCatalogPojo;
-    private final int START_SEEWORLD_ACTIVITY_REQUESTCODE = 1;
+
+
     protected String mCatalogUrl;
-    private Button mReloadBtn;
+    public Button mReloadBtn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Debug.d("SeeWorldChildBaseFragment onCreate");
         mBaseActivity = getActivity();
-        super.onCreate(savedInstanceState);
         mAsyncHttpClient = new AsyncHttpClient();
+        super.onCreate(savedInstanceState);
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,7 +92,7 @@ public class SeeWorldChildBaseFragment extends Fragment implements View.OnClickL
     {
         mTitanicTextView = (TitanicTextView)layout.findViewById(R.id.titanic_text);
         mReloadBtn = (Button)layout.findViewById(R.id.reload);
-        mReloadBtn.setOnClickListener(this);
+//        mReloadBtn.setOnClickListener(this);
         mAutoListView = (AutoListView)layout.findViewById(R.id.auto_list);
         mAutoListView.setOnRefreshListener(new AutoListView.OnRefreshListener() {
             @Override
@@ -108,33 +110,32 @@ public class SeeWorldChildBaseFragment extends Fragment implements View.OnClickL
                 mAutoListView.noLoadDate();
             }
         });
-        mSeeWorldAdapter = new SeeWorldAdapter(getActivity());
-//        mAutoListView.setAdapter(mSeeWorldAdapter);
-//        mSeeWorldAdapter.notifyDataSetChanged();
-        mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("list", mCatalogPojo);
-                bundle.putInt("index_id",position);
-                Intent intent = new Intent(mBaseActivity, SeeWorldActivity.class);
-                intent.putExtra("bundle",bundle);
-                startActivityForResult(intent,START_SEEWORLD_ACTIVITY_REQUESTCODE);
-            }
-        });
-        getCatalogList();
-        loading();
+
+//        mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("list", mCatalogPojo);
+//                bundle.putInt("index_id",position);
+//                Intent intent = new Intent(mBaseActivity, SeeWorldActivity.class);
+//                intent.putExtra("bundle",bundle);
+//                startActivityForResult(intent,START_SEEWORLD_ACTIVITY_REQUESTCODE);
+//            }
+//        });
+//        getCatalogList();
+//        loading();
     }
 
-    private void loading()
+    public void loading()
     {
         mAutoListView.setVisibility(View.GONE);
         showLoading(mTitanicTextView);
     }
 
-    private void loadingComplete()
+    public void loadingComplete()
     {
         mAutoListView.setVisibility(View.VISIBLE);
+        mAutoListView.noLoadDate();
         hideLoading(mTitanicTextView);
         if(mReloadBtn.isShown())
         {
@@ -142,67 +143,9 @@ public class SeeWorldChildBaseFragment extends Fragment implements View.OnClickL
         }
     }
 
-    private void loadingFailed()
+    public void loadingFailed()
     {
         hideLoading(mTitanicTextView);
         mReloadBtn.setVisibility(View.VISIBLE);
-    }
-
-    public void getCatalogList()
-    {
-        if(mCatalogUrl.isEmpty())
-        {
-            return;
-        }
-        RequestHandle handle = mAsyncHttpClient.get(mCatalogUrl, new BaseJsonHttpResponseHandler()
-        {
-            @Override
-            public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
-            {
-                loadingFailed();
-                Toast.makeText(mBaseActivity,mBaseActivity.getResources().getString(R.string.get_list_failed),Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(int arg0, Header[] arg1, String arg2, Object arg3)
-            {
-                if(!Util.isEmpty(arg2))
-                {
-                    Gson gson = new Gson();
-                    BaseCatalogPojo pojo = gson.fromJson(arg2, BaseCatalogPojo.class);
-                    if(pojo.getStatus().equals("success"))
-                    {
-                        Debug.d("json = " + arg2);
-                        mCatalogPojo = pojo.getMessage();
-                        mSeeWorldAdapter.setList(mCatalogPojo);
-                        mAutoListView.setAdapter(mSeeWorldAdapter);
-                        mSeeWorldAdapter.notifyDataSetChanged();
-                        loadingComplete();
-                    }
-                }
-            }
-
-            @Override
-            protected Object parseResponse(String arg0, boolean arg1) throws Throwable
-            {
-                return arg0;
-            }
-        });
-    }
-
-    @Override
-    public void onClick(View v)
-    {
-        int id = v.getId();
-        switch (id)
-        {
-            case R.id.reload:
-            {
-                mReloadBtn.setVisibility(View.GONE);
-                getCatalogList();
-                loading();
-                break;
-            }
-        }
     }
 }

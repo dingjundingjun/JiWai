@@ -13,6 +13,7 @@ public class HttpUtils
 
         public static final String URL_WORLD_CATALOG = "http://121.40.93.89:13090/article/getWatchWorldList";
         public static final String URL_JOKE_CATALOG = "http://121.40.93.89:13090/article/getJokeList";
+        public static final String URL_GAME_CATALOG = "http://121.40.93.89:13090/game/getGameList";
 
     }
 }
