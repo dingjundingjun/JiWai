@@ -110,20 +110,6 @@ public class SeeWorldChildBaseFragment extends Fragment{
                 mAutoListView.noLoadDate();
             }
         });
-
-//        mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("list", mCatalogPojo);
-//                bundle.putInt("index_id",position);
-//                Intent intent = new Intent(mBaseActivity, SeeWorldActivity.class);
-//                intent.putExtra("bundle",bundle);
-//                startActivityForResult(intent,START_SEEWORLD_ACTIVITY_REQUESTCODE);
-//            }
-//        });
-//        getCatalogList();
-//        loading();
     }
 
     public void loading()

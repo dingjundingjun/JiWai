@@ -14,13 +14,11 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.Util;
-import com.org.great.world.Views.BaseListView;
 import com.org.great.world.Views.CustomShareBoard;
 import com.org.great.world.adapters.CommentAdapter;
 import com.org.great.world.data.CatalogPojo;
@@ -53,10 +51,11 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     private ProgressDialog mProgressDialog;
     private UMSocialService mSocialService;
     private List<UMComment> mComments;
-    private LinearLayout mCommentLayout;
     private TextView mMoreComment;
     private TextView mLikeTextView;
     private TextView mShareTextView;
+    private ListView mCommentList;
+    private CommentAdapter mCommentAdapter;
     private final UMSocialService mController = UMServiceFactory
             .getUMSocialService(Util.Constants.DESCRIPTOR);
     public BaseContentFragment() {
@@ -65,8 +64,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBaseActivity = getActivity();
-        View view = LayoutInflater.from(mBaseActivity).inflate(R.layout.seeworld_layout, null);
-        mParentView = view;
+        mParentView = LayoutInflater.from(mBaseActivity).inflate(R.layout.seeworld_layout, null);
         init();
         return mParentView;
     }
@@ -77,16 +75,33 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void init()
+    private View initCommentListHead()
     {
-        mWebView = (WebView)mParentView.findViewById(R.id.webview);
-        mMoreComment = (TextView)mParentView.findViewById(R.id.more_comment);
-        mCommentLayout = (LinearLayout)mParentView.findViewById(R.id.comments_layout);
-        mMoreComment.setOnClickListener(this);
-        mShareTextView = (TextView) mParentView.findViewById(R.id.share);
-        mLikeTextView = (TextView)mParentView.findViewById(R.id.like);
+        View view = View.inflate(mBaseActivity,R.layout.comment_list_head,null);
+        mWebView = (WebView)view.findViewById(R.id.webview);
+        mShareTextView = (TextView) view.findViewById(R.id.share);
+        mLikeTextView = (TextView)view.findViewById(R.id.like);
         mShareTextView.setOnClickListener(this);
         mLikeTextView.setOnClickListener(this);
+        return view;
+    }
+
+    private TextView initCommentListFoot()
+    {
+        TextView view = new TextView(mBaseActivity);
+        view.setText(mBaseActivity.getString(R.string.more_comments));
+        return view;
+    }
+
+    private void init()
+    {
+        mMoreComment = initCommentListFoot();
+        mCommentList = (ListView)mParentView.findViewById(R.id.comment_list);
+        mCommentAdapter = new CommentAdapter(mBaseActivity);
+        mMoreComment.setOnClickListener(this);
+        mCommentList.addHeaderView(initCommentListHead());
+        mCommentList.addFooterView(mMoreComment);
+        mCommentList.setAdapter(mCommentAdapter);
         initWebView();
         initProgressDialog();
         addQQQZonePlatform();
@@ -96,8 +111,8 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     }
 
     /**
-     * @功能描述 : 添加微信平台分享
-     * @return
+     * 添加微信平台分享
+     *
      */
     private void addWXPlatform() {
         // 注意：在微信授权的时候，必须传递appSecret
@@ -136,11 +151,11 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     }
 
     /**
-     * @功能描述 : 添加QQ平台支持 QQ分享的内容， 包含四种类型， 即单纯的文字、图片、音乐、视频. 参数说明 : title, summary,
+     * 添加QQ平台支持 QQ分享的内容， 包含四种类型， 即单纯的文字、图片、音乐、视频. 参数说明 : title, summary,
      *       image url中必须至少设置一个, targetUrl必须设置,网页地址必须以"http://"开头 . title :
      *       要分享标题 summary : 要分享的文字概述 image url : 图片地址 [以上三个参数至少填写一个] targetUrl
      *       : 用户点击该分享时跳转到的目标地址 [必填] ( 若不填写则默认设置为友盟主页 )
-     * @return
+     *
      */
     private void addQQQZonePlatform() {
         String appId = "1104234972";
@@ -185,43 +200,33 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             @Override
             public void onComplete(int status, List<UMComment> comments, SocializeEntity arg2) {
                 Debug.d("status = " + status);
-                if(status == 200)    //ok
+                if (status == 200)    //ok
                 {
                     Debug.d("comments size = " + comments.size());
-                    if(mCommentLayout.getChildCount() > 0)
-                    {
-                        return;
-                    }
-                    if(comments != null && !comments.isEmpty())
-                    {
-                        mComments.clear();
-                        if(comments.size() > 3)
-                        {
-                            mComments.addAll(comments.subList(0,3));
-                        }
-                        else if(comments.size() == 0)
-                        {
+                    if (!comments.isEmpty()) {
+                        if (comments.size() > 0) {
+                            mComments.addAll(comments.subList(0, comments.size()));
+                        } else if (comments.size() == 0) {
                             mMoreComment.setVisibility(View.GONE);
-                        }
-                        else
-                        {
+                        } else {
                             mComments.addAll(comments);
                         }
-                        for(int i = 0;i < mComments.size();i++) {
-                            addCommentLayout(mComments.get(i));
-                        }
-                    }
-                    else
-                    {
+                        updateComment(mComments);
+                    } else {
 
                     }
-                }
-                else if(status == -104)
-                {
+                } else if (status == -104) {
                     getCommentFromUM(-1);
                 }
             }
         }, -1);
+    }
+
+    private void updateComment(List<UMComment> comments)
+    {
+        Debug.d("udpateComment comments.size = " + comments.size());
+        mCommentAdapter.setList(comments);
+        mCommentAdapter.notifyDataSetChanged();
     }
 
     private void initComment()
@@ -295,15 +300,13 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        mWebView.setWebChromeClient(new WebChromeClient(){
+        mWebView.setWebChromeClient(new WebChromeClient() {
 
             @Override
-            public void onProgressChanged(WebView view, int newProgress)
-            {
+            public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 Debug.d("onProgressChanged  = " + newProgress);
-                if(newProgress >= 40)
-                {
+                if (newProgress >= 40) {
                     mProgressDialog.dismiss();
                 }
             }
@@ -318,18 +321,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             mWebView.removeAllViews();
             mWebView.destroy();
         }
-    }
-
-    private void addCommentLayout(UMComment comnent)
-    {
-        View convertView = View.inflate(mBaseActivity, R.layout.comment_layout_item, null);
-        TextView content = (TextView) convertView.findViewById(R.id.content);
-        TextView date = (TextView) convertView.findViewById(R.id.date);
-        TextView name = (TextView) convertView.findViewById(R.id.name);
-        content.setText(comnent.mText);
-        date.setText(DateUtils.formatDateTime(mBaseActivity, comnent.mDt, DateUtils.FORMAT_12HOUR));
-        name.setText(comnent.mUname);
-        mCommentLayout.addView(convertView);
     }
 
     private void setLike(SocializeEntity entity) {
@@ -369,11 +360,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId())
         {
-            case R.id.more_comment:
-            {
-                gotoCommentActivity();
-                break;
-            }
             case R.id.like:
             {
                 mSocialService.likeChange(mBaseActivity,
