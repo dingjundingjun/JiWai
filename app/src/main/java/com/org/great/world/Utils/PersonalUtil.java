@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.org.great.world.pojo.PersonalInfoPojo;
+import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
 
 public class PersonalUtil {

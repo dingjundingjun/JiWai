@@ -16,13 +16,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.org.great.world.Utils.Debug;
+import com.org.great.world.Utils.PersonalUtil;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.CustomShareBoard;
 import com.org.great.world.adapters.CommentAdapter;
 import com.org.great.world.data.CatalogPojo;
+import com.org.great.world.data.PersonalInfoPojo;
+import com.org.great.world.dialog.CommentDialog;
 import com.org.great.wrold.R;
+import com.umeng.socialize.bean.Gender;
+import com.umeng.socialize.bean.SnsAccount;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.bean.UMComment;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -54,8 +60,12 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     private TextView mMoreComment;
     private TextView mLikeTextView;
     private TextView mShareTextView;
+    private TextView mUserCommentNumber;
+    private TextView mCommentTextView;
     private ListView mCommentList;
+    private CommentDialog mCommentDialog;
     private CommentAdapter mCommentAdapter;
+    private final int MORE_COMMENT_ID = 0;
     private final UMSocialService mController = UMServiceFactory
             .getUMSocialService(Util.Constants.DESCRIPTOR);
     public BaseContentFragment() {
@@ -79,23 +89,30 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     {
         View view = View.inflate(mBaseActivity,R.layout.comment_list_head,null);
         mWebView = (WebView)view.findViewById(R.id.webview);
-        mShareTextView = (TextView) view.findViewById(R.id.share);
-        mLikeTextView = (TextView)view.findViewById(R.id.like);
-        mShareTextView.setOnClickListener(this);
-        mLikeTextView.setOnClickListener(this);
+
         return view;
     }
 
     private TextView initCommentListFoot()
     {
         TextView view = new TextView(mBaseActivity);
+        view.setId(MORE_COMMENT_ID);
         view.setText(mBaseActivity.getString(R.string.more_comments));
+        view.setTextSize(50);
+        view.setGravity(Gravity.CENTER);
         return view;
     }
 
     private void init()
     {
         mMoreComment = initCommentListFoot();
+        mShareTextView = (TextView) mParentView.findViewById(R.id.share);
+        mLikeTextView = (TextView)mParentView.findViewById(R.id.like);
+        mCommentTextView = (TextView)mParentView.findViewById(R.id.comment);
+        mShareTextView.setOnClickListener(this);
+        mLikeTextView.setOnClickListener(this);
+        mCommentTextView.setOnClickListener(this);
+        mUserCommentNumber = (TextView)mParentView.findViewById(R.id.user_comment_number);
         mCommentList = (ListView)mParentView.findViewById(R.id.comment_list);
         mCommentAdapter = new CommentAdapter(mBaseActivity);
         mMoreComment.setOnClickListener(this);
@@ -205,21 +222,20 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
                     Debug.d("comments size = " + comments.size());
                     if (!comments.isEmpty()) {
                         if (comments.size() > 0) {
-                            mComments.addAll(comments.subList(0, comments.size()));
+                            mComments.addAll(comments);
                         } else if (comments.size() == 0) {
                             mMoreComment.setVisibility(View.GONE);
-                        } else {
-                            mComments.addAll(comments);
                         }
                         updateComment(mComments);
                     } else {
-
+                        mMoreComment.setVisibility(View.GONE);
+                        Toast.makeText(mBaseActivity, R.string.no_more_comment, Toast.LENGTH_SHORT).show();
                     }
                 } else if (status == -104) {
                     getCommentFromUM(-1);
                 }
             }
-        }, -1);
+        }, sinceTime);
     }
 
     private void updateComment(List<UMComment> comments)
@@ -324,12 +340,12 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     }
 
     private void setLike(SocializeEntity entity) {
-
         if(!isAdded()||isRemoving()){
 
             return;
         }
-        String str = String.format(mBaseActivity.getResources().getString(R.string.like_show),entity.getLikeCount());
+        String str = String.format(mBaseActivity.getResources().getString(R.string.like_show), entity.getLikeCount());
+        mUserCommentNumber.setText(mBaseActivity.getString(R.string.user_comment_string) + "("+entity.getCommentCount() + ")");
         mLikeTextView.setText(str);
     }
 
@@ -384,11 +400,39 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
                 postShare();
                 break;
             }
+            case MORE_COMMENT_ID:
+            {
+                getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
+                break;
+            }
+            case R.id.comment:
+            {
+                gotoComment();
+                break;
+            }
         }
     }
 
-    public void gotoCommentActivity()
+    public void gotoComment()
     {
         Debug.d("gotoCommentActvitiy");
+        if(mCommentDialog == null)
+        {
+            mCommentDialog = new CommentDialog(mBaseActivity);
+            mCommentDialog.setSocialService(mSocialService);
+            mCommentDialog.setCommentListener(new CommentDialog.CommentListener() {
+                @Override
+                public void OnCommentComplete() {
+                    getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
+                }
+            });
+        }
+        else
+        {
+            mCommentDialog.clear();
+        }
+        mCommentDialog.show();
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.org.great.world.adapters;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,8 @@ public class CommentAdapter extends BAdapter
 
         UMComment umData = (UMComment) getItem(position);
         viewHolder.content.setText(umData.mText);
-        viewHolder.date.setText(DateUtils.formatDateTime(mContext, umData.mDt, DateUtils.FORMAT_12HOUR));
+//        viewHolder.date.setText(DateUtils.formatDateTime(mContext, umData.mDt, DateUtils.FORMAT_24HOUR));
+        viewHolder.date.setText(DateFormat.format("yyyy-MM-dd kk:mm", umData.mDt).toString());
         viewHolder.name.setText(umData.mUname);
         return convertView;
     }

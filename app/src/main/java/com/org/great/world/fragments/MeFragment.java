@@ -43,7 +43,7 @@ import com.org.great.world.Utils.PersonalUtil;
 import com.org.great.world.activities.ActivityRegister;
 import com.org.great.world.activities.GalleryUrlActivity;
 import com.org.great.world.adapters.PopGridListAdapter;
-import com.org.great.world.pojo.PersonalInfoPojo;
+import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
 import com.soundcloud.android.crop.Crop;
 import com.soundcloud.android.crop.CropImageActivity;

@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.org.great.world.Views.ContentPaperAdapter;
 import com.org.great.world.Views.FragmentViewPaper;
 import com.org.great.world.Views.TitleScroolView;
+import com.org.great.world.adapters.ContentPaperAdapter;
 import com.org.great.wrold.R;
 
 import java.util.ArrayList;

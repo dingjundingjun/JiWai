@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 
 import com.org.great.world.Utils.DensityUtil;
 import com.org.great.world.Utils.PersonalUtil;
-import com.org.great.world.pojo.PersonalInfoPojo;
+import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
 import com.ryanharter.viewpager.PagerAdapter;
 import com.ryanharter.viewpager.ViewPager;

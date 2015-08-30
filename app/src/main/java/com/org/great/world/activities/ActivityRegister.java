@@ -53,7 +53,7 @@ import android.widget.Toast;
 
 import com.org.great.world.Utils.JsonTools;
 import com.org.great.world.Utils.PersonalUtil;
-import com.org.great.world.pojo.PersonalInfoPojo;
+import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
 
 
@@ -129,6 +129,7 @@ public class ActivityRegister extends Activity{
 		});
 		
 		mProgressDialog = new ProgressDialog(this);
+		mProgressDialog.setTitle("温馨提示");
 	}
 	
 	protected void popForgetPassword() {

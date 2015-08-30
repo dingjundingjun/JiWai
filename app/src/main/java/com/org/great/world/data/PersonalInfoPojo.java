@@ -1,4 +1,4 @@
-package com.org.great.world.pojo;
+package com.org.great.world.data;
 
 import java.io.Serializable;
 
