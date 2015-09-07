@@ -14,22 +14,26 @@ public class GreatWorldFragment extends BaseFragment{
     private SeeWorld mSeeWorld;
     private Joke mJoke;
     private Game mGame;
+    private Video mVideo;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mSeeWorld = new SeeWorld();
         mJoke = new Joke();
         mGame = new Game();
+        mVideo = new Video();
         mFragmentList.clear();
         mFragmentList.add(mSeeWorld);
         mFragmentList.add(mJoke);
         mFragmentList.add(mGame);
+        mFragmentList.add(mVideo);
         mTitleListStr.clear();
         Debug.d("mSeeworld title = " + mSeeWorld.getTitle());
         Debug.d("mJoke title = " + mJoke.getTitle());
         mTitleListStr.add(mSeeWorld.getTitle());
         mTitleListStr.add(mJoke.getTitle());
         mTitleListStr.add(mGame.getTitle());
+        mTitleListStr.add(mVideo.getTitle());
         updateFragmentList();
     }
 
