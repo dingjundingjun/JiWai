@@ -94,22 +94,21 @@ public class SeeWorldChildBaseFragment extends Fragment{
         mReloadBtn = (Button)layout.findViewById(R.id.reload);
 //        mReloadBtn.setOnClickListener(this);
         mAutoListView = (AutoListView)layout.findViewById(R.id.auto_list);
-        mAutoListView.setOnRefreshListener(new AutoListView.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_SHORT).show();
-                mAutoListView.onRefreshComplete();
-            }
-        });
-
-        mAutoListView.setOnLoadListener(new AutoListView.OnLoadListener() {
-            @Override
-            public void onLoad() {
-                Toast.makeText(getActivity(), "加载更多", Toast.LENGTH_SHORT).show();
-                mAutoListView.onLoadComplete();
-                mAutoListView.noLoadDate();
-            }
-        });
+//        mAutoListView.setOnRefreshListener(new AutoListView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_SHORT).show();
+//                mAutoListView.onRefreshComplete();
+//            }
+//        });
+//
+//        mAutoListView.setOnLoadListener(new AutoListView.OnLoadListener() {
+//            @Override
+//            public void onLoad() {
+//                Toast.makeText(getActivity(), "加载更多", Toast.LENGTH_SHORT).show();
+//                mAutoListView.onLoadComplete();
+//            }
+//        });
     }
 
     public void loading()
@@ -121,7 +120,8 @@ public class SeeWorldChildBaseFragment extends Fragment{
     public void loadingComplete()
     {
         mAutoListView.setVisibility(View.VISIBLE);
-        mAutoListView.noLoadDate();
+        mAutoListView.onLoadComplete();
+//        mAutoListView.noLoadDate();
         hideLoading(mTitanicTextView);
         if(mReloadBtn.isShown())
         {

@@ -13,6 +13,7 @@ import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.Util;
+import com.org.great.world.Views.AutoListView;
 import com.org.great.world.activities.PlayerActivity;
 import com.org.great.world.adapters.VideoAdapter;
 import com.org.great.world.data.VideoBasePojo;
@@ -31,9 +32,15 @@ public class Video extends SeeWorldChildBaseFragment{
     private final int START_GAME_ACTIVITY_REQUESTCODE = 1;
     private VideoAdapter mVideoAdapter;
     private ArrayList<VideoPojo> mVideoPojoList;
+    private int mPageIndex = 0;
+    private int mTotalCount = 0;
+    private int mOnePageCount = 0;
     public Video() {
         mTitle = "搞笑视频";
-        mCatalogUrl = "https://api.youku.com/quality/video/by/category.json?client_id=7960cf1cd1ea53a4&cate=2&page=1&count=20";
+        mPageIndex = 1;
+        mOnePageCount = 10;
+		mCatalogUrl = "https://api.youku.com/quality/video/by/category.json?client_id=7960cf1cd1ea53a4&cate=2&"
+				+ "page=" + mPageIndex + "&count=" + mOnePageCount;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +55,7 @@ public class Video extends SeeWorldChildBaseFragment{
             }
         });
         mVideoAdapter = new VideoAdapter(getActivity());
+        
         getCatalogList();
         loading();
         mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,17 +65,40 @@ public class Video extends SeeWorldChildBaseFragment{
                 Intent intent = new Intent(mBaseActivity,PlayerActivity.class);
                 intent.putExtra("vid", mVideoPojoList.get(position).getId());
                 startActivityForResult(intent, START_GAME_ACTIVITY_REQUESTCODE);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("list", mGamePojoList);
-//                bundle.putInt("index_id",position);
-//                Intent intent = new Intent(mBaseActivity, GameActivity.class);
-//                intent.putExtra("bundle",bundle);
-//                startActivityForResult(intent,START_GAME_ACTIVITY_REQUESTCODE);
+            }
+        });
+        mAutoListView.setOnRefreshListener(new AutoListView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_SHORT).show();
+                mAutoListView.onRefreshComplete();
+            }
+        });
+
+        mAutoListView.setOnLoadListener(new AutoListView.OnLoadListener() {
+            @Override
+            public void onLoad() {
+                Toast.makeText(getActivity(), "加载更多", Toast.LENGTH_SHORT).show();
+                loadMore();
+                
             }
         });
         return view;
     }
 
+    public void loadMore()
+    {
+    	if(mPageIndex > 10)
+    	{
+    		mAutoListView.noLoadDate();
+    		return;
+    	}
+    	mPageIndex++;
+		mCatalogUrl = "https://api.youku.com/quality/video/by/category.json?client_id=7960cf1cd1ea53a4&cate=2&"
+				+ "page=" + mPageIndex + "&count=" + mOnePageCount;
+		getCatalogList();
+    }
+    
     public void getCatalogList()
     {
         if(mCatalogUrl.isEmpty())
@@ -94,11 +125,26 @@ public class Video extends SeeWorldChildBaseFragment{
                     VideoBasePojo pojo = gson.fromJson(arg2, VideoBasePojo.class);
                     {
                         Debug.d("json = " + arg2);
-                        mVideoPojoList = pojo.getVideos();
-                        mVideoAdapter.setList(mVideoPojoList);
-                        mAutoListView.setAdapter(mVideoAdapter);
-                        mVideoAdapter.notifyDataSetChanged();
-                        loadingComplete();
+                        ArrayList<VideoPojo> videoList = pojo.getVideos();
+                        if(videoList != null && !videoList.isEmpty())
+                        {
+                        	if(mVideoPojoList == null)
+                        	{
+                        		mVideoPojoList = videoList;
+                        	}
+                        	else
+                        	{
+                        		mVideoPojoList.addAll(videoList);
+                        	}
+	                        mVideoAdapter.setList(mVideoPojoList);
+	                        mAutoListView.setAdapter(mVideoAdapter);
+	                        mVideoAdapter.notifyDataSetChanged();
+	                        if(mPageIndex > 1)
+	                        {
+	                        	mAutoListView.setSelection(mVideoPojoList.size()-1);
+	                        }
+	                        loadingComplete();
+                        }
                     }
                 }
             }

@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: E:\\workspace\\projects\\YoukuPlayerOpenSDK_android\\YoukuPlayerOpenSDK\\src\\com\\youku\\service\\download\\ICallback.aidl
+ * Original file: E:\\workspace\\projects\\GreateWorld_Studio\\YoukuPlayerOpenSDK\\src\\com\\youku\\service\\download\\ICallback.aidl
  */
 package com.youku.service.download;
 /**

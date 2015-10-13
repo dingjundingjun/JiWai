@@ -53,7 +53,7 @@ public class GameAdapter extends BAdapter
             view = (TextView) convertView;
         }
         view.setText(mGameList.get(position).getTitle());
-        view.setBackgroundColor(Color.GREEN);
+//        view.setBackgroundColor(Color.GREEN);
         view.setWidth(500);
         view.setHeight(100);
         view.setGravity(Gravity.CENTER);

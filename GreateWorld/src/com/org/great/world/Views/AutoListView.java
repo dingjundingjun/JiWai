@@ -509,6 +509,10 @@ public class AutoListView extends ListView implements OnScrollListener {
     }
 	
 	private void doJazzinessImpl(View item, int position, int scrollDirection) {
+		if(item == null)
+		{
+			return;
+		}
         ViewPropertyAnimator animator = item.animate()
                 .setDuration(DURATION)
                 .setInterpolator(new AccelerateDecelerateInterpolator());
