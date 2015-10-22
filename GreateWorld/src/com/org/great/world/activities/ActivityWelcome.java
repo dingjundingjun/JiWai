@@ -201,12 +201,13 @@ public class ActivityWelcome extends FragmentActivity implements ViewPager.OnPag
     private void intoJy() {
 
         PersonalInfoPojo personInfo = PersonalUtil.getPersonInfo(this);
-        if( null == personInfo ){
-            goIntoLoginActivity();
-        }
-        else{
-            goIntoMainActivity();
-        }
+        goIntoMainActivity();
+//        if( null == personInfo ){
+//            goIntoLoginActivity();
+//        }
+//        else{
+//            goIntoMainActivity();
+//        }
     }
 
     private void goIntoMainActivity() {
