@@ -14,11 +14,13 @@ import com.loopj.android.http.RequestHandle;
 import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.HttpUtils;
 import com.org.great.world.Utils.Util;
+import com.org.great.world.Views.AutoListView.OnRefreshListener;
 import com.org.great.world.activities.SeeWorldActivity;
 import com.org.great.world.adapters.SeeWorldAdapter;
 import com.org.great.world.data.BaseCatalogPojo;
 import com.org.great.world.data.CatalogPojo;
 import com.org.great.wrold.R;
+import com.youku.uplayer.OnRealVideoStartListener;
 
 import org.apache.http.Header;
 
@@ -45,13 +47,13 @@ public class SeeWorld extends SeeWorldChildBaseFragment{
             @Override
             public void onClick(View v) {
                 mReloadBtn.setVisibility(View.GONE);
-                getCatalogList();
+                getCatalogListFromServer();
                 loading();
             }
         });
         mSeeWorldAdapter = new SeeWorldAdapter(getActivity());
-        getCatalogList();
         loading();
+        getDataFromLocalOrServer();
         mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -64,48 +66,114 @@ public class SeeWorld extends SeeWorldChildBaseFragment{
                 startActivityForResult(intent,START_SEEWORLD_ACTIVITY_REQUESTCODE);
             }
         });
+        
+        mAutoListView.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				getCatalogListFromServer();
+			}
+		});
         return view;
     }
 
-    public void getCatalogList()
+    public void getDataFromLocalOrServer()
+    {
+    	if(Util.getSeeWorldJson(mBaseActivity) == null)
+    	{
+    		Debug.d("getDataFromServer because the local json is null");
+    		getCatalogListFromServer();
+    	}
+    	else
+    	{
+    		if(Util.isCanFresh(mBaseActivity))
+    		{
+    			Debug.d("getDataFromServer because the time is over 6 hour");
+    			getCatalogListFromServer();
+    		}
+    		else
+    		{
+    			Debug.d("getCatalogListFromLocal");
+    			getCatalogListFromLocal();
+    		}
+    	}
+    }
+    
+    public void getCatalogListFromLocal()
+    {
+    	String json = Util.getSeeWorldJson(mBaseActivity);
+    	Gson gson = new Gson();
+        BaseCatalogPojo pojo = gson.fromJson(json, BaseCatalogPojo.class);
+        if(pojo.getStatus().equals("success"))
+        {
+            Debug.d("json = " + json);
+            ArrayList<CatalogPojo> tempList = pojo.getMessage();
+            if(tempList != null )
+            {
+        		mCatalogPojo = pojo.getMessage();
+                mSeeWorldAdapter.setList(mCatalogPojo);
+                mAutoListView.setAdapter(mSeeWorldAdapter);
+                mSeeWorldAdapter.notifyDataSetChanged();
+            }
+            loadingComplete();
+        }
+    }
+    
+    public void getCatalogListFromServer()
     {
         if(mCatalogUrl.isEmpty())
         {
             return;
         }
-        RequestHandle handle = mAsyncHttpClient.get(mCatalogUrl, new BaseJsonHttpResponseHandler()
-        {
-            @Override
-            public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
-            {
-                loadingFailed();
-                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(int arg0, Header[] arg1, String arg2, Object arg3)
-            {
-                if(!Util.isEmpty(arg2))
-                {
-                    Gson gson = new Gson();
-                    BaseCatalogPojo pojo = gson.fromJson(arg2, BaseCatalogPojo.class);
-                    if(pojo.getStatus().equals("success"))
-                    {
-                        Debug.d("json = " + arg2);
-                        mCatalogPojo = pojo.getMessage();
-                        mSeeWorldAdapter.setList(mCatalogPojo);
-                        mAutoListView.setAdapter(mSeeWorldAdapter);
-                        mSeeWorldAdapter.notifyDataSetChanged();
-                        loadingComplete();
-                    }
-                }
-            }
-
-            @Override
-            protected Object parseResponse(String arg0, boolean arg1) throws Throwable
-            {
-                return arg0;
-            }
-        });
+	        RequestHandle handle = mAsyncHttpClient.get(mCatalogUrl, new BaseJsonHttpResponseHandler()
+	        {
+	            @Override
+	            public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
+	            {
+	                loadingFailed();
+	                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+	            }
+	
+	            @Override
+	            public void onSuccess(int arg0, Header[] arg1, String arg2, Object arg3)
+	            {
+	                if(!Util.isEmpty(arg2))
+	                {
+	                    Gson gson = new Gson();
+	                    BaseCatalogPojo pojo = gson.fromJson(arg2, BaseCatalogPojo.class);
+	                    if(pojo.getStatus().equals("success"))
+	                    {
+	                        Debug.d("json = " + arg2);
+	                        ArrayList<CatalogPojo> tempList = pojo.getMessage();
+	                        if(tempList != null )
+	                        {
+	                        	if(mCatalogPojo != null && tempList.size() == mCatalogPojo.size())
+	                        	{
+	                        		Debug.d("there is no new news ");
+	                        		mAutoListView.onRefreshComplete();
+	                        		Toast.makeText(mBaseActivity, R.string.there_is_no_new_catalog_seeworld, Toast.LENGTH_SHORT).show();
+//	                        		String Str = mBaseActivity.getResources().getString(R.string.there_has_some_seeworld, 2);
+//	                        		Toast.makeText(mBaseActivity, Str, Toast.LENGTH_SHORT).show();
+	                        	}
+	                        	else
+	                        	{
+	                        		mCatalogPojo = pojo.getMessage();
+	                                mSeeWorldAdapter.setList(mCatalogPojo);
+	                                mAutoListView.setAdapter(mSeeWorldAdapter);
+	                                mSeeWorldAdapter.notifyDataSetChanged();
+	                        	}
+	                        	Util.saveFreshTime(mBaseActivity);
+	                        	Util.saveSeeWorldJson(mBaseActivity, arg2);
+	                        }
+	                        loadingComplete();
+	                    }
+	                }
+	            }
+	
+	            @Override
+	            protected Object parseResponse(String arg0, boolean arg1) throws Throwable
+	            {
+	                return arg0;
+	            }
+	        });
     }
 }

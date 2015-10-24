@@ -12,10 +12,14 @@ import java.util.Locale;
 import java.util.Map;
 
 
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,6 +141,67 @@ public class Util
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+    
+    /**
+     * 是否自动刷新，从服务器获取最新列表。这样做是为了防止每次进入都从服务器获取一次，浪费资源
+     * @return
+     */
+    public static boolean isCanFresh(Context context)
+    {
+    	String lastTimeStr = getLastFreshTime(context);
+    	long lastTime = Long.decode(lastTimeStr);
+    	Debug.d("lastTime = " + lastTime);
+    	if(lastTime != -1)
+    	{
+    		if(System.currentTimeMillis()/1000 - lastTime > 6*3600)
+    		{
+    			return true;
+    		}
+    		else
+    		{
+    			return false;
+    		}
+    	}
+    	else
+    	{
+    		return true;
+    	}
+    }
+    
+    public static void saveFreshTime(Context context)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("last_fresh_time","" + System.currentTimeMillis()/1000);
+		prefsEditor.commit();
+    }
+    
+    public static String getLastFreshTime(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("last_fresh_time", "-1");
+    }
+    
+    public static void saveSeeWorldJson(Context context,String json)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("seeworld_json",json);
+		prefsEditor.commit();
+    }
+    
+    public static String getSeeWorldJson(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("seeworld_json", null);
+    }
+    
     public static class Constants {
 
         public static final String DESCRIPTOR = "com.umeng.share";
@@ -157,4 +222,5 @@ public class Util
                 "（三）提供详尽的后台用户社交行为分析。http://www.umeng.com/social";
 
     }
+    
 }

@@ -71,7 +71,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 	// 只有在listview第一个item显示的时候（listview滑到了顶部）才进行下拉刷新， 否则此时的下拉只是滑动listview
 	private boolean isRecorded;
 	private boolean isLoading;// 判断是否正在加载
-	private boolean loadEnable = true;// �?启或者关闭加载更多功�?
+	private boolean loadEnable = false;// �?启或者关闭加载更多功�?
 	private boolean isLoadFull;
 	private int pageSize = 10;
 
@@ -110,7 +110,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 
 	// 加载更多监听
 	public void setOnLoadListener(OnLoadListener onLoadListener) {
-		this.loadEnable = true;
+		this.loadEnable = false;
 		this.onLoadListener = onLoadListener;
 	}
 

@@ -86,6 +86,7 @@ public class SeeWorldChildBaseFragment extends Fragment{
         }
         mTitanic.cancel();
         view.setVisibility(View.GONE);
+        Debug.d("hideLoading");
     }
 
     private void init(View layout)
@@ -119,9 +120,9 @@ public class SeeWorldChildBaseFragment extends Fragment{
 
     public void loadingComplete()
     {
+    	Debug.d("loadingComplete");
         mAutoListView.setVisibility(View.VISIBLE);
         mAutoListView.onLoadComplete();
-//        mAutoListView.noLoadDate();
         hideLoading(mTitanicTextView);
         if(mReloadBtn.isShown())
         {

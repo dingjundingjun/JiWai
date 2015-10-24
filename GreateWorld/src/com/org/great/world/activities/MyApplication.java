@@ -19,8 +19,6 @@ public class MyApplication extends Application {
 		super.onCreate();
 		configuration = new YoukuPlayerBaseConfiguration(this)
 		{
-
-
 			/**
 			 * 通过覆写该方法，返回“正在缓存视频信息的界面”，
 			 * 则在状态栏点击下载信息时可以自动跳转到所设定的界面.

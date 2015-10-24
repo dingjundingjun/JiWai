@@ -26,6 +26,8 @@
     <string name="like_show">赞(%1$d)</string>
     <string name="no_more_comment">没有更多评论了</string>
     <string name="comment_can_not_null">评论不能为空</string>
+    <string name="there_is_no_new_catalog_seeworld">亲，Len哥还没有更新最新的文章哦!</string>
+    <string name="there_has_some_seeworld">跟新了%1$d篇文章</string>
     <!-- login -->
     <string name="login">登陆</string>
     <string name="register">注册</string>
