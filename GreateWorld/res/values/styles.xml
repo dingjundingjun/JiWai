@@ -1,8 +1,15 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
     </style>
+    <style name="comment_dialog_style" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:titleTextAppearance">@style/comment_dialog_title_apprearance</item>
+    </style>
+    <style name="comment_dialog_title_apprearance" parent="@android:style/TextAppearance.Holo">
+        <item name="android:textSize">35sp</item>
+    </style>
+    
     <style name="customProgressBar" parent="@android:style/Widget.ProgressBar.Small">
         <item name="android:indeterminateDrawable">@drawable/custom_progress_bar</item>
         <item name="android:layout_width">21dip</item>

@@ -66,6 +66,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     private CommentDialog mCommentDialog;
     private CommentAdapter mCommentAdapter;
     private final int MORE_COMMENT_ID = 0;
+    private int mLastCommentExpandNum = 0;
     private final UMSocialService mController = UMServiceFactory
             .getUMSocialService(Util.Constants.DESCRIPTOR);
     public BaseContentFragment() {
@@ -89,7 +90,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     {
         View view = View.inflate(mBaseActivity,R.layout.comment_list_head,null);
         mWebView = (WebView)view.findViewById(R.id.webview);
-
         return view;
     }
 
@@ -98,7 +98,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         TextView view = new TextView(mBaseActivity);
         view.setId(MORE_COMMENT_ID);
         view.setText(mBaseActivity.getString(R.string.more_comments));
-        view.setTextSize(50);
+        view.setTextSize(mBaseActivity.getResources().getDimension(R.dimen.more_comment_text_size));
         view.setGravity(Gravity.CENTER);
         return view;
     }
@@ -227,6 +227,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
                             mMoreComment.setVisibility(View.GONE);
                         }
                         updateComment(mComments);
+                        mLastCommentExpandNum += comments.size();
                     } else {
                         mMoreComment.setVisibility(View.GONE);
                         Toast.makeText(mBaseActivity, R.string.no_more_comment, Toast.LENGTH_SHORT).show();
@@ -251,6 +252,16 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         if (mSocialService == null) {
             Debug.d("getUMSocial name = " + "JJYY_" + mCatalogPojo.getTitle());
             mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
+            mSocialService.login(mBaseActivity, PersonalUtil.mSnsAccount, new SocializeListeners.SocializeClientListener(){
+                @Override
+                public void onStart() {
+                	Debug.d("start login for " + "JJYY_" + mCatalogPojo.getTitle());
+                }
+                @Override
+                public void onComplete(int arg0, SocializeEntity arg1) {
+                	Debug.d("login success for " + "JJYY_" + mCatalogPojo.getTitle());
+                }
+            } );
         }
         getCommentFromUM(-1);
         requestLike();
@@ -423,7 +434,8 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             mCommentDialog.setCommentListener(new CommentDialog.CommentListener() {
                 @Override
                 public void OnCommentComplete() {
-                    getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
+                	mComments.clear();
+                    getCommentFromUM(-1);
                 }
             });
         }

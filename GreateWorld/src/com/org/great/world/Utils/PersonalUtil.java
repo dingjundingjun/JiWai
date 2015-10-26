@@ -19,6 +19,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,17 +29,32 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
+import com.umeng.socialize.bean.Gender;
+import com.umeng.socialize.bean.SnsAccount;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners;
 
 public class PersonalUtil {
-	
+	public static SnsAccount mSnsAccount = new SnsAccount(Build.SERIAL,Gender.MALE,"","");
 	/**
 	 * judge is logined
 	 * @return
 	 */
-	public static boolean isLogined()
+	public static boolean isLogined(Context context)
 	{
+		PersonalInfoPojo pi = getPersonInfo(context);
+		if(pi == null)
+		{
+			mSnsAccount.setUserName("小明");
+			mSnsAccount.setUsid(Build.SERIAL);
+			mSnsAccount.setAccountIconUrl(null);
+			return false;
+		}
+		mSnsAccount = new SnsAccount(pi.getNickName(), Gender.MALE, pi.getPhotoPath(),pi.getAccountId().toString());
 		return true;
 	}
+	
 	
 	public static boolean isTextCanInput(Context context, String str) {
 		// ������%��&,$���κ��ַ���
@@ -84,13 +100,10 @@ public class PersonalUtil {
 	{
 		PersonalInfoPojo personnalInfo = null;
 		String personInfoStr = null;
-		
 		SharedPreferences preferences;
 		preferences = context.getSharedPreferences("personalinfo", Context.MODE_PRIVATE);
 		personInfoStr = preferences.getString("personalinfo", "");
-		
 		if( !TextUtils.isEmpty(personInfoStr)){
-			
 			personnalInfo = JsonTools.GsonToObj(personInfoStr,PersonalInfoPojo.class);
 		}
 		
@@ -195,4 +208,17 @@ public class PersonalUtil {
         inStream.close();  
         return outStream.toByteArray();  
     }  
+	
+	public static void login(Context context,UMSocialService socialService)
+	{
+		socialService.login(context, mSnsAccount, new SocializeListeners.SocializeClientListener() {
+            @Override
+            public void onStart() {
+
+            }
+            @Override
+            public void onComplete(int arg0, SocializeEntity arg1) {
+            }
+        });
+	}
 }

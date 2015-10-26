@@ -94,7 +94,6 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
     {
         mTitanicTextView = (TitanicTextView)layout.findViewById(R.id.titanic_text);
         mReloadBtn = (Button)layout.findViewById(R.id.reload);
-//        mReloadBtn.setOnClickListener(this);
         mAutoListView = (AutoListView)layout.findViewById(R.id.auto_list);
         mReloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override

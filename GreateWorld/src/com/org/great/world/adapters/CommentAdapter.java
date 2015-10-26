@@ -28,7 +28,7 @@ public class CommentAdapter extends BAdapter
     public int getCount() {
         if(mUMCommentList != null)
         {
-            Debug.d("mUMCommentList.size() = " + mUMCommentList.size());
+//            Debug.d("mUMCommentList.size() = " + mUMCommentList.size());
             return mUMCommentList.size();
         }
         return 0;

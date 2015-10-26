@@ -26,4 +26,5 @@
     <dimen name="commnet_dialog_layout_comment_edit_width">500dip</dimen>
     <dimen name="commnet_dialog_layout_comment_edit_height">350dip</dimen>
 
+    
 </resources>

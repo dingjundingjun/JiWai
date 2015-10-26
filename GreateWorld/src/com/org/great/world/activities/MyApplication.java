@@ -1,5 +1,6 @@
 package com.org.great.world.activities;
 
+import com.org.great.world.Utils.PersonalUtil;
 import com.youku.player.YoukuPlayerBaseConfiguration;
 
 import android.app.Activity;
@@ -15,8 +16,8 @@ public class MyApplication extends Application {
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
+		PersonalUtil.isLogined(this);
 		configuration = new YoukuPlayerBaseConfiguration(this)
 		{
 			/**
