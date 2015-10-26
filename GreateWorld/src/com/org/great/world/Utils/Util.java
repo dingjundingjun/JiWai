@@ -30,6 +30,8 @@ import com.org.great.wrold.R;
 
 public class Util 
 {
+	/**刷新的时间间隔*/
+	public static int REFRESH_TIME_INTERVAL = 1;
 	public static byte[] charToByte(char c) {   
         byte[] b = new byte[2];   
         b[0] = (byte) ((c & 0xFF00) >> 8);   
@@ -153,7 +155,7 @@ public class Util
     	Debug.d("lastTime = " + lastTime);
     	if(lastTime != -1)
     	{
-    		if(System.currentTimeMillis()/1000 - lastTime > 6*3600)
+    		if(System.currentTimeMillis()/1000 - lastTime > REFRESH_TIME_INTERVAL*3600)
     		{
     			return true;
     		}
@@ -200,6 +202,23 @@ public class Util
     	SharedPreferences preferences;
 		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
 		return preferences.getString("seeworld_json", null);
+    }
+    
+    public static void saveJokeJson(Context context,String json)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("joke_json",json);
+		prefsEditor.commit();
+    }
+    
+    public static String getJokeJson(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("joke_json", null);
     }
     
     public static class Constants {

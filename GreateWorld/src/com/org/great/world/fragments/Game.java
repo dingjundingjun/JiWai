@@ -34,7 +34,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2015/8/27.
  */
-public class Game extends SeeWorldChildBaseFragment
+public class Game extends SeeWorldAndJokeChildBaseFragment
 {
     private final int START_GAME_ACTIVITY_REQUESTCODE = 1;
     private GameAdapter mGameAdapter;
@@ -86,7 +86,7 @@ public class Game extends SeeWorldChildBaseFragment
             public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
             {
                 loadingFailed();
-                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -116,4 +116,22 @@ public class Game extends SeeWorldChildBaseFragment
             }
         });
     }
+
+	@Override
+	protected void getDataFromLocalOrServer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getCatalogListFromLocal() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void saveJson(String json) {
+		// TODO Auto-generated method stub
+		
+	}
 }

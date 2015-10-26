@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * Created by dj on 2015/9/7.
  * email:dingjun0225@gmail.com
  */
-public class Video extends SeeWorldChildBaseFragment{
+public class Video extends SeeWorldAndJokeChildBaseFragment{
     private final int START_GAME_ACTIVITY_REQUESTCODE = 1;
     private VideoAdapter mVideoAdapter;
     private ArrayList<VideoPojo> mVideoPojoList;
@@ -112,7 +112,7 @@ public class Video extends SeeWorldChildBaseFragment{
             public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
             {
                 loadingFailed();
-                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -156,4 +156,22 @@ public class Video extends SeeWorldChildBaseFragment{
             }
         });
     }
+
+	@Override
+	protected void getDataFromLocalOrServer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getCatalogListFromLocal() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void saveJson(String json) {
+		// TODO Auto-generated method stub
+		
+	}
 }

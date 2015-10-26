@@ -25,7 +25,7 @@ public class BaseFragment extends Fragment {
     private View mParentView;
     private Activity mBaseActivity;
     public FragmentViewPaper mFragmentViewPaper;
-    public List<SeeWorldChildBaseFragment> mFragmentList = new ArrayList<SeeWorldChildBaseFragment>();
+    public List<SeeWorldAndJokeChildBaseFragment> mFragmentList = new ArrayList<SeeWorldAndJokeChildBaseFragment>();
     public List<String> mTitleListStr = new ArrayList<String>();
     private TitleScroolView mTitleScroolView;
     public int mCurrentIndex = 0;
