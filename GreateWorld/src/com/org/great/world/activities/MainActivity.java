@@ -10,9 +10,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
+import com.org.great.world.data.AllAD;
 import com.org.great.world.fragments.GreatWorldFragment;
 import com.org.great.world.fragments.MeFragment;
 import com.org.great.wrold.R;
@@ -31,7 +33,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private int mFrontFragment = -1;
     private final int GREAT_WORLD = 0;
     private final int ME = 1;
-
+    private LinearLayout mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mFragmentManager = this.getSupportFragmentManager();
         mGreatWorldBtn = (TabView) findViewById(R.id.btn_great_world);
         mMeBtn = (TabView) findViewById(R.id.btn_me);
+        mAdView = (LinearLayout)findViewById(R.id.ad_layout);
         mGreatWorldBtn.setOnClickListener(this);
         mMeBtn.setOnClickListener(this);
         mTabViewList.add(mGreatWorldBtn);
@@ -77,6 +80,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         checkWifi();
+        if(mAdView != null)
+		{
+        	mAdView.removeAllViews();
+			mAdView.addView(AllAD.getGDTBannerView(this));
+		}
     }
 
     private void checkWifi()

@@ -37,6 +37,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener
     private UMSocialService mSocialService;
     private String mCommentStr;
     private ProgressDialog mCommentProgress;
+    private String mLognTitle = "";
     public CommentDialog(Context context, int theme) {
         super(context, R.style.comment_dialog_style);
     }
@@ -123,11 +124,23 @@ public class CommentDialog extends Dialog implements View.OnClickListener
         	mCommentProgress.setMessage(mContext.getString(R.string.comment_sending));
         }
         mCommentProgress.show();
-        mSocialService.postComment(mContext, socializeComment,
+        mSocialService.login(mContext, PersonalUtil.mSnsAccount, new SocializeListeners.SocializeClientListener(){
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onComplete(int arg0, SocializeEntity arg1) {
+            	comment(socializeComment);
+            }
+        } );
+    }
+
+    private void comment(UMComment socializeComment)
+    {
+    	mSocialService.postComment(mContext, socializeComment,
                 new SocializeListeners.MulStatusListener() {
                     @Override
                     public void onStart() {
-//                        mTextView.setText("发送中...");
                     }
 
                     @Override
@@ -143,6 +156,9 @@ public class CommentDialog extends Dialog implements View.OnClickListener
                         mCommentProgress.dismiss();
                     }
                 }, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE);
-
     }
+    
+	public void setCatalogTitle(String string) {
+		mLognTitle = string;
+	}
 }

@@ -527,5 +527,13 @@ public class AutoListView extends ListView implements OnScrollListener {
 	{
 		this.removeFooterView(footer);
 	}
+	
+	public void hideFooterView()
+	{
+		if(footer != null)
+		{
+			footer.setVisibility(View.GONE);
+		}
+	}
 
 }

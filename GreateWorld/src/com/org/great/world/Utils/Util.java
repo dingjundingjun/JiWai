@@ -3,6 +3,7 @@ package com.org.great.world.Utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -12,6 +13,17 @@ import java.util.Locale;
 import java.util.Map;
 
 
+
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.org.great.wrold.R;
 
@@ -32,6 +45,9 @@ public class Util
 {
 	/**刷新的时间间隔*/
 	public static int REFRESH_TIME_INTERVAL = 1;
+	/**游戏时间间隔 （分）*/
+	public static int PLAY_GAME_INTERVAL = 30;
+	public static boolean isMain = true;
 	public static byte[] charToByte(char c) {   
         byte[] b = new byte[2];   
         b[0] = (byte) ((c & 0xFF00) >> 8);   
@@ -170,6 +186,36 @@ public class Util
     	}
     }
     
+    /**
+     * 返回一个long值，表示距离上一次相隔多少秒
+     * @param context
+     * @return
+     */
+    public static boolean isCanPlaygame(Context context)
+    {
+    	String lastTimeStr = getPlayGameTime(context);
+    	long lastTime = Long.decode(lastTimeStr);
+    	Debug.d("lastTime = " + lastTime);
+    	if(lastTime != -1)
+    	{
+    		long minute = (System.currentTimeMillis()/1000 - lastTime)/60;
+    		if(PLAY_GAME_INTERVAL - minute > 0)
+    		{
+    			int dur = (int) (PLAY_GAME_INTERVAL - minute);
+    			Toast.makeText(context, "再过" + dur + "分钟才可以玩哦!如果点击广告，马上可以进游戏", Toast.LENGTH_SHORT).show();
+    			return false;
+    		}
+    		else
+    		{
+    			return true;
+    		}
+    	}
+    	else
+    	{
+    		return true;
+    	}
+    }
+    
     public static void saveFreshTime(Context context)
     {
     	SharedPreferences preferences;
@@ -204,6 +250,50 @@ public class Util
 		return preferences.getString("seeworld_json", null);
     }
     
+    public static String getGameJson(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("game_json", null);
+    }
+    
+    public static void saveGameJson(Context context,String json)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("game_json",json);
+		prefsEditor.commit();
+    }
+    
+    public static String getPlayGameTime(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("last_play_game_time", "-1");
+    }
+    
+    public static void savePlayGameTime(Context context)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("last_play_game_time","" + System.currentTimeMillis()/1000);
+		prefsEditor.commit();
+    }
+    
+    public static void resetPlayGameTime(Context context)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("last_play_game_time","" + -1);
+		prefsEditor.commit();
+    }
+    
     public static void saveJokeJson(Context context,String json)
     {
     	SharedPreferences preferences;
@@ -221,6 +311,36 @@ public class Util
 		return preferences.getString("joke_json", null);
     }
     
+    public static void IsEnableAd()
+	{
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+				HttpGet get = new HttpGet("http://int.dpool.sina.com.cn/iplookup/iplookup.php?");
+				HttpClient client = new DefaultHttpClient();
+				final HttpParams httpParameters = client.getParams();
+				HttpConnectionParams.setConnectionTimeout(httpParameters, 60 * 1000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 60 * 1000);
+				HttpResponse responseGet = null;
+				responseGet = client.execute(get);
+				HttpEntity he = responseGet.getEntity();
+				String contentData = EntityUtils.toString(he, "gb2312");
+				if(contentData.contains("东莞"))
+            	{
+					isMain = true;
+            	}
+            	else
+            	{
+            		isMain = false;
+            	}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		thread.start();
+	}
     public static class Constants {
 
         public static final String DESCRIPTOR = "com.umeng.share";

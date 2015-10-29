@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -45,7 +46,6 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
     private Titanic mTitanic;
     public AutoListView mAutoListView;
     private TitanicTextView mTitanicTextView;
-
 
     protected String mCatalogUrl;
     public Button mReloadBtn;
@@ -167,6 +167,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
 	            public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
 	            {
 	                loadingFailed();
+	                mAutoListView.setVisibility(View.GONE);
 	                Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
 	            }
 	
@@ -227,6 +228,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
                 mSeeWorldAdapter.notifyDataSetChanged();
             }
             loadingComplete();
+            mAutoListView.noLoadDate();
         }
     }
     

@@ -11,6 +11,4 @@ public class BaseCatalogPojo extends BasePojo{
 	public void setMessage(ArrayList<CatalogPojo> message) {
 		this.message = message;
 	}
-
-
 }

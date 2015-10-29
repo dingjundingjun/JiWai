@@ -46,7 +46,7 @@ public class PersonalUtil {
 		PersonalInfoPojo pi = getPersonInfo(context);
 		if(pi == null)
 		{
-			mSnsAccount.setUserName("小明");
+			mSnsAccount.setUserName(null);
 			mSnsAccount.setUsid(Build.SERIAL);
 			mSnsAccount.setAccountIconUrl(null);
 			return false;

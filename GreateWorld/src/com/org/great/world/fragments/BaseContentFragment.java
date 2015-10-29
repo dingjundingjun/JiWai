@@ -351,21 +351,18 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     }
 
     private void setLike(SocializeEntity entity) {
-        if(!isAdded()||isRemoving()){
-
-            return;
-        }
         String str = String.format(mBaseActivity.getResources().getString(R.string.like_show), entity.getLikeCount());
+        Debug.d("setLike = " + entity.getLikeCount());
         mUserCommentNumber.setText(mBaseActivity.getString(R.string.user_comment_string) + "("+entity.getCommentCount() + ")");
+        
         mLikeTextView.setText(str);
     }
 
     private void requestLike() {
 
-        UMSocialService controller = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
-
-        if (!controller.getEntity().mInitialized) {
-            controller.initEntity(mBaseActivity, new SocializeListeners.SocializeClientListener() {
+//        UMSocialService controller = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
+        if (!mSocialService.getEntity().mInitialized) {
+        	mSocialService.initEntity(mBaseActivity, new SocializeListeners.SocializeClientListener() {
                 @Override
                 public void onStart() {
 
@@ -379,7 +376,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
                 }
             });
         } else {
-            setLike(controller.getEntity());
+            setLike(mSocialService.getEntity());
         }
     }
 
@@ -393,13 +390,14 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
                         new SocializeListeners.SocializeClientListener() {
                             @Override
                             public void onStart() {
-
+                            	Debug.d("start likeChange");
                             }
 
                             @Override
                             public void onComplete(int status,
                                                    SocializeEntity entity) {
                                 if (entity != null) {
+                                	Debug.d("onComplete likeChange");
                                     requestLike();
                                 }
                             }
@@ -431,6 +429,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         {
             mCommentDialog = new CommentDialog(mBaseActivity);
             mCommentDialog.setSocialService(mSocialService);
+            mCommentDialog.setCatalogTitle("JJYY_" + mCatalogPojo.getTitle());
             mCommentDialog.setCommentListener(new CommentDialog.CommentListener() {
                 @Override
                 public void OnCommentComplete() {
