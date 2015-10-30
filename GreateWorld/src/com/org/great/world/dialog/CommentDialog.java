@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.media.tv.TvContract.Programs;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;

@@ -211,6 +211,7 @@ public class MeFragment extends BaseFragment
             mRadioGroup.check(("1".equals(mPersonInfo.getSex()) ? mGirl.getId():mBoy.getId()));
             mChangeNickName.selectAll();
         }
+        PersonalUtil.isLogined(getActivity());
     }
 
     private void setImageBitmap() {

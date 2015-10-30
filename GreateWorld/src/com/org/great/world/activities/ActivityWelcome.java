@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMGroupManager;
+import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.DensityUtil;
 import com.org.great.world.Utils.PersonalUtil;
+import com.org.great.world.Utils.Util;
 import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
 import com.ryanharter.viewpager.PagerAdapter;
@@ -68,6 +71,7 @@ public class ActivityWelcome extends FragmentActivity implements ViewPager.OnPag
     private Animation animationTop;
     private Animation animationBottom;
 
+    private static final int sleepTime = 2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -80,7 +84,17 @@ public class ActivityWelcome extends FragmentActivity implements ViewPager.OnPag
         initActivity( );
     }
 
-
+    private void isLogin()
+    {
+    	if (DemoHXSDKHelper.getInstance().isLogined()) {
+			// ** 免登陆情况 加载所有本地群和会话
+			//不是必须的，不加sdk也会自动异步去加载(不会重复加载)；
+			//加上的话保证进了主页面会话和群组都已经load完毕
+			EMGroupManager.getInstance().loadAllGroups();
+			EMChatManager.getInstance().loadAllConversations();
+			Util.IS_LOGINED = true;
+		}
+    }
 
     private void initActivity() {
 

@@ -46,15 +46,23 @@ public class PersonalUtil {
 		PersonalInfoPojo pi = getPersonInfo(context);
 		if(pi == null)
 		{
-			mSnsAccount.setUserName(null);
+			mSnsAccount.setUserName("起个名字真难");
 			mSnsAccount.setUsid(Build.SERIAL);
 			mSnsAccount.setAccountIconUrl(null);
+			pi = new PersonalInfoPojo();
+			pi.nickName = "起个名字真难";
+			pi.sex = "男";
+			pi.setGrade("一年级");
+			savePersonInfo(context, pi);
 			return false;
 		}
-		mSnsAccount = new SnsAccount(pi.getNickName(), Gender.MALE, pi.getPhotoPath(),pi.getAccountId().toString());
+		Debug.d("pi = " + pi);
+		mSnsAccount = new SnsAccount(pi.getNickName(), Gender.MALE, pi.getPhotoPath(),pi.getAccountId());
+		mSnsAccount.setUserName(pi.getNickName());
+		mSnsAccount.setUsid(Build.SERIAL);
+		mSnsAccount.setAccountIconUrl(null);
 		return true;
 	}
-	
 	
 	public static boolean isTextCanInput(Context context, String str) {
 		// ������%��&,$���κ��ַ���
@@ -95,7 +103,6 @@ public class PersonalUtil {
 		prefsEditor.commit();
 	}
 	
-	
 	public static PersonalInfoPojo getPersonInfo(Context context)
 	{
 		PersonalInfoPojo personnalInfo = null;
@@ -106,7 +113,6 @@ public class PersonalUtil {
 		if( !TextUtils.isEmpty(personInfoStr)){
 			personnalInfo = JsonTools.GsonToObj(personInfoStr,PersonalInfoPojo.class);
 		}
-		
 		return personnalInfo;
 	}
 	

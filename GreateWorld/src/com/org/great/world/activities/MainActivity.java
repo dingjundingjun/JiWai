@@ -15,8 +15,10 @@ import android.widget.LinearLayout;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
 import com.org.great.world.data.AllAD;
+import com.org.great.world.fragments.CommunionFragment;
 import com.org.great.world.fragments.GreatWorldFragment;
 import com.org.great.world.fragments.MeFragment;
+import com.org.great.world.fragments.SettingFragment;
 import com.org.great.wrold.R;
 
 import java.util.ArrayList;
@@ -24,15 +26,18 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private GreatWorldFragment mGreatWorldFragment;
-    private MeFragment mMeFragment;
+    private SettingFragment mMeFragment;
+    private CommunionFragment mCommunionFragment;
     private TabView mGreatWorldBtn;
     private TabView mMeBtn;
+    private TabView mCommunionBtn;
     private List<TabView> mTabViewList = new ArrayList<TabView>();
     private FragmentManager mFragmentManager = null;
     private FragmentTransaction mTransaction = null;
     private int mFrontFragment = -1;
     private final int GREAT_WORLD = 0;
     private final int ME = 1;
+    private final int COMMU = 2;
     private LinearLayout mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +50,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mFragmentManager = this.getSupportFragmentManager();
         mGreatWorldBtn = (TabView) findViewById(R.id.btn_great_world);
         mMeBtn = (TabView) findViewById(R.id.btn_me);
+        mCommunionBtn = (TabView)findViewById(R.id.btn_communion);
         mAdView = (LinearLayout)findViewById(R.id.ad_layout);
         mGreatWorldBtn.setOnClickListener(this);
         mMeBtn.setOnClickListener(this);
+        mCommunionBtn.setOnClickListener(this);
         mTabViewList.add(mGreatWorldBtn);
         mTabViewList.add(mMeBtn);
+        mTabViewList.add(mCommunionBtn);
         setDefaultFragment();
     }
 
@@ -68,10 +76,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mGreatWorldBtn.setSelected(true);
         } else if (mFrontFragment == ME) {
             if (mMeFragment == null) {
-                mMeFragment = new MeFragment();
+                mMeFragment = new SettingFragment();
             }
             mTransaction.replace(R.id.content, mMeFragment);
             mMeBtn.setSelected(true);
+        }
+        else if(mFrontFragment == COMMU)
+        {
+        	if (mCommunionFragment == null) {
+        		mCommunionFragment = new CommunionFragment();
+            }
+            mTransaction.replace(R.id.content, mCommunionFragment);
+            mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();
     }
@@ -122,8 +138,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 if (mFrontFragment != ME) {
                     mFrontFragment = ME;
                     changeFragment();
+                    break;
                 }
-                break;
+            }
+            case R.id.btn_communion:
+            {
+            	if (mFrontFragment != COMMU) {
+                    mFrontFragment = COMMU;
+                    changeFragment();
+                    break;
+                }
+            	break;
             }
         }
         changeTabViewStatus(id);

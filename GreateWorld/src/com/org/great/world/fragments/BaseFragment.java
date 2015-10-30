@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class BaseFragment extends Fragment {
     private View mParentView;
-    private Activity mBaseActivity;
+    public Activity mBaseActivity;
     public FragmentViewPaper mFragmentViewPaper;
     public List<SeeWorldAndJokeChildBaseFragment> mFragmentList = new ArrayList<SeeWorldAndJokeChildBaseFragment>();
     public List<String> mTitleListStr = new ArrayList<String>();

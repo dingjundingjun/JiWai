@@ -44,7 +44,6 @@ import java.util.ArrayList;
  */
 public class Game extends SeeWorldAndJokeChildBaseFragment
 {
-    private final int START_GAME_ACTIVITY_REQUESTCODE = 1;
     private GameAdapter mGameAdapter;
     private ArrayList<GamePojo> mGamePojos;
     public Game() {
@@ -71,10 +70,9 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
         });
         
         mAutoListView.setOnRefreshListener(new OnRefreshListener() {
-			
 			@Override
 			public void onRefresh() {
-				getGameCatalogListFromServer();
+				getGameUrl();
 			}
 		});
         
@@ -95,15 +93,6 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
 		mGameAdapter = new GameAdapter(mBaseActivity);
 	}
 
-    public void addAd()
-	{
-//		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-//				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-//		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//		
-//		addContentView(AllAD.getGDTBannerView(mBaseActivity), layoutParams);
-	}
-    
     public void getDataFromLocalOrServer()
     {
     	if(Util.getGameJson(mBaseActivity) == null)
@@ -130,7 +119,8 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
     
     public void getGameCatalogListFromServer()
     {
-        if(mCatalogUrl.isEmpty())
+    	Debug.d("mCatalogUrl = " + mCatalogUrl);
+        if(mCatalogUrl == null || mCatalogUrl.isEmpty())
         {
             return;
         }
@@ -225,6 +215,7 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
             public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
             {
                 Toast.makeText(mBaseActivity, mBaseActivity.getResources().getString(R.string.get_list_failed), Toast.LENGTH_SHORT).show();
+                mAutoListView.onRefreshComplete();
             }
 
             @Override
