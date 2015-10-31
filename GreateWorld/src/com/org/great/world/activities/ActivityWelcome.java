@@ -92,7 +92,6 @@ public class ActivityWelcome extends FragmentActivity implements ViewPager.OnPag
 			//加上的话保证进了主页面会话和群组都已经load完毕
 			EMGroupManager.getInstance().loadAllGroups();
 			EMChatManager.getInstance().loadAllConversations();
-			Util.IS_LOGINED = true;
 		}
     }
 

@@ -246,18 +246,47 @@
         </receiver>
         <!-- iOS offline push nick -->
         <activity
-            android:name=".activity.OfflinePushNickActivity"
+            android:name="com.easemob.chatuidemo.activity.OfflinePushNickActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <!-- user profile -->
 		<activity 
-		    android:name=".activity.UserProfileActivity"
+		    android:name="com.easemob.chatuidemo.activity.UserProfileActivity"
 		    android:screenOrientation="portrait"
 		    android:theme="@style/horizontal_slide"
 		    ></activity>
-                <service
+		 <!-- 聊天页面 -->
+        <activity
+            android:name="com.easemob.chatuidemo.activity.ChatActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+		
+		<!-- 聊天室详情 -->
+        <activity
+            android:name="com.easemob.chatuidemo.activity.ChatRoomDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+		
+		 <!-- 地图 -->
+        <activity
+            android:name="com.easemob.chatuidemo.activity.BaiduMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
+		<activity
+            android:name="com.easemob.chatuidemo.activity.ImageGridActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        
+		<service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" />
 

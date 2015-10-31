@@ -18,7 +18,6 @@ public class CommunionFragment extends Fragment{
 		mBaseActivity = getActivity();
 	}
 
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

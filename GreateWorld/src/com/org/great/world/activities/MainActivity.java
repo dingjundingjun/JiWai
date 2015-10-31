@@ -11,7 +11,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.easemob.chatuidemo.activity.ChatActivity;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
 import com.org.great.world.data.AllAD;
@@ -83,11 +86,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
         else if(mFrontFragment == COMMU)
         {
-        	if (mCommunionFragment == null) {
-        		mCommunionFragment = new CommunionFragment();
-            }
-            mTransaction.replace(R.id.content, mCommunionFragment);
-            mCommunionBtn.setSelected(true);
+        	if(DemoHXSDKHelper.getInstance().isLogined() == false)
+        	{
+        		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+        		return;
+        	}
+//        	if (mCommunionFragment == null) {
+//        		mCommunionFragment = new CommunionFragment();
+//            }
+//            mTransaction.replace(R.id.content, mCommunionFragment);
+//            mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();
     }
@@ -145,9 +153,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             {
             	if (mFrontFragment != COMMU) {
                     mFrontFragment = COMMU;
-                    changeFragment();
-                    break;
                 }
+            	if(DemoHXSDKHelper.getInstance().isLogined() == false)
+            	{
+            		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            		return;
+            	}
+            	enterChatRoom();
             	break;
             }
         }
@@ -160,5 +172,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             boolean bMatchId = mTabViewList.get(i).getId() == id;
             mTabViewList.get(i).setSelector(bMatchId);
         }
+    }
+    
+    private void enterChatRoom()
+    {
+    	String charId = "122980374539141604";
+		// 进入群聊
+		Intent intent = new Intent(this, ChatActivity.class);
+		// it is group chat
+		intent.putExtra("chatType", ChatActivity.CHATTYPE_CHATROOM);
+		intent.putExtra("groupId", charId);
+		startActivity(intent);
     }
 }

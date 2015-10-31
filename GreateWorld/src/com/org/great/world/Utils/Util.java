@@ -43,7 +43,7 @@ import com.org.great.wrold.R;
 
 public class Util 
 {
-	public static boolean IS_LOGINED = false;
+//	public static boolean IS_LOGINED = false;
 	/**刷新的时间间隔*/
 	public static int REFRESH_TIME_INTERVAL = 1;
 	/**游戏时间间隔 （分）*/

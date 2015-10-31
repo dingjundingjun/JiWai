@@ -25,6 +25,7 @@ import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.DemoHXSDKModel;
 import com.easemob.chatuidemo.activity.OfflinePushNickActivity;
 import com.easemob.chatuidemo.activity.UserProfileActivity;
+import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.RegisterView.OnRegisterCallback;
 import com.org.great.world.Views.RegisterView.UIHandler;
 import com.org.great.wrold.R;

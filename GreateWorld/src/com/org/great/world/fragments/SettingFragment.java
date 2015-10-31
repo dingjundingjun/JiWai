@@ -30,10 +30,6 @@ public class SettingFragment extends BaseFragment
 	private RegisterView mRegisterView;
 	private SettingView mSettingView;
 	private RelativeLayout mMainView;
-	private int mShowViewType = 0;
-	private final int SHOW_LOGIN_VIEW = 1;
-	private final int SHOW_REGISTER_VIEW = 2;
-	private final int SHOW_SETTING_VIEW = 3;
 	private View mAttachView;
 	 @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +48,8 @@ public class SettingFragment extends BaseFragment
 	
 	private void init(View view)
 	{
-		if (DemoHXSDKHelper.getInstance().isLogined() || Util.IS_LOGINED) {
+		if (DemoHXSDKHelper.getInstance().isLogined()) {
 			autoLogin = true;
-			Util.IS_LOGINED = true;
 			showSettingView();
 		}
 		else
