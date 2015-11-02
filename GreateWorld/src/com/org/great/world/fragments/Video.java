@@ -70,7 +70,6 @@ public class Video extends SeeWorldAndJokeChildBaseFragment{
         mAutoListView.setOnRefreshListener(new AutoListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getActivity(), "下拉刷新", Toast.LENGTH_SHORT).show();
                 mAutoListView.onRefreshComplete();
             }
         });
@@ -78,7 +77,6 @@ public class Video extends SeeWorldAndJokeChildBaseFragment{
         mAutoListView.setOnLoadListener(new AutoListView.OnLoadListener() {
             @Override
             public void onLoad() {
-                Toast.makeText(getActivity(), "加载更多", Toast.LENGTH_SHORT).show();
                 loadMore();
                 
             }

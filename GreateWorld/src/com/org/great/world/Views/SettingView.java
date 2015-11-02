@@ -93,8 +93,6 @@ public class SettingView implements OnClickListener
 	 */
 	private TextView textview1, textview2;
 
-	private LinearLayout blacklistContainer;
-	
 	private LinearLayout userProfileContainer;
 	
 	/**
@@ -102,21 +100,12 @@ public class SettingView implements OnClickListener
 	 */
 	private Button logoutBtn;
 
-	private RelativeLayout rl_switch_chatroom_leave;
-	private ImageView iv_switch_room_owner_leave_allow;
-	private ImageView iv_switch_room_owner_leave_disallow;
+//	private RelativeLayout rl_switch_chatroom_leave;
+//	private ImageView iv_switch_room_owner_leave_allow;
+//	private ImageView iv_switch_room_owner_leave_disallow;
 	
 	private EMChatOptions chatOptions;
  
-	/**
-	 * 诊断
-	 */
-	private LinearLayout llDiagnose;
-	/**
-	 * iOS离线推送昵称
-	 */
-	private LinearLayout pushNick;
-	
 	DemoHXSDKModel model;
 	public SettingView(Context context) {
 		mContext = context;
@@ -140,7 +129,6 @@ public class SettingView implements OnClickListener
 		rl_switch_sound = (RelativeLayout) view.findViewById(R.id.rl_switch_sound);
 		rl_switch_vibrate = (RelativeLayout) view.findViewById(R.id.rl_switch_vibrate);
 		rl_switch_speaker = (RelativeLayout) view.findViewById(R.id.rl_switch_speaker);
-		rl_switch_chatroom_leave = (RelativeLayout) view.findViewById(R.id.rl_switch_chatroom_owner_leave);
 
 		iv_switch_open_notification = (ImageView) view.findViewById(R.id.iv_switch_open_notification);
 		iv_switch_close_notification = (ImageView)view.findViewById(R.id.iv_switch_close_notification);
@@ -151,10 +139,6 @@ public class SettingView implements OnClickListener
 		iv_switch_open_speaker = (ImageView) view.findViewById(R.id.iv_switch_open_speaker);
 		iv_switch_close_speaker = (ImageView) view.findViewById(R.id.iv_switch_close_speaker);
 		
-		iv_switch_room_owner_leave_allow = (ImageView) view.findViewById(R.id.iv_switch_chatroom_owner_leave_allow);
-		iv_switch_room_owner_leave_disallow = (ImageView) view.findViewById(R.id.iv_switch_chatroom_owner_leave_not_allow);
-		
-		
 		logoutBtn = (Button) view.findViewById(R.id.btn_logout);
 		if(!TextUtils.isEmpty(EMChatManager.getInstance().getCurrentUser())){
 			logoutBtn.setText(mContext.getString(R.string.button_logout) + "(" + EMChatManager.getInstance().getCurrentUser() + ")");
@@ -163,21 +147,13 @@ public class SettingView implements OnClickListener
 		textview1 = (TextView) view.findViewById(R.id.textview1);
 		textview2 = (TextView) view.findViewById(R.id.textview2);
 		
-		blacklistContainer = (LinearLayout) view.findViewById(R.id.ll_black_list);
 		userProfileContainer = (LinearLayout) view.findViewById(R.id.ll_user_profile);
-		llDiagnose=(LinearLayout) view.findViewById(R.id.ll_diagnose);
-		pushNick=(LinearLayout) view.findViewById(R.id.ll_set_push_nick);
-		
-		blacklistContainer.setOnClickListener(this);
 		userProfileContainer.setOnClickListener(this);
 		rl_switch_notification.setOnClickListener(this);
 		rl_switch_sound.setOnClickListener(this);
 		rl_switch_vibrate.setOnClickListener(this);
 		rl_switch_speaker.setOnClickListener(this);
 		logoutBtn.setOnClickListener(this);
-		llDiagnose.setOnClickListener(this);
-		pushNick.setOnClickListener(this);
-		rl_switch_chatroom_leave.setOnClickListener(this);
 		
 		chatOptions = EMChatManager.getInstance().getChatOptions();
 		
@@ -221,15 +197,6 @@ public class SettingView implements OnClickListener
 		} else {
 			iv_switch_open_speaker.setVisibility(View.INVISIBLE);
 			iv_switch_close_speaker.setVisibility(View.VISIBLE);
-		}
-
-		// 是否允许聊天室owner leave
-		if(model.isChatroomOwnerLeaveAllowed()){
-		    iv_switch_room_owner_leave_allow.setVisibility(View.VISIBLE);
-		    iv_switch_room_owner_leave_disallow.setVisibility(View.INVISIBLE);
-		}else{
-		    iv_switch_room_owner_leave_allow.setVisibility(View.INVISIBLE);
-            iv_switch_room_owner_leave_disallow.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -305,33 +272,8 @@ public class SettingView implements OnClickListener
 				HXSDKHelper.getInstance().getModel().setSettingMsgVibrate(true);
 			}
 			break;
-		case R.id.rl_switch_chatroom_owner_leave:
-		    if(this.iv_switch_room_owner_leave_allow.getVisibility() == View.VISIBLE){
-		        iv_switch_room_owner_leave_allow.setVisibility(View.INVISIBLE);
-                iv_switch_room_owner_leave_disallow.setVisibility(View.VISIBLE);
-                chatOptions.allowChatroomOwnerLeave(false);
-                EMChatManager.getInstance().setChatOptions(chatOptions);
-                model.allowChatroomOwnerLeave(false);
-
-		    }else{
-		        iv_switch_room_owner_leave_allow.setVisibility(View.VISIBLE);
-                iv_switch_room_owner_leave_disallow.setVisibility(View.INVISIBLE);
-                chatOptions.allowChatroomOwnerLeave(true);
-                EMChatManager.getInstance().setChatOptions(chatOptions);
-                model.allowChatroomOwnerLeave(true);
-		    }
-		    break;
 		case R.id.btn_logout: //退出登陆
 			logout();
-			break;
-		case R.id.ll_black_list:
-//			mContext.startActivity(new Intent(mContext, BlacklistActivity.class));
-			break;
-		case R.id.ll_diagnose:
-//			mContext.startActivity(new Intent(mContext, DiagnoseActivity.class));
-			break;
-		case R.id.ll_set_push_nick:
-			mContext.startActivity(new Intent(mContext, OfflinePushNickActivity.class));
 			break;
 		case R.id.ll_user_profile:
 			mContext.startActivity(new Intent(mContext, UserProfileActivity.class).putExtra("setting", true));

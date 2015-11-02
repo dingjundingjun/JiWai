@@ -537,21 +537,21 @@ public class MessageAdapter extends BaseAdapter{
 //			}
 		}
 
-//		TextView timestamp = (TextView) convertView.findViewById(R.id.timestamp);
-//
-//		if (position == 0) {
-//			timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
-//			timestamp.setVisibility(View.VISIBLE);
-//		} else {
-//			// 两条消息时间离得如果稍长，显示时间
-//			EMMessage prevMessage = getItem(position - 1);
-//			if (prevMessage != null && DateUtils.isCloseEnough(message.getMsgTime(), prevMessage.getMsgTime())) {
-//				timestamp.setVisibility(View.GONE);
-//			} else {
-//				timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
-//				timestamp.setVisibility(View.VISIBLE);
-//			}
-//		}
+		TextView timestamp = (TextView) convertView.findViewById(R.id.timestamp);
+
+		if (position == 0) {
+			timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
+			timestamp.setVisibility(View.VISIBLE);
+		} else {
+			// 两条消息时间离得如果稍长，显示时间
+			EMMessage prevMessage = getItem(position - 1);
+			if (prevMessage != null && DateUtils.isCloseEnough(message.getMsgTime(), prevMessage.getMsgTime())) {
+				timestamp.setVisibility(View.GONE);
+			} else {
+				timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
+				timestamp.setVisibility(View.VISIBLE);
+			}
+		}
 		return convertView;
 	}
 	

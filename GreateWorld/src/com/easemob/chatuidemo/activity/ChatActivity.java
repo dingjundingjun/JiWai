@@ -194,6 +194,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 
+	private View mLayoutTakePicture;
 	private Handler micImageHandler = new Handler() {
 		@Override
 		public void handleMessage(android.os.Message msg) {
@@ -212,6 +213,16 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		activityInstance = this;
 		initView();
 		setUpView();
+		
+		mLayoutTakePicture = findViewById(R.id.layout_take_picture);
+		if(!CommonUtils.isIntentExisting(this,MediaStore.ACTION_IMAGE_CAPTURE))
+		{
+			mLayoutTakePicture.setVisibility(View.GONE);
+		}
+		if(!CommonUtils.isIntentExisting(this, Intent.ACTION_GET_CONTENT))
+		{
+			findViewById(R.id.layout_file_explorer).setVisibility(View.GONE);
+		}
 	}
 
 	/**
