@@ -211,12 +211,12 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         mSocialService.getComments(mBaseActivity, new SocializeListeners.FetchCommetsListener() {
             @Override
             public void onStart() {
-                System.out.println("====onStart==>>> ");
+                Debug.d("====onStart==>>> ");
             }
 
             @Override
             public void onComplete(int status, List<UMComment> comments, SocializeEntity arg2) {
-                Debug.d("status = " + status);
+                Debug.d("status111 = " + status);
                 if (status == 200)    //ok
                 {
                     Debug.d("comments size = " + comments.size());
@@ -252,16 +252,6 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         if (mSocialService == null) {
             Debug.d("getUMSocial name = " + "JJYY_" + mCatalogPojo.getTitle());
             mSocialService = UMServiceFactory.getUMSocialService("JJYY_" + mCatalogPojo.getTitle());
-            mSocialService.login(mBaseActivity, PersonalUtil.mSnsAccount, new SocializeListeners.SocializeClientListener(){
-                @Override
-                public void onStart() {
-                	Debug.d("start login for " + "JJYY_" + mCatalogPojo.getTitle());
-                }
-                @Override
-                public void onComplete(int arg0, SocializeEntity arg1) {
-                	Debug.d("login success for " + "JJYY_" + mCatalogPojo.getTitle());
-                }
-            } );
         }
         getCommentFromUM(-1);
         requestLike();

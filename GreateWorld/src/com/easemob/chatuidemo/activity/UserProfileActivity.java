@@ -1,6 +1,7 @@
 package com.easemob.chatuidemo.activity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -8,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -28,7 +30,12 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.domain.User;
 import com.easemob.chatuidemo.utils.UserUtils;
+import com.org.great.world.Utils.PersonalUtil;
+import com.org.great.world.Utils.RegisterAndLogin;
+import com.org.great.world.Utils.Util;
 import com.org.great.wrold.R;
+import com.soundcloud.android.crop.Crop;
+import com.soundcloud.android.crop.CropImageActivity;
 import com.squareup.picasso.Picasso;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
@@ -43,12 +50,12 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private ProgressDialog dialog;
 	private RelativeLayout rlNickName;
 	
-	
-	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_user_profile);
+		User user = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().getCurrentUserInfo();
+		user.setNick(PersonalUtil.getPersonInfo(this).getNickName());
 		initView();
 		initListener();
 	}
@@ -66,6 +73,14 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		Intent intent = getIntent();
 		String username = intent.getStringExtra("username");
 		boolean enableUpdate = intent.getBooleanExtra("setting", false);
+		if(Util.isFileExsit(RegisterAndLogin.ICON_PATH))
+		{
+			headAvatar.setImageBitmap(BitmapFactory.decodeFile(RegisterAndLogin.ICON_PATH));
+		}
+		else
+		{
+			headAvatar.setImageResource(R.drawable.default_avatar);
+		}
 		if (enableUpdate) {
 			headPhotoUpdate.setVisibility(View.VISIBLE);
 			iconRightArrow.setVisibility(View.VISIBLE);
@@ -78,15 +93,15 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		if (username == null) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setCurrentUserNick(tvNickName);
-			UserUtils.setCurrentUserAvatar(this, headAvatar);
+//			UserUtils.setCurrentUserAvatar(this, headAvatar);
 		} else if (username.equals(EMChatManager.getInstance().getCurrentUser())) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setCurrentUserNick(tvNickName);
-			UserUtils.setCurrentUserAvatar(this, headAvatar);
+//			UserUtils.setCurrentUserAvatar(this, headAvatar);
 		} else {
 			tvUsername.setText(username);
 			UserUtils.setUserNick(username, tvNickName);
-			UserUtils.setUserAvatar(this, username, headAvatar);
+//			UserUtils.setUserAvatar(this, username, headAvatar);
 			asyncFetchUserInfo(username);
 		}
 	}
@@ -126,11 +141,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			public void onSuccess(User user) {
 				if (user != null) {
 					tvNickName.setText(user.getNick());
-					if(!TextUtils.isEmpty(user.getAvatar())){
-						 Picasso.with(UserProfileActivity.this).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(headAvatar);
-					}else{
-						Picasso.with(UserProfileActivity.this).load(R.drawable.default_avatar).into(headAvatar);
-					}
+//					if(!TextUtils.isEmpty(user.getAvatar())){
+//						 Picasso.with(UserProfileActivity.this).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(headAvatar);
+//					}else{
+//						Picasso.with(UserProfileActivity.this).load(R.drawable.default_avatar).into(headAvatar);
+//					}
 					UserUtils.saveUserInfo(user);
 				}
 			}
@@ -141,35 +156,40 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		});
 	}
 	
-	
+	public void setCrop()
+    {
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 111);
+    }
 	
 	private void uploadHeadPhoto() {
-		AlertDialog.Builder builder = new Builder(this);
-		builder.setTitle(R.string.dl_title_upload_photo);
-		builder.setItems(new String[] { getString(R.string.dl_msg_take_photo), getString(R.string.dl_msg_local_upload) },
-				new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						switch (which) {
-						case 0:
-							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_no_support),
-									Toast.LENGTH_SHORT).show();
-							break;
-						case 1:
-							Intent pickIntent = new Intent(Intent.ACTION_PICK,null);
-							pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-							startActivityForResult(pickIntent, REQUESTCODE_PICK);
-							break;
-						default:
-							break;
-						}
-					}
-				});
-		builder.create().show();
+//		AlertDialog.Builder builder = new Builder(this);
+//		builder.setTitle(R.string.dl_title_upload_photo);
+//		builder.setItems(new String[] { getString(R.string.dl_msg_take_photo), getString(R.string.dl_msg_local_upload) },
+//				new DialogInterface.OnClickListener() {
+//
+//					public void onClick(DialogInterface dialog, int which) {
+//						dialog.dismiss();
+//						switch (which) {
+//						case 0:
+//							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_no_support),
+//									Toast.LENGTH_SHORT).show();
+//							break;
+//						case 1:
+//							Intent pickIntent = new Intent(Intent.ACTION_PICK,null);
+//							pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//							startActivityForResult(pickIntent, REQUESTCODE_PICK);
+//							break;
+//						default:
+//							break;
+//						}
+//					}
+//				});
+//		builder.create().show();
+		setCrop();
 	}
-	
-	
 
 	private void updateRemoteNick(final String nickName) {
 		dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
@@ -178,10 +198,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			@Override
 			public void run() {
 				boolean updatenick = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().updateParseNickName(nickName);
+				boolean updateSever = RegisterAndLogin.getInstance(UserProfileActivity.this).updatePersonInfo(nickName);
 				if (UserProfileActivity.this.isFinishing()) {
 					return;
 				}
-				if (!updatenick) {
+				if (!updatenick || !updateSever) {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
@@ -218,12 +239,44 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 				setPicToView(data);
 			}
 			break;
+		case 111:
+        {
+            if(data != null)
+            {
+                beginCrop(data.getData());
+            }
+            break;
+        }
+		case Crop.REQUEST_CROP:{
+            handleCrop(resultCode, data);
+            break;
+		}
 		default:
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
+	private void beginCrop(Uri source) {
 
+        Uri destination = Uri.fromFile(new File(RegisterAndLogin.ICON_PATH));
+        Intent cropIntent = new Intent();
+        cropIntent.setData(source);
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, destination);
+        cropIntent.setClass(this, CropImageActivity.class);
+        startActivityForResult(cropIntent, Crop.REQUEST_CROP);
+    }
+
+	private void handleCrop(int resultCode, Intent result) {
+
+        if (resultCode == this.RESULT_OK && result != null) {
+        	headAvatar.setImageBitmap(BitmapFactory.decodeFile(RegisterAndLogin.ICON_PATH));
+        	updateRemoteNick(tvNickName.getText().toString());
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+	
 	public void startPhotoZoom(Uri uri) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");

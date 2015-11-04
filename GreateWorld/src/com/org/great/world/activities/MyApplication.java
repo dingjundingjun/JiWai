@@ -3,6 +3,7 @@ package com.org.great.world.activities;
 import com.easemob.EMCallBack;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.PersonalUtil;
+import com.org.great.world.Utils.RegisterAndLogin;
 import com.youku.player.YoukuPlayerBaseConfiguration;
 
 import android.app.Activity;
@@ -52,8 +53,8 @@ public class MyApplication extends Application {
 	         * }
 	         */
 	        hxSDKHelper.onInit(applicationContext);
-	        
-		PersonalUtil.isLogined(this);
+	        PersonalUtil.isLogined(this);
+		
 		configuration = new YoukuPlayerBaseConfiguration(this)
 		{
 			/**

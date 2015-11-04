@@ -2,6 +2,14 @@ package com.org.great.world.fragments;
 
 import java.io.File;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -31,6 +39,10 @@ public class SettingFragment extends BaseFragment
 	private SettingView mSettingView;
 	private RelativeLayout mMainView;
 	private View mAttachView;
+	
+	private HttpClient httpClient; 
+	private HttpParams httpParams;
+	
 	 @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -148,6 +160,7 @@ public class SettingFragment extends BaseFragment
 		{
 			mSettingView = new SettingView(mBaseActivity);
 		}
+		mSettingView.update();
 //		mMainView.removeAllViews();
 		mMainView.removeAllViewsInLayout();
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(

@@ -1,20 +1,17 @@
 package com.org.great.world.Utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-
-
-
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,13 +27,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.net.ConnectivityManager;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.org.great.wrold.R;
@@ -55,6 +53,71 @@ public class Util
         b[1] = (byte) (c & 0xFF);   
         return b;   
     }  
+	
+	public static void saveHeadIcon(Context c,String path)
+	{
+		Bitmap bmp = null;
+		try {
+		byte head[] = getImage(path);
+		if(head != null)
+		{
+			bmp = BitmapFactory.decodeByteArray(head, 0, head.length);
+		}
+		else
+		{
+			bmp = BitmapFactory.decodeResource(c.getResources(), R.drawable.default_avatar);
+		}
+			bmp.compress(CompressFormat.PNG, 100, new FileOutputStream(RegisterAndLogin.ICON_PATH));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bmp.recycle();
+	}
+public static byte[] getImage(String path) throws Exception{  
+		
+		if(TextUtils.isEmpty(path)){
+			return null;
+		}
+		if(path.equals("null") || path == null)
+		{
+			return null;
+		}
+        URL url = new URL(path); 
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+        conn.setConnectTimeout(5 * 1000);  
+        conn.setRequestMethod("GET");  
+        InputStream inStream = conn.getInputStream();  
+        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){  
+            return readStream(inStream);  
+        }  
+        return null;  
+    }  
+
+public static byte[] readStream(InputStream inStream) throws Exception{  
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream();  
+    byte[] buffer = new byte[1024];  
+    int len = 0;  
+    while( (len=inStream.read(buffer)) != -1){  
+        outStream.write(buffer, 0, len);  
+    }  
+    outStream.close();  
+    inStream.close();  
+    return outStream.toByteArray();  
+}  
+	public static boolean isFileExsit(String path)
+	{
+		File file = new File(path);
+		if(file.exists())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	
 	public static String decodeUnicode(final String dataStr) {   
         int start = 0;   
@@ -310,6 +373,13 @@ public class Util
     	SharedPreferences preferences;
 		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
 		return preferences.getString("joke_json", null);
+    }
+    
+    public static void hideSoftKeyboard(Context context,View view)
+    {
+		InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
+				InputMethodManager.HIDE_NOT_ALWAYS);
     }
     
     public static void IsEnableAd()

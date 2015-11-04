@@ -5,8 +5,14 @@ import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.org.great.world.Utils.Debug;
 import com.org.great.wrold.R;
 import com.umeng.socialize.bean.UMComment;
@@ -20,8 +26,14 @@ import java.util.List;
 public class CommentAdapter extends BAdapter
 {
     private List<UMComment> mUMCommentList;
+    private ImageLoader mLoader;
+    private DisplayImageOptions mOptions;
     public CommentAdapter(Context mContext) {
         super(mContext);
+        DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
+        DisplayImageOptions options = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
+        mLoader = ImageLoader.getInstance();
+        mLoader.init(ImageLoaderConfiguration.createDefault(mContext));
     }
 
     @Override
@@ -59,14 +71,24 @@ public class CommentAdapter extends BAdapter
             viewHolder.content = (TextView) convertView.findViewById(R.id.content);
             viewHolder.date = (TextView) convertView.findViewById(R.id.date);
             viewHolder.name = (TextView) convertView.findViewById(R.id.name);
+            viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             convertView.setTag(viewHolder);
         }
 
         UMComment umData = (UMComment) getItem(position);
         viewHolder.content.setText(umData.mText);
-//        viewHolder.date.setText(DateUtils.formatDateTime(mContext, umData.mDt, DateUtils.FORMAT_24HOUR));
         viewHolder.date.setText(DateFormat.format("yyyy-MM-dd kk:mm", umData.mDt).toString());
         viewHolder.name.setText(umData.mUname);
+        String pUrl = umData.mUserIcon;
+        Debug.d("name = " + umData.mUname + " pUrl = " + pUrl);
+        if(pUrl != null && !pUrl.equals("")&&!pUrl.equals("http://fake_icon"))
+        {
+        	mLoader.displayImage(pUrl, viewHolder.avatar, mOptions, new SimpleImageLoadingListener());
+        }
+        else
+        {
+        	viewHolder.avatar.setImageResource(R.drawable.default_avatar);
+        }
         return convertView;
     }
 
@@ -75,6 +97,7 @@ public class CommentAdapter extends BAdapter
         TextView content;
         TextView date;
         TextView name;
+        ImageView avatar;
     }
 
     public void setList(List<UMComment> list)

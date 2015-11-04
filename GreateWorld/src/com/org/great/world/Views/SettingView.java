@@ -1,5 +1,7 @@
 package com.org.great.world.Views;
 
+import org.apache.http.client.HttpClient;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +29,6 @@ import com.easemob.chatuidemo.activity.OfflinePushNickActivity;
 import com.easemob.chatuidemo.activity.UserProfileActivity;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.RegisterView.OnRegisterCallback;
-import com.org.great.world.Views.RegisterView.UIHandler;
 import com.org.great.wrold.R;
 
 public class SettingView implements OnClickListener
@@ -99,6 +100,7 @@ public class SettingView implements OnClickListener
 	 * 退出按钮
 	 */
 	private Button logoutBtn;
+	
 
 //	private RelativeLayout rl_switch_chatroom_leave;
 //	private ImageView iv_switch_room_owner_leave_allow;
@@ -121,6 +123,13 @@ public class SettingView implements OnClickListener
 	public View getView()
 	{
 		return mMainView;
+	}
+	
+	public void update()
+	{
+		if(!TextUtils.isEmpty(EMChatManager.getInstance().getCurrentUser())){
+			logoutBtn.setText(mContext.getString(R.string.button_logout) + "(" + EMChatManager.getInstance().getCurrentUser() + ")");
+		}
 	}
 	
 	private void init(View view)

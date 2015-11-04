@@ -2,6 +2,19 @@ package com.org.great.world.data;
 
 import java.io.Serializable;
 
+/*
+data = {
+"sex":"",
+"accountId":16427,
+"regTime":"2015-11-04T01:51:51.000Z",
+"nickName":"没有名字的小伙伴",
+"hxPassword":"a493f239048c4d5d0139cae34075a374",
+"grade":"",
+"hxUser":"ddd",
+"photoPath":"",
+"loginName":"ddd"}
+
+* **/
 public class PersonalInfoPojo implements Serializable{
 	
 	/**
@@ -17,6 +30,9 @@ public class PersonalInfoPojo implements Serializable{
 	public String sex;
 	public String grade;
 	public String photoPath;
+	
+	public String hxPassword;
+	public String hxUser;
 	
 	public PersonalInfoPojo() {
 		
@@ -83,6 +99,27 @@ public class PersonalInfoPojo implements Serializable{
 
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+
+	
+
+	public String getHxPassword() {
+		return hxPassword;
+	}
+
+
+	public void setHxPassword(String hxPassword) {
+		this.hxPassword = hxPassword;
+	}
+
+
+	public String getHxUser() {
+		return hxUser;
+	}
+
+
+	public void setHxUser(String hxUser) {
+		this.hxUser = hxUser;
 	}
 
 
