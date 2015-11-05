@@ -16,5 +16,7 @@ public class HttpUtils
         public static final String URL_GAME_CATALOG = "http://121.40.93.89:13090/game/getGameList";
         
         public static final String URL_TYPE_LIST = "http://121.40.93.89:13090/card/getCardType";
+        
+        public static final String URL_GET_USER_INFO = "http://121.40.93.89:13080/users/getSimpleUserInfoByName";
     }
 }

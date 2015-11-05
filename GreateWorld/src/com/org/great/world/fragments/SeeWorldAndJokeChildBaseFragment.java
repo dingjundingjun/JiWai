@@ -180,7 +180,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
 	                    BaseCatalogPojo pojo = gson.fromJson(arg2, BaseCatalogPojo.class);
 	                    if(pojo.getStatus().equals("success"))
 	                    {
-	                        Debug.d("json = " + arg2);
+//	                        Debug.d("json = " + arg2);
 	                        ArrayList<CatalogPojo> tempList = pojo.getMessage();
 	                        if(tempList != null )
 	                        {
@@ -218,7 +218,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
         BaseCatalogPojo pojo = gson.fromJson(json, BaseCatalogPojo.class);
         if(pojo.getStatus().equals("success"))
         {
-            Debug.d("json = " + json);
+//            Debug.d("json = " + json);
             ArrayList<CatalogPojo> tempList = pojo.getMessage();
             if(tempList != null )
             {

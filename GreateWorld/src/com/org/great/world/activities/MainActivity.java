@@ -19,6 +19,7 @@ import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
 import com.org.great.world.data.AllAD;
+import com.org.great.world.fragments.ChatFragment;
 import com.org.great.world.fragments.CommunionFragment;
 import com.org.great.world.fragments.GreatWorldFragment;
 import com.org.great.world.fragments.MeFragment;
@@ -31,7 +32,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private GreatWorldFragment mGreatWorldFragment;
     private SettingFragment mMeFragment;
-    private CommunionFragment mCommunionFragment;
+    private ChatFragment mChatFragment;
     private TabView mGreatWorldBtn;
     private TabView mMeBtn;
     private TabView mCommunionBtn;
@@ -46,6 +47,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+		Util.createDB(this);
         setContentView(R.layout.activity_main);
         RegisterAndLogin.getInstance(this);    
         init();
@@ -93,11 +95,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
         		return;
         	}
-//        	if (mCommunionFragment == null) {
-//        		mCommunionFragment = new CommunionFragment();
-//            }
-//            mTransaction.replace(R.id.content, mCommunionFragment);
-//            mCommunionBtn.setSelected(true);
+        	if (mChatFragment == null) {
+        		mChatFragment = new ChatFragment();
+            }
+            mTransaction.replace(R.id.content, mChatFragment);
+            mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();
     }
@@ -153,16 +155,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
             case R.id.btn_communion:
             {
-            	if (mFrontFragment != COMMU) {
-                    mFrontFragment = COMMU;
-                }
             	if(DemoHXSDKHelper.getInstance().isLogined() == false)
             	{
             		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
             		return;
             	}
+            	if (mFrontFragment != COMMU) {
+                    mFrontFragment = COMMU;
+//                	changeFragment();
+                }
             	enterChatRoom();
-            	break;
+            	return;
             }
         }
         changeTabViewStatus(id);
@@ -178,12 +181,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     
     private void enterChatRoom()
     {
-    	String charId = "122980374539141604";
+//    	String charId = "122980374539141604";
+    	String charId = "122972290336948680";
+    	
 		// 进入群聊
 		Intent intent = new Intent(this, ChatActivity.class);
 		// it is group chat
-		intent.putExtra("chatType", ChatActivity.CHATTYPE_CHATROOM);
+//		intent.putExtra("chatType", ChatActivity.CHATTYPE_CHATROOM);
+		intent.putExtra("chatType", ChatActivity.CHATTYPE_GROUP);
 		intent.putExtra("groupId", charId);
 		startActivity(intent);
     }
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Util.closeDB();
+	}
+    
+    
 }

@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -299,8 +300,9 @@ public class RegisterAndLogin
                 if(status.equals("200"))
                 {
                     System.out.println("更新成功.........");
-                    pi = JsonTools.GsonToObj(message, PersonalInfoPojo.class);
+                    pi.nickName = nickName;
                     PersonalUtil.savePersonInfo(mContext, pi);
+                    PersonalUtil.isLogined(mContext);
                     return true;
                 }
                 else if(status.equals("404"))

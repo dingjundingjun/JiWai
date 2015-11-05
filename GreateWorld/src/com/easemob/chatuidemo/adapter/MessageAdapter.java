@@ -31,7 +31,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.Spannable;
@@ -83,6 +86,17 @@ import com.easemob.util.EMLog;
 import com.easemob.util.FileUtils;
 import com.easemob.util.LatLng;
 import com.easemob.util.TextFormater;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.org.great.world.Utils.Debug;
+import com.org.great.world.Utils.PersonalUtil;
+import com.org.great.world.Utils.RegisterAndLogin;
+import com.org.great.world.Utils.Util;
+import com.org.great.world.data.PersonalInfoPojo;
+import com.org.great.world.data.UserInfo;
 import com.org.great.wrold.R;
 
 public class MessageAdapter extends BaseAdapter{
@@ -120,10 +134,13 @@ public class MessageAdapter extends BaseAdapter{
 	private static final int HANDLER_MESSAGE_SELECT_LAST = 1;
 	private static final int HANDLER_MESSAGE_SEEK_TO = 2;
 
+    private ImageLoader mLoader;
+    private DisplayImageOptions mOptions;
+    
 	// reference to conversation object in chatsdk
 	private EMConversation conversation;
 	EMMessage[] messages = null;
-
+	private PersonalInfoPojo mPersonalInfoPojo;
 	private Context context;
 
 	private Map<String, Timer> timers = new Hashtable<String, Timer>();
@@ -134,6 +151,11 @@ public class MessageAdapter extends BaseAdapter{
 		inflater = LayoutInflater.from(context);
 		activity = (Activity) context;
 		this.conversation = EMChatManager.getInstance().getConversation(username);
+		DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
+        mOptions = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
+        mLoader = ImageLoader.getInstance();
+        mLoader.init(ImageLoaderConfiguration.createDefault(context));
+        mPersonalInfoPojo = PersonalUtil.getPersonInfo(context);
 	}
 	
 	Handler handler = new Handler() {
@@ -144,6 +166,7 @@ public class MessageAdapter extends BaseAdapter{
 			for (int i = 0; i < messages.length; i++) {
 				// getMessage will set message as read status
 				conversation.getMessage(i);
+				Util.getOneUserInfo(context,messages[i].getUserName());
 			}
 			notifyDataSetChanged();
 		}
@@ -309,6 +332,7 @@ public class MessageAdapter extends BaseAdapter{
 	@SuppressLint("NewApi")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final EMMessage message = getItem(position);
+		UserInfo user = Util.getUserByName(message.getFrom());
 		ChatType chatType = message.getChatType();
 		final ViewHolder holder;
 		if (convertView == null) {
@@ -401,19 +425,19 @@ public class MessageAdapter extends BaseAdapter{
 				}
 
 			}
-
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
+		
 		// 群聊时，显示接收的消息的发送人的名称
 		if ((chatType == ChatType.GroupChat || chatType == ChatType.ChatRoom) && message.direct == EMMessage.Direct.RECEIVE){
 		    //demo里使用username代码nick
-			UserUtils.setUserNick(message.getFrom(), holder.tv_usernick);
+//			UserUtils.setUserNick(message.getFrom(), holder.tv_usernick);
 		}
 		if(message.direct == EMMessage.Direct.SEND){
-			UserUtils.setCurrentUserNick(holder.tv_usernick);
+//			UserUtils.setCurrentUserNick(holder.tv_usernick);
 		}
 		// 如果是发送的消息并且不是群聊消息，显示已读textview
 		if (!(chatType == ChatType.GroupChat || chatType == ChatType.ChatRoom) && message.direct == EMMessage.Direct.SEND) {
@@ -453,10 +477,35 @@ public class MessageAdapter extends BaseAdapter{
 				}
 			}
 		}
+		Debug.d("user = " + user + " message.from = " + message.getFrom());
+		if(message.direct == EMMessage.Direct.SEND)
+		{
+//			holder.tv_usernick.setText(PersonalUtil.getPersonInfo(context).nickName);
+			setUserAvatar(null,message, holder.iv_avatar);
+		}
+		else
+		{
+			if(user != null)
+			{
+				holder.tv_usernick.setText(user.getNickName());
+				setUserAvatar(user.getPhotoPath(),message, holder.iv_avatar);
+			}
+			else
+			{
+				holder.tv_usernick.setText(mPersonalInfoPojo.getNickName());
+				if(Util.isFileExsit(RegisterAndLogin.ICON_PATH))
+				{
+					Debug.d("file is exsit1111");
+					mLoader.displayImage("file://"+RegisterAndLogin.ICON_PATH, holder.iv_avatar, mOptions, new SimpleImageLoadingListener());
+				}
+				else
+				{
+					mLoader.displayImage("drawable://"+R.drawable.default_avatar, holder.iv_avatar, mOptions, new SimpleImageLoadingListener());
+				}
+			}
+		}
 		
 		//设置用户头像
-		setUserAvatar(message, holder.iv_avatar);
-
 		switch (message.getType()) {
 		// 根据消息type显示item
 		case IMAGE: // 图片
@@ -488,7 +537,10 @@ public class MessageAdapter extends BaseAdapter{
 		default:
 			// not supported
 		}
-
+//		if(message.getFrom().equals(mPersonalInfoPojo.getLoginName()))
+//		{
+//			message.direct = EMMessage.Direct.SEND;
+//		}
 		if (message.direct == EMMessage.Direct.SEND) {
 			View statusView = convertView.findViewById(R.id.msg_status);
 			// 重发按钮点击事件
@@ -561,12 +613,42 @@ public class MessageAdapter extends BaseAdapter{
 	 * @param message
 	 * @param imageView
 	 */
-	private void setUserAvatar(final EMMessage message, ImageView imageView){
+	private void setUserAvatar(String photoPath,final EMMessage message, ImageView imageView){
+		Debug.d("message.direct = " + message.direct);
 	    if(message.direct == Direct.SEND){
 	        //显示自己头像
-	        UserUtils.setCurrentUserAvatar(context, imageView);
+//	        UserUtils.setCurrentUserAvatar(context, imageView);
+	    	if(Util.isFileExsit(RegisterAndLogin.ICON_PATH))
+			{
+	    		mLoader.displayImage("file://"+RegisterAndLogin.ICON_PATH, imageView, mOptions, new SimpleImageLoadingListener());
+//	    		imageView.setImageBitmap(BitmapFactory.decodeFile(RegisterAndLogin.ICON_PATH));
+			}
+			else
+			{
+				mLoader.displayImage("drawable://"+R.drawable.default_avatar, imageView, mOptions, new SimpleImageLoadingListener());
+//				imageView.setImageResource(R.drawable.default_avatar);
+			}
 	    }else{
-	        UserUtils.setUserAvatar(context, message.getFrom(), imageView);
+//	        UserUtils.setUserAvatar(context, message.getFrom(), imageView);
+	    	Debug.d("setAvatar = " + photoPath);
+	    	if(photoPath == null || photoPath.equals(""))
+	    	{
+	    		mLoader.displayImage("drawable://"+R.drawable.default_avatar, imageView, mOptions, new SimpleImageLoadingListener());
+//	    		imageView.setImageResource(R.drawable.default_avatar);
+	    	}
+	    	else
+	    	{
+	    		String iconPath = Util.PicIconPath + message.getFrom() + ".jpg";
+	    		if(Util.isFileExsit(iconPath))
+	    		{
+	    			mLoader.displayImage("file://"+iconPath, imageView, mOptions, new SimpleImageLoadingListener());
+	    		}
+	    		else
+	    		{
+	    			mLoader.displayImage("drawable://"+R.drawable.default_avatar, imageView, mOptions, new SimpleImageLoadingListener());
+//	    			imageView.setImageResource(R.drawable.default_avatar);
+	    		}
+	    	}
 	    }
 	    imageView.setOnClickListener(new View.OnClickListener() {
 			

@@ -31,7 +31,7 @@ public class CommentAdapter extends BAdapter
     public CommentAdapter(Context mContext) {
         super(mContext);
         DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
-        DisplayImageOptions options = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
+        mOptions = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
         mLoader = ImageLoader.getInstance();
         mLoader.init(ImageLoaderConfiguration.createDefault(mContext));
     }

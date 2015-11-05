@@ -63,7 +63,7 @@ public class PersonalUtil {
 		mSnsAccount = new SnsAccount(pi.getNickName(), Gender.MALE, pi.getPhotoPath(),pi.getAccountId());
 		mSnsAccount.setUserName(pi.getNickName());
 		mSnsAccount.setUsid(Build.SERIAL);
-		mSnsAccount.setAccountIconUrl(null);
+		mSnsAccount.setAccountIconUrl(pi.getPhotoPath());
 		return true;
 	}
 	

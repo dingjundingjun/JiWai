@@ -104,6 +104,8 @@ import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
 import com.easemob.util.VoiceRecorder;
+import com.org.great.world.Utils.Debug;
+import com.org.great.world.Utils.Util;
 import com.org.great.world.activities.MyApplication;
 import com.org.great.wrold.R;
 
@@ -211,6 +213,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
 		activityInstance = this;
+		
 		initView();
 		setUpView();
 		
@@ -356,7 +359,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	                                                 swipeRefreshLayout.setRefreshing(false);
 	                                                 return;
 		                                         }
-		                                         
+		                                         Debug.d("messages.size = " + messages.size());
 		                                         if (messages.size() > 0) {
 	                                                 adapter.notifyDataSetChanged();
 	                                                 adapter.refreshSeekTo(messages.size() - 1);
@@ -412,7 +415,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			findViewById(R.id.container_voice_call).setVisibility(View.GONE);
 			findViewById(R.id.container_video_call).setVisibility(View.GONE);
 			toChatUsername = getIntent().getStringExtra("groupId");
-
+			
 			if(chatType == CHATTYPE_GROUP){
 			    onGroupViewCreation();
 			}else{ 
@@ -443,14 +446,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	    }else if(chatType == CHATTYPE_CHATROOM){
 	        conversation = EMChatManager.getInstance().getConversationByType(toChatUsername,EMConversationType.ChatRoom);
 	    }
-	     
+	    
         // 把此会话的未读数置为0
         conversation.markAllMessagesAsRead();
-
         // 初始化db时，每个conversation加载数目是getChatOptions().getNumberOfMessagesLoaded
         // 这个数目如果比用户期望进入会话界面时显示的个数不一样，就多加载一些
         final List<EMMessage> msgs = conversation.getAllMessages();
         int msgCount = msgs != null ? msgs.size() : 0;
+        Debug.d("11111111111111111111 get AllMessages = " + msgs.size());
         if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
             String msgId = null;
             if (msgs != null && msgs.size() > 0) {
@@ -473,7 +476,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             }
 
             @Override
-            public void onMemberJoined(String roomId, String participant) {                
+            public void onMemberJoined(String roomId, String participant) { 
             }
 
             @Override
@@ -1481,6 +1484,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		
 		activityInstance = null;
 		if(groupListener != null){
 		    EMGroupManager.getInstance().removeGroupChangeListener(groupListener);
@@ -1625,7 +1629,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			switch (scrollState) {
 			case OnScrollListener.SCROLL_STATE_IDLE:
-				/*if (view.getFirstVisiblePosition() == 0 && !isloading && haveMoreData && conversation.getAllMessages().size() != 0) {
+				if (view.getFirstVisiblePosition() == 0 && !isloading && haveMoreData && conversation.getAllMessages().size() != 0) {
 					isloading = true;
 					loadmorePB.setVisibility(View.VISIBLE);
 					// sdk初始化加载的聊天记录为20条，到顶时去db里获取更多					
@@ -1660,7 +1664,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 					loadmorePB.setVisibility(View.GONE);
 					isloading = false;
 
-				}*/
+				}
 				break;
 			}
 		}

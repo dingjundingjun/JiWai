@@ -7,12 +7,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -30,6 +34,8 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,15 +43,27 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.BaseJsonHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
+import com.org.great.world.data.BaseCatalogPojo;
+import com.org.great.world.data.BaseUserInfoPojo;
+import com.org.great.world.data.CatalogPojo;
+import com.org.great.world.data.UserInfo;
+import com.org.great.world.db.UserDBHelp;
 import com.org.great.wrold.R;
 
 public class Util 
 {
+	private static UserDBHelp gUserDBHelp;
 //	public static boolean IS_LOGINED = false;
 	/**刷新的时间间隔*/
 	public static int REFRESH_TIME_INTERVAL = 1;
 	/**游戏时间间隔 （分）*/
 	public static int PLAY_GAME_INTERVAL = 30;
+	/**更新聊天信息*/
+	public static int LOAD_USER_INFO_INTERVAL = 3;
 	public static boolean isMain = true;
 	public static byte[] charToByte(char c) {   
         byte[] b = new byte[2];   
@@ -91,8 +109,43 @@ public static byte[] getImage(String path) throws Exception{
         if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){  
             return readStream(inStream);  
         }  
+        
         return null;  
     }  
+
+public static final String PicIconPath = "/mnt/sdcard/jiwai/pic/";
+public static boolean getImage(UserInfo user,String path) throws Exception{  
+	
+	if(TextUtils.isEmpty(path)){
+		return false;
+	}
+	if(path.equals("null") || path == null)
+	{
+		return false;
+	}
+    URL url = new URL(path); 
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
+    conn.setConnectTimeout(5 * 1000);  
+    conn.setRequestMethod("GET");  
+    InputStream inStream = conn.getInputStream();  
+    byte[] bmpByte = null;
+    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){  
+        bmpByte = readStream(inStream);  
+    }  
+    Bitmap tempBmp = BitmapFactory.decodeByteArray(bmpByte, 0, bmpByte.length);
+    File file = new File(PicIconPath);
+    if(!file.exists())
+    {
+    	file.mkdirs();
+    }
+    String iconPath = PicIconPath + user.getLoginName() + ".jpg";
+    Debug.d("iconPath = " + iconPath);
+    FileOutputStream os = new FileOutputStream(iconPath);
+    tempBmp.compress(CompressFormat.JPEG, 50, os);
+    os.close();
+    tempBmp.recycle();
+    return true;  
+} 
 
 public static byte[] readStream(InputStream inStream) throws Exception{  
     ByteArrayOutputStream outStream = new ByteArrayOutputStream();  
@@ -280,6 +333,34 @@ public static byte[] readStream(InputStream inStream) throws Exception{
     	}
     }
     
+    /**
+     * 返回一个long值，表示距离上一次相隔多少秒
+     * @param context
+     * @return
+     */
+    public static boolean isCanLoadUserInfo(Context context)
+    {
+    	String lastTimeStr = getLoadUserInfoTime(context);
+    	long lastTime = Long.decode(lastTimeStr);
+    	Debug.d("lastTime = " + lastTime);
+    	if(lastTime != -1)
+    	{
+    		long minute = (System.currentTimeMillis()/1000 - lastTime)/60;
+    		if(LOAD_USER_INFO_INTERVAL - minute > 0)
+    		{
+    			return false;
+    		}
+    		else
+    		{
+    			return true;
+    		}
+    	}
+    	else
+    	{
+    		return true;
+    	}
+    }
+    
     public static void saveFreshTime(Context context)
     {
     	SharedPreferences preferences;
@@ -345,6 +426,23 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
 		prefsEditor = preferences.edit();
 		prefsEditor.putString("last_play_game_time","" + System.currentTimeMillis()/1000);
+		prefsEditor.commit();
+    }
+    
+    public static String getLoadUserInfoTime(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("last_load_user_info_time", "-1");
+    }
+    
+    public static void saveLoadUserInfoTime(Context context)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("last_load_user_info_time","" + System.currentTimeMillis()/1000);
 		prefsEditor.commit();
     }
     
@@ -433,4 +531,117 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 
     }
     
+    
+    /**
+     * 从服务器取信息，存数据库
+     * @param context
+     * @param loginName
+     */
+    public static void getOneUserInfo(final Context context,String loginName)
+    {
+    	if(loginName == null || loginName.equals(""))
+    		return;
+    	//这里做一个定时控制  不能每次都从服务器去取
+    	if(!isCanLoadUserInfo(context) && gUserDBHelp.hasUserInfo(loginName))
+    	{
+    		return;
+    	}
+    	saveLoadUserInfoTime(context);
+    	Debug.d("1111111111111111111111111111111111111111111111111111111 load  11111111111111111");
+    	AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+    	String url = HttpUtils.RequestUrl.URL_GET_USER_INFO + "?loginName=" + loginName;
+		RequestHandle handle = asyncHttpClient.get(url, new BaseJsonHttpResponseHandler()
+		{
+		    @Override
+		    public void onFailure(int arg0, Header[] arg1, Throwable arg2, String arg3, Object arg4)
+		    {
+		    }
+		
+		    @Override
+		    public void onSuccess(int arg0, Header[] arg1, String arg2, Object arg3)
+		    {
+		        if(!Util.isEmpty(arg2))
+		        {
+		            Gson gson = new Gson();
+		            BaseUserInfoPojo pojo = gson.fromJson(arg2, BaseUserInfoPojo.class);
+		            if(pojo.getStatus().equals("success"))
+		            {
+		                Debug.d("json = " + arg2);
+		                final UserInfo tempUsr = pojo.getData();
+		                if(tempUsr != null )
+		                {
+		                	if(!gUserDBHelp.isCanUpdataUser(tempUsr))
+		                	{
+		                		return;
+		                	}
+		                	Thread thread = new Thread(new Runnable() {
+								
+								@Override
+								public void run() {
+									Debug.d("tempUsr = " + tempUsr.getLoginName());
+				                	boolean b;
+			                		try {
+										b = getImage(tempUsr,tempUsr.getPhotoPath());
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+				                	if(!gUserDBHelp.hasUserInfo(tempUsr.getLoginName()))
+				                	{
+				                		gUserDBHelp.insertUserInfo(tempUsr);
+				                	}
+				                	else
+				                	{
+				                		gUserDBHelp.UpdateUserInfo(tempUsr);
+				                	}
+								}
+							});
+		                	thread.start();
+		                }
+		            }
+		        }
+		    }
+		
+		    @Override
+		    protected Object parseResponse(String arg0, boolean arg1) throws Throwable
+		    {
+		        return arg0;
+		    }
+		});
+    }
+    
+    public static UserInfo getUserByName(String name)
+    {
+    	return gUserDBHelp.getUserInfo(name);
+    }
+    
+    public static void createDB(Context c)
+    {
+    	if(gUserDBHelp == null)
+    	{
+    		gUserDBHelp = new UserDBHelp(c);
+    	}
+    }
+    
+    public static void closeDB()
+    {
+    	if(gUserDBHelp != null)
+    	{
+    		gUserDBHelp.Close();
+    	}
+    }
+    
+//    public static Drawable getImageByLoginNameFromDB(String loginName)
+//    {
+//    	Debug.d("getImageByLoginNameFromDB " + loginName);
+//    	byte[] bmp = gUserDBHelp.getUserImage(loginName);
+//    	if(bmp != null)
+//    	{
+//    		Debug.d("bmp = " + bmp);
+//	    	Bitmap b = new BitmapFactory().decodeByteArray(bmp, 0, bmp.length);
+//	    	Drawable drawable = new BitmapDrawable(b);
+//	    	return drawable;
+//    	}
+//    	return null;
+//    }
 }

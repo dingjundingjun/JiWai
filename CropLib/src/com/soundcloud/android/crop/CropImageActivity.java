@@ -42,7 +42,7 @@ import java.util.concurrent.CountDownLatch;
 public class CropImageActivity extends MonitoredActivity {
 
     private static final int SIZE_DEFAULT = 2048;
-    private static final int SIZE_LIMIT = 4096;
+    private static final int SIZE_LIMIT = 2048;
 
     private final Handler handler = new Handler();
 
