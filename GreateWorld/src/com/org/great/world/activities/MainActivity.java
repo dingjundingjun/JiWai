@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.activity.ChatActivity;
+import com.easemob.exceptions.EaseMobException;
 import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
@@ -181,9 +183,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     
     private void enterChatRoom()
     {
+    	//需异步处理
 //    	String charId = "122980374539141604";
-    	String charId = "122972290336948680";
-    	
+    	String charId = Util.getGroupId(this);
 		// 进入群聊
 		Intent intent = new Intent(this, ChatActivity.class);
 		// it is group chat

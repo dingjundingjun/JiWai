@@ -37,8 +37,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
+import com.easemob.EMValueCallBack;
 import com.easemob.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMGroup;
+import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.Constant;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
@@ -261,6 +264,80 @@ public class RegisterAndLogin
 		UserDao dao = new UserDao(mContext);
 		List<User> users = new ArrayList<User>(userlist.values());
 		dao.saveContactList(users);
+		
+		List<EMGroup> grouplistHasJoin;
+		try {
+			grouplistHasJoin = EMGroupManager.getInstance().getGroupsFromServer();
+			EMGroup emGroup = null;
+			Debug.d("join local group list : " + grouplistHasJoin.size());
+			if (grouplistHasJoin.size() > 0) {
+				Debug.d("join local group list : " + grouplistHasJoin.get(0).getGroupName());
+				emGroup = grouplistHasJoin.get(0);
+				Debug.d("join group :" + emGroup.getGroupName() + " users = " + emGroup.getMaxUsers());
+				Util.gGroupId = emGroup.getId();
+				Util.saveJoGroupId(mContext, Util.gGroupId);
+				EMGroupManager.getInstance().joinGroup(Util.gGroupId);	
+			} else {
+				List<EMGroupInfo> groupsList = EMGroupManager.getInstance().getAllPublicGroupsFromServer();
+				Debug.d("async group from server group list : " + groupsList.size());
+				for (int i = 0; i < groupsList.size(); i++) {
+					Debug.d("join group list:" + groupsList.get(i).getGroupName());
+				}
+				for (int i = 0; i < groupsList.size(); i++) {
+					
+					EMGroupInfo emgInfo = groupsList.get(i);
+					EMGroup emg = EMGroupManager.getInstance().getGroupFromServer(emgInfo.getGroupId());
+					Debug.d("join group list:" + emg.getGroupName() + " users:" + emg.getMaxUsers());
+					int maxUser = emg.getMaxUsers();
+					int hasUsers = emg.getMembers().size();
+					if (hasUsers < maxUser - 1) {
+						Util.gGroupId = emg.getId();
+						Util.saveJoGroupId(mContext, Util.gGroupId);
+						try {
+							EMGroupManager.getInstance().joinGroup(Util.gGroupId);
+							break;
+						} catch (EaseMobException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	
+						break;
+					}
+				}
+				
+//				EMGroupManager.getInstance().asyncGetGroupsFromServer(new EMValueCallBack<List<EMGroup>>() {
+//				    @Override
+//					public void onSuccess(List<EMGroup> value) {
+//				    	for (int i = 0; i < value.size(); i++) {
+//							Debug.d("join group list:" + value.get(i).getGroupName() + " users = " + value.get(i).getMembers().size());
+//						}
+//						for (int i = 0; i < value.size(); i++) {
+//							EMGroup emg = value.get(i);
+//							int maxUser = emg.getMaxUsers();
+//							int hasUsers = emg.getMembers().size();
+//							if (hasUsers < maxUser - 1) {
+//								Util.gGroupId = emg.getId();
+//								Util.saveJoGroupId(mContext, Util.gGroupId);
+//								try {
+//									EMGroupManager.getInstance().joinGroup(Util.gGroupId);
+//								} catch (EaseMobException e) {
+//									// TODO Auto-generated catch block
+//									e.printStackTrace();
+//								}	
+//								break;
+//							}
+//						}
+//					}
+//				 
+//					@Override
+//					public void onError(int error, String errorMsg) {
+//				 
+//					}
+//				});
+			}
+		} catch (EaseMobException e1) {
+			e1.printStackTrace();
+			Debug.d("join group failed");
+		}
 	}
 	
 	/**

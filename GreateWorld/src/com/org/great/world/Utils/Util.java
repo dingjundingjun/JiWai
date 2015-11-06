@@ -57,6 +57,7 @@ import com.org.great.wrold.R;
 public class Util 
 {
 	private static UserDBHelp gUserDBHelp;
+	public static String gGroupId;
 //	public static boolean IS_LOGINED = false;
 	/**刷新的时间间隔*/
 	public static int REFRESH_TIME_INTERVAL = 1;
@@ -466,6 +467,23 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 		prefsEditor.commit();
     }
     
+    public static void saveJoGroupId(Context context,String id)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putString("groupId",id);
+		prefsEditor.commit();
+    }
+    
+    public static String getGroupId(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getString("groupId", "-1");
+    }
+    
     public static String getJokeJson(Context context)
     {
     	SharedPreferences preferences;
@@ -630,18 +648,4 @@ public static byte[] readStream(InputStream inStream) throws Exception{
     		gUserDBHelp.Close();
     	}
     }
-    
-//    public static Drawable getImageByLoginNameFromDB(String loginName)
-//    {
-//    	Debug.d("getImageByLoginNameFromDB " + loginName);
-//    	byte[] bmp = gUserDBHelp.getUserImage(loginName);
-//    	if(bmp != null)
-//    	{
-//    		Debug.d("bmp = " + bmp);
-//	    	Bitmap b = new BitmapFactory().decodeByteArray(bmp, 0, bmp.length);
-//	    	Drawable drawable = new BitmapDrawable(b);
-//	    	return drawable;
-//    	}
-//    	return null;
-//    }
 }
