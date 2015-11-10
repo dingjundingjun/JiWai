@@ -10,7 +10,7 @@
     <color name="like_text_color">#595959</color>
     <color name="user_comment_background_color">#ff4a23</color>
     <color name="user_comment_text_color">#ffff</color>
-    
+    <color name="app_style_color">#fff25253</color>
     <!-- easemob -->
     <color name="common_top_bar_blue">#4ebcd3</color>
     <color name="btn_login_normal">#00acff</color>

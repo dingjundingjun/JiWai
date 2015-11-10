@@ -21,7 +21,7 @@ import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
 import com.org.great.world.data.AllAD;
-import com.org.great.world.fragments.ChatFragment;
+//import com.org.great.world.fragments.ChatFragment;
 import com.org.great.world.fragments.CommunionFragment;
 import com.org.great.world.fragments.GreatWorldFragment;
 import com.org.great.world.fragments.MeFragment;
@@ -34,7 +34,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private GreatWorldFragment mGreatWorldFragment;
     private SettingFragment mMeFragment;
-    private ChatFragment mChatFragment;
+//    private ChatFragment mChatFragment;
     private TabView mGreatWorldBtn;
     private TabView mMeBtn;
     private TabView mCommunionBtn;
@@ -97,10 +97,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
         		return;
         	}
-        	if (mChatFragment == null) {
-        		mChatFragment = new ChatFragment();
-            }
-            mTransaction.replace(R.id.content, mChatFragment);
+//        	if (mChatFragment == null) {
+//        		mChatFragment = new ChatFragment();
+//            }
+//            mTransaction.replace(R.id.content, mChatFragment);
             mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();

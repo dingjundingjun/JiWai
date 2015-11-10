@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="#f2f0eb" >
-
+<!-- 
     <RelativeLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:src="@drawable/to_group_details_normal" />
         </RelativeLayout>
     </RelativeLayout>
-
+ -->
     <LinearLayout
         android:id="@+id/bar_bottom"
         android:layout_width="match_parent"
@@ -463,7 +463,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bar_bottom"
-        android:layout_below="@id/top_bar" >
+         >
 
         <ProgressBar
             android:id="@+id/pb_load_more"

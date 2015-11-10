@@ -35,10 +35,10 @@ public class PlayerActivity extends Activity {
 	private String vid;
 
 	// 清晰度相关按钮
-	private Button btn_standard, btn_hight, btn_super, btn_1080;
+//	private Button btn_standard, btn_hight, btn_super, btn_1080;
 
 	// 下载视频按钮
-	private Button btn_download;
+//	private Button btn_download;
 
 	// 需要播放的本地视频的id
 	private String local_vid;
@@ -236,17 +236,17 @@ public class PlayerActivity extends Activity {
 	}
 
 	private void iniView() {
-		btn_standard = (Button) this.findViewById(R.id.biaoqing);
-		btn_hight = (Button) this.findViewById(R.id.gaoqing);
-		btn_super = (Button) this.findViewById(R.id.chaoqing);
-		btn_1080 = (Button) this.findViewById(R.id.most);
-		btn_download = (Button) this.findViewById(R.id.download);
-
-		btn_standard.setOnClickListener(listener);
-		btn_hight.setOnClickListener(listener);
-		btn_super.setOnClickListener(listener);
-		btn_1080.setOnClickListener(listener);
-		btn_download.setOnClickListener(listener);
+//		btn_standard = (Button) this.findViewById(R.id.biaoqing);
+//		btn_hight = (Button) this.findViewById(R.id.gaoqing);
+//		btn_super = (Button) this.findViewById(R.id.chaoqing);
+//		btn_1080 = (Button) this.findViewById(R.id.most);
+//		btn_download = (Button) this.findViewById(R.id.download);
+//
+//		btn_standard.setOnClickListener(listener);
+//		btn_hight.setOnClickListener(listener);
+//		btn_super.setOnClickListener(listener);
+//		btn_1080.setOnClickListener(listener);
+//		btn_download.setOnClickListener(listener);
 	}
 
 	public View.OnClickListener listener = new View.OnClickListener() {
@@ -254,23 +254,23 @@ public class PlayerActivity extends Activity {
 		@Override
 		public void onClick(View view) {
 			// TODO Auto-generated method stub
-			switch (view.getId()) {
-				case R.id.biaoqing: // 切换标清
-					change(VideoQuality.STANDARD);
-					break;
-				case R.id.gaoqing: // 切换高清
-					change(VideoQuality.HIGHT);
-					break;
-				case R.id.chaoqing: // 切换超清
-					change(VideoQuality.SUPER);
-					break;
-				case R.id.most: // 切换为1080P
-					change(VideoQuality.P1080);
-					break;
-				case R.id.download: // 下载视频接口测试
-					doDownload();
-					break;
-			}
+//			switch (view.getId()) {
+//				case R.id.biaoqing: // 切换标清
+//					change(VideoQuality.STANDARD);
+//					break;
+//				case R.id.gaoqing: // 切换高清
+//					change(VideoQuality.HIGHT);
+//					break;
+//				case R.id.chaoqing: // 切换超清
+//					change(VideoQuality.SUPER);
+//					break;
+//				case R.id.most: // 切换为1080P
+//					change(VideoQuality.P1080);
+//					break;
+//				case R.id.download: // 下载视频接口测试
+//					doDownload();
+//					break;
+//			}
 
 		}
 	};

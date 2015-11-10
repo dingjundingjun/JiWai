@@ -4,6 +4,7 @@ import com.easemob.EMCallBack;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.PersonalUtil;
 import com.org.great.world.Utils.RegisterAndLogin;
+import com.org.great.world.Utils.Util;
 import com.youku.player.YoukuPlayerBaseConfiguration;
 
 import android.app.Activity;
@@ -33,7 +34,16 @@ public class MyApplication extends Application {
 		
 		 applicationContext = this;
 	     instance = this;
-
+	     
+	     int dip = this.getResources().getDisplayMetrics().densityDpi;
+	     if(dip == 160)
+	     {
+	    	 Util.B_XH = false;
+	     }
+	     else
+	     {
+	    	 Util.B_XH = true;
+	     }
 	        /**
 	         * this function will initialize the HuanXin SDK
 	         * 

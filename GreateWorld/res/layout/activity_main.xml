@@ -2,12 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_style_color"
+        android:id="@+id/logon_layout"
+        >
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/main_bottom_tab_button_bg"
         android:layout_alignParentBottom="true">
         <com.org.great.world.Views.TabView
             android:id="@+id/btn_great_world"
@@ -16,6 +28,15 @@
             android:background="@color/main_bottom_tab_button_bg"
             android:src="@drawable/tab_world_selector"
             android:layout_weight="1"/>
+        
+        <com.org.great.world.Views.TabView
+            android:id="@+id/btn_communion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bottom_tab_button_bg"
+            android:src="@drawable/tab_jiwai_selector"
+            android:layout_weight="1"/>
+        
         <com.org.great.world.Views.TabView
             android:id="@+id/btn_me"
             android:layout_width="match_parent"
@@ -23,19 +44,13 @@
             android:background="@color/main_bottom_tab_button_bg"
             android:src="@drawable/tab_me_selector"
             android:layout_weight="1"/>
-        <com.org.great.world.Views.TabView
-            android:id="@+id/btn_communion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/main_bottom_tab_button_bg"
-            android:src="@drawable/tab_world_selector"
-            android:layout_weight="1"/>
         </LinearLayout>
 	    <FrameLayout
 	        android:id="@+id/content"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
 	        android:layout_above="@id/bottom"
+	        android:layout_below="@id/logon_layout"
 	        />
     <LinearLayout 
         android:id="@+id/ad_layout"

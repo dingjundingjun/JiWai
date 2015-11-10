@@ -410,8 +410,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			}
 		} else {
 			// 群聊
-			findViewById(R.id.container_to_group).setVisibility(View.VISIBLE);
-			findViewById(R.id.container_remove).setVisibility(View.GONE);
+//			findViewById(R.id.container_to_group).setVisibility(View.VISIBLE);
+//			findViewById(R.id.container_remove).setVisibility(View.GONE);
 			findViewById(R.id.container_voice_call).setVisibility(View.GONE);
 			findViewById(R.id.container_video_call).setVisibility(View.GONE);
 			toChatUsername = getIntent().getStringExtra("groupId");
@@ -526,11 +526,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	protected void onGroupViewCreation(){
 	    group = EMGroupManager.getInstance().getGroup(toChatUsername);
         
-        if (group != null){
-            ((TextView) findViewById(R.id.name)).setText(group.getGroupName());
-        }else{
-            ((TextView) findViewById(R.id.name)).setText(toChatUsername);
-        }
+//        if (group != null){
+//            ((TextView) findViewById(R.id.name)).setText(group.getGroupName());
+//        }else{
+//            ((TextView) findViewById(R.id.name)).setText(toChatUsername);
+//        }
         
         // 监听当前会话的群聊解散被T事件
         groupListener = new GroupListener();
@@ -538,7 +538,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	}
 	
 	protected void onChatRoomViewCreation(){
-        findViewById(R.id.container_to_group).setVisibility(View.GONE);
+//      findViewById(R.id.container_to_group).setVisibility(View.GONE);
         
         final ProgressDialog pd = ProgressDialog.show(this, "", "Joining......");
         EMChatManager.getInstance().joinChatRoom(toChatUsername, new EMValueCallBack<EMChatRoom>() {
@@ -1494,8 +1494,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (group != null)
-			((TextView) findViewById(R.id.name)).setText(group.getGroupName());
+//		if (group != null)
+//			((TextView) findViewById(R.id.name)).setText(group.getGroupName());
 		voiceCallBtn.setEnabled(true);
 		videoCallBtn.setEnabled(true);
 

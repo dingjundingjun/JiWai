@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.org.great.world.Utils.Util;
+import com.org.great.wrold.R;
 import com.qq.e.ads.AdListener;
 import com.qq.e.ads.AdRequest;
 import com.qq.e.ads.AdSize;
@@ -36,10 +37,11 @@ public class AllAD
 {
 	private Activity mActivity;
 	private static RelativeLayout mAdLayout;
-	private static boolean bShowAD = true;
+	public static boolean bShowAD = false;
 	public AllAD(Activity ac) {
 		super();
 		this.mActivity = ac;
+		
 	}
 
 //	public void setInsertAD(Activity ac)
@@ -75,10 +77,12 @@ public class AllAD
 //    }
 	
 	public static RelativeLayout getGDTBannerView(final Context context) {
-		
+		IsEnableAd();
 		mAdLayout = new RelativeLayout(context);
+		
+		int height = (int) context.getResources().getDimension(R.dimen.ad_height);
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, 100);
+				LayoutParams.MATCH_PARENT, height);
 		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 //		mAdLayout.setBackgroundColor(Color.RED);
 //		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -161,7 +165,7 @@ public class AllAD
 				HttpEntity he = responseGet.getEntity();
 				String contentData = EntityUtils.toString(he, "gb2312");
 //				System.out.println("p=================" + contentData);
-				if(contentData.contains("��ݸ111"))
+				if(contentData.contains("东莞"))
             	{
             		bShowAD = false;
             		myHandler.sendEmptyMessageDelayed(1,3000);
@@ -223,8 +227,7 @@ public class AllAD
    
    public static void connectShowAD()
 	{
-//	   com.sounuo.game.chess
-		new AsyncHttpClient().get("http://jyadmgr.sinaapp.com/checkADByPackage.php?package=test.on.package", new TextHttpResponseHandler() {
+		new AsyncHttpClient().get("http://jyadmgr.sinaapp.com/checkADByPackage.php?package=com.org.great.wrold", new TextHttpResponseHandler() {
   			@Override
   			public void onSuccess(int arg0, Header[] arg1, String arg2) {
   				JSONObject jsonObject;

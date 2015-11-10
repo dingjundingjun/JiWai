@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 
 
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
+import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.Util;
 import com.org.great.wrold.R;
 
@@ -110,7 +112,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 
 	// 加载更多监听
 	public void setOnLoadListener(OnLoadListener onLoadListener) {
-		this.loadEnable = false;
+		this.loadEnable = true;
 		this.onLoadListener = onLoadListener;
 	}
 
@@ -121,7 +123,7 @@ public class AutoListView extends ListView implements OnScrollListener {
 	// 这里的开启或者关闭加载更多，并不支持动�?�调�?
 	public void setLoadEnable(boolean loadEnable) {
 		this.loadEnable = loadEnable;
-		this.removeFooterView(footer);
+//		this.removeFooterView(footer);
 	}
 
 	public int getPageSize() {
@@ -263,9 +265,11 @@ public class AutoListView extends ListView implements OnScrollListener {
 
 	// 根据listview滑动的状态判断是否需要加载更�?
 	private void ifNeedLoad(AbsListView view, int scrollState) {
+		Debug.d("isNeedLoad loadEnable:" + loadEnable );
 		if (!loadEnable) {
 			return;
 		}
+		Debug.d("isNeedLoad = ");
 		try {
 			if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
 					&& !isLoading

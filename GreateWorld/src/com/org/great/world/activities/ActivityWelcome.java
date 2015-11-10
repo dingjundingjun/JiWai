@@ -97,15 +97,16 @@ public class ActivityWelcome extends FragmentActivity implements ViewPager.OnPag
 
     private void initActivity() {
 
-        if( isFirstInJy()){
-            //初始化 viewpager
-            saveFistInFlag();
-            initViewPager();
-        }
-        else{
+//        if( isFirstInJy()){
+//            //初始化 viewpager
+//            saveFistInFlag();
+//            initViewPager();
+//        }
+//        else
+//        {
             //显示欢迎界面 image
             initImageView();
-        }
+//        }
     }
 
 

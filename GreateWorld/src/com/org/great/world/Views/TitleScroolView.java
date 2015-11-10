@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 
 
+
 import com.org.great.world.Utils.Debug;
+import com.org.great.world.Utils.Util;
 import com.org.great.wrold.R;
 
 import java.util.ArrayList;
@@ -106,19 +108,38 @@ public class TitleScroolView extends LinearLayout{
                                 tempView.setTextColor(mColorNormal);
                                 if(((Integer)tempView.getTag()) == LABEL_STATUS_PRESS)
                                 {
-                                    Animation am = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                	Animation am;
+                                	Debug.d("B_XH = " + Util.B_XH);
+                                	if(!Util.B_XH)
+                                	{
+                                		
+                                		am = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                	}
+                                	else
+                                	{
+                                		am = new ScaleAnimation(1.1f,1.0f,1.1f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                	}
                                     am.setFillAfter(true);
                                     am.setDuration(ANIM_DURATION);
                                     tempView.setAnimation(am);
                                     tempView.setTag(LABEL_STATUS_NORMAL);
                                 }
                             }
-                            else
+                            else 
                             {
                                 mOnTitleClickListener.onClick(id);
                                 tempView.setTextSize(mContext.getResources().getDimension(R.dimen.title_scrool_label_text_press_size));
                                 tempView.setTextColor(mColorPress);
-                                Animation am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                Animation am;
+                                Debug.d("B_XH = " + Util.B_XH);
+                                if(!Util.B_XH)
+                                {
+                                	am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                }
+                                else
+                                {
+                                	am = new ScaleAnimation(1.0f,1.1f,1.0f,1.1f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                }
                                 am.setFillAfter(true);
                                 am.setDuration(ANIM_DURATION);
                                 tempView.setAnimation(am);

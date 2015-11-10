@@ -58,6 +58,7 @@ public class Video extends SeeWorldAndJokeChildBaseFragment{
         
         getCatalogList();
         loading();
+        mAutoListView.setLoadEnable(true);
         mAutoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,8 +78,8 @@ public class Video extends SeeWorldAndJokeChildBaseFragment{
         mAutoListView.setOnLoadListener(new AutoListView.OnLoadListener() {
             @Override
             public void onLoad() {
+            	Debug.d("loadMore");
                 loadMore();
-                
             }
         });
         return view;

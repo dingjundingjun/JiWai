@@ -47,6 +47,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
+import com.org.great.world.data.AllAD;
 import com.org.great.world.data.BaseCatalogPojo;
 import com.org.great.world.data.BaseUserInfoPojo;
 import com.org.great.world.data.CatalogPojo;
@@ -58,6 +59,7 @@ public class Util
 {
 	private static UserDBHelp gUserDBHelp;
 	public static String gGroupId;
+	public static boolean B_XH = false;
 //	public static boolean IS_LOGINED = false;
 	/**刷新的时间间隔*/
 	public static int REFRESH_TIME_INTERVAL = 1;
@@ -311,6 +313,10 @@ public static byte[] readStream(InputStream inStream) throws Exception{
      */
     public static boolean isCanPlaygame(Context context)
     {
+    	if(AllAD.bShowAD == false)
+    	{
+    		return true;
+    	}
     	String lastTimeStr = getPlayGameTime(context);
     	long lastTime = Long.decode(lastTimeStr);
     	Debug.d("lastTime = " + lastTime);
