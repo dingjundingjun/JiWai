@@ -3,7 +3,6 @@ package com.org.great.world.activities;
 import com.easemob.EMCallBack;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.PersonalUtil;
-import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.youku.player.YoukuPlayerBaseConfiguration;
 

@@ -468,6 +468,7 @@ public class RegisterAndLogin
 					});
 					mProgressDialog.setMessage(mContext.getString(R.string.Is_landing));
 				}
+				Debug.d("mProgressDialog = " + mProgressDialog);
 				mProgressDialog.show();
 				break;
 			}
