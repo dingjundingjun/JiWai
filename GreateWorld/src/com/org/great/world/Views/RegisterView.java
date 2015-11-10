@@ -105,7 +105,7 @@ public class RegisterView
 				}
 				
 				@Override
-				public void onLoginError() {
+				public void onLoginError(String errorMsg) {
 					mOnRegisterCallback.onError();
 				}
 			});

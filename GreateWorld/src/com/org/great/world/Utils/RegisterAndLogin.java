@@ -376,7 +376,6 @@ public class RegisterAndLogin
                 String message = jsonObject.getString("data");
                 if(status.equals("200"))
                 {
-                    System.out.println("更新成功.........");
                     pi.nickName = nickName;
                     PersonalUtil.savePersonInfo(mContext, pi);
                     PersonalUtil.isLogined(mContext);
@@ -384,12 +383,10 @@ public class RegisterAndLogin
                 }
                 else if(status.equals("404"))
                 {
-                    System.out.println("更新失败.........");
                     return false;
                 }
             }
             else {
-                System.out.println("链接失败.........");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -400,7 +397,7 @@ public class RegisterAndLogin
 	public interface onCallBack
 	{
 		void onLoginSuccess();
-		void onLoginError();
+		void onLoginError(String errorMsg);
 		void onRegisterSuccess();
 		void onRegisterError();
 	}
@@ -423,8 +420,8 @@ public class RegisterAndLogin
 			{
 				sendEmptyMessage(HODE_PROGRESS);
 				DemoHXSDKHelper.getInstance().logout(true,null);
-				Toast.makeText(mContext, mContext.getString(R.string.Login_failed) + (String)msg.obj, 1).show();
-				mOnCallBack.onLoginError();
+				Toast.makeText(mContext, mContext.getString(R.string.Login_failed), 1).show();
+				mOnCallBack.onLoginError(mContext.getString(R.string.Login_failed));
 				break;
 			}
 			case LOGIN_ERROR_MSG_F:
@@ -432,7 +429,7 @@ public class RegisterAndLogin
 				sendEmptyMessage(HODE_PROGRESS);
 				DemoHXSDKHelper.getInstance().logout(true,null);
 				Toast.makeText(mContext, mContext.getString(R.string.login_failure_failed) + (String)msg.obj, 1).show();
-				mOnCallBack.onLoginError();
+				mOnCallBack.onLoginError(mContext.getString(R.string.login_failure_failed));
 				break;
 			}
 			case REGISTER_SUCCESS_MSG:

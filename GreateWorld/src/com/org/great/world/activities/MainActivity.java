@@ -17,6 +17,7 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.activity.ChatActivity;
 import com.easemob.exceptions.EaseMobException;
+import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
@@ -152,14 +153,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 if (mFrontFragment != ME) {
                     mFrontFragment = ME;
                     changeFragment();
-                    break;
                 }
+                break;
             }
             case R.id.btn_communion:
             {
             	if(DemoHXSDKHelper.getInstance().isLogined() == false)
             	{
             		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            		if (mFrontFragment != ME) {
+                        mFrontFragment = ME;
+                        changeFragment();
+                        Debug.d("match id = R.id.btn_communiton");
+//                        mMeBtn.setSelected(true);
+                        changeTabViewStatus(R.id.btn_me);
+                        return;
+                    }
             		return;
             	}
             	if (mFrontFragment != COMMU) {
