@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginView 
@@ -24,6 +25,7 @@ public class LoginView
 	private String currentUsername;
 	private String currentPassword;
 	private View mMainView;
+	private TextView mShowError;
 	private OnLoginCallback mOnLoginCallback;
 	private Context mContext;
 	public LoginView(Context context) {
@@ -41,13 +43,14 @@ public class LoginView
 	{
 		usernameEditText = (EditText) view.findViewById(R.id.username);
 		passwordEditText = (EditText) view.findViewById(R.id.password);
-		view.findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				register();
-			}
-		});
+		mShowError = (TextView)view.findViewById(R.id.show_error);
+//		view.findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				register();
+//			}
+//		});
 		
 		view.findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
 			
@@ -122,8 +125,10 @@ public class LoginView
 			}
 			
 			@Override
-			public void onLoginError() {
+			public void onLoginError(String errorMsg) {
+				// TODO Auto-generated method stub
 				mOnLoginCallback.onError();
+				mShowError.setText(errorMsg);
 			}
 		});
 	}
