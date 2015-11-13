@@ -57,7 +57,7 @@ import com.org.great.wrold.R;
 
 public class Util 
 {
-	private static UserDBHelp gUserDBHelp;
+	public static UserDBHelp gUserDBHelp;
 	public static String gGroupId;
 	public static boolean B_XH = false;
 //	public static boolean IS_LOGINED = false;
@@ -483,6 +483,23 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 		prefsEditor.commit();
     }
     
+    public static void setUpdateInfo(Context context,boolean bUpdate)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putBoolean("update_info",bUpdate);
+		prefsEditor.commit();
+    }
+    
+    public static boolean getUpdateInfo(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getBoolean("update_info", false);
+    }
+    
     public static String getGroupId(Context context)
     {
     	SharedPreferences preferences;
@@ -566,11 +583,11 @@ public static byte[] readStream(InputStream inStream) throws Exception{
     	if(loginName == null || loginName.equals(""))
     		return;
     	//这里做一个定时控制  不能每次都从服务器去取
-    	if(!isCanLoadUserInfo(context) && gUserDBHelp.hasUserInfo(loginName))
-    	{
-    		return;
-    	}
-    	saveLoadUserInfoTime(context);
+//    	if(gUserDBHelp.hasUserInfo(loginName))
+//    	{
+//    		return;
+//    	}
+//    	saveLoadUserInfoTime(context);
     	Debug.d("1111111111111111111111111111111111111111111111111111111 load  11111111111111111");
     	AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
     	String url = HttpUtils.RequestUrl.URL_GET_USER_INFO + "?loginName=" + loginName;

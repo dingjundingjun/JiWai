@@ -165,8 +165,7 @@ public class MessageAdapter extends BaseAdapter{
 			messages = (EMMessage[]) conversation.getAllMessages().toArray(new EMMessage[conversation.getAllMessages().size()]);
 			for (int i = 0; i < messages.length; i++) {
 				// getMessage will set message as read status
-				conversation.getMessage(i);
-				Util.getOneUserInfo(context,messages[i].getUserName());
+				EMMessage message = conversation.getMessage(i);
 			}
 			notifyDataSetChanged();
 		}
@@ -492,13 +491,13 @@ public class MessageAdapter extends BaseAdapter{
 			}
 			else
 			{
-				holder.tv_usernick.setText(mPersonalInfoPojo.getNickName());
-				if(Util.isFileExsit(RegisterAndLogin.ICON_PATH))
-				{
-					Debug.d("file is exsit1111");
-					mLoader.displayImage("file://"+RegisterAndLogin.ICON_PATH, holder.iv_avatar, mOptions, new SimpleImageLoadingListener());
-				}
-				else
+				holder.tv_usernick.setText(message.getUserName());
+//				if(Util.isFileExsit(RegisterAndLogin.ICON_PATH))
+//				{
+//					Debug.d("file is exsit1111");
+//					mLoader.displayImage("file://"+RegisterAndLogin.ICON_PATH, holder.iv_avatar, mOptions, new SimpleImageLoadingListener());
+//				}
+//				else
 				{
 					mLoader.displayImage("drawable://"+R.drawable.default_avatar, holder.iv_avatar, mOptions, new SimpleImageLoadingListener());
 				}
@@ -606,6 +605,7 @@ public class MessageAdapter extends BaseAdapter{
 		}
 		return convertView;
 	}
+	
 	
 	
 	/**

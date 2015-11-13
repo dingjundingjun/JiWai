@@ -215,6 +215,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 						@Override
 						public void run() {
 							dialog.dismiss();
+							Util.setUpdateInfo(UserProfileActivity.this, true);
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_success), Toast.LENGTH_SHORT)
 									.show();
 							tvNickName.setText(nickName);
@@ -317,6 +318,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 					@Override
 					public void run() {
 						dialog.dismiss();
+						Util.setUpdateInfo(UserProfileActivity.this, true);
 						if (avatarUrl != null) {
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
 									Toast.LENGTH_SHORT).show();

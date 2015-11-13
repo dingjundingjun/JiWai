@@ -61,11 +61,14 @@ public class UserDBHelp {
     		Debug.d("return true");
     		return true;
     	}
-   	 	if(tempUsr.getPhotoPath().equals(user.getPhotoPath()) && tempUsr.getNickName().equals(user.getNickName()))
-   	 	{
-   	 		Debug.d("return false");
-   	 		return false;
-   	 	}
+    	if(tempUsr.getPhotoPath() == null || user.getPhotoPath() == null)
+    	{
+	   	 	if(tempUsr.getPhotoPath().equals(user.getPhotoPath()) && tempUsr.getNickName().equals(user.getNickName()))
+	   	 	{
+	   	 		Debug.d("return false");
+	   	 		return false;
+	   	 	}
+    	}
    	 	return true;
     }
     

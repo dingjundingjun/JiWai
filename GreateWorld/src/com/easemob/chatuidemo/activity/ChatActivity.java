@@ -776,6 +776,33 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 //		}
 	}
 
+	private void reflashInfo(EMMessage message)
+	{
+		Debug.d("reflashInfo message = " + message);
+		try {
+			boolean update = message.getBooleanAttribute("update_info");
+			Debug.d("update = " + update);
+			Debug.d("update_info111111111111111111111111 message.getUserName() = " + message.getUserName());
+			message.setAttribute("update_info", false);
+			
+			Util.getOneUserInfo(this,message.getFrom());
+			return;
+			}
+			catch (EaseMobException e) {
+				e.printStackTrace();
+			}
+			if(Util.gUserDBHelp.hasUserInfo(message.getUserName()))
+		    {
+				Debug.d("do not update_info111111111111111111111111");
+		    	return;
+		    }
+			else
+			{
+				Debug.d("getOneUserInfo111111111111111111111111");
+				Util.getOneUserInfo(this,message.getUserName());
+			}
+	}
+	
 	/**
 	 * 事件监听
 	 * 
@@ -801,14 +828,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
             //如果是当前会话的消息，刷新聊天页面
             if(username.equals(getToChatUsername())){
-                refreshUIWithNewMessage();
+                refreshUIWithNewMessage(message);
                 //声音和震动提示有新消息
                 HXSDKHelper.getInstance().getNotifier().viberateAndPlayTone(message);
+                
             }else{
                 //如果消息不是和当前聊天ID的消息
                 HXSDKHelper.getInstance().getNotifier().onNewMsg(message);
             }
-
             break;
         }
         case EventDeliveryAck:
@@ -839,7 +866,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
     }
 	
 	
-	private void refreshUIWithNewMessage(){
+	private void refreshUIWithNewMessage(final EMMessage message){
 	    if(adapter == null){
 	        return;
 	    }
@@ -847,6 +874,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	    runOnUiThread(new Runnable() {
             public void run() {
                 adapter.refreshSelectLast();
+                reflashInfo(message);
             }
         });
 	}
@@ -924,6 +952,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 		if (content.length() > 0) {
 			EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+//			if(Util.getUpdateInfo(this))
+			{
+				message.setAttribute("update_info", true);
+//				Util.setUpdateInfo(this, false);
+			}
 			// 如果是群聊，设置chattype,默认是单聊
 			if (chatType == CHATTYPE_GROUP){
 			    message.setChatType(ChatType.GroupChat);
