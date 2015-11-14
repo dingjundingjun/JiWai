@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public class Debug {
     private static String TAG = "JIWAI";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static void d(String tag, String msg) {
         if (DEBUG) {
