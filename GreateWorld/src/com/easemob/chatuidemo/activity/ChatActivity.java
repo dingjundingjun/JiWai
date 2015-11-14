@@ -952,10 +952,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 		if (content.length() > 0) {
 			EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
-//			if(Util.getUpdateInfo(this))
+			if(Util.getUpdateInfo(this))
 			{
 				message.setAttribute("update_info", true);
-//				Util.setUpdateInfo(this, false);
+				Util.setUpdateInfo(this, false);
 			}
 			// 如果是群聊，设置chattype,默认是单聊
 			if (chatType == CHATTYPE_GROUP){

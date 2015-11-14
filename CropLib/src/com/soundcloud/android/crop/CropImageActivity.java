@@ -258,9 +258,12 @@ public class CropImageActivity extends MonitoredActivity {
 
         Bitmap croppedImage;
         Rect r = cropView.getScaledCropRect(sampleSize);
-        int width = r.width();
-        int height = r.height();
-
+//        int width = r.width();
+//        int height = r.height();
+        
+        int width = 100;
+        int height = 100;
+        
         int outWidth = width;
         int outHeight = height;
         if (maxX > 0 && maxY > 0 && (width > maxX || height > maxY)) {
