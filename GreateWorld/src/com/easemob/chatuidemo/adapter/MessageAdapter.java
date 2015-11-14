@@ -73,6 +73,8 @@ import com.easemob.chat.VideoMessageBody;
 import com.easemob.chat.VoiceMessageBody;
 import com.easemob.chatuidemo.Constant;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
+import com.easemob.chatuidemo.activity.ChatActivity;
+import com.easemob.chatuidemo.activity.ShowBigImage;
 import com.easemob.chatuidemo.task.LoadImageTask;
 import com.easemob.chatuidemo.task.LoadVideoImageTask;
 import com.easemob.chatuidemo.utils.DateUtils;
@@ -794,15 +796,15 @@ public class MessageAdapter extends BaseAdapter{
 	 */
 	private void handleImageMessage(final EMMessage message, final ViewHolder holder, final int position, View convertView) {
 		holder.pb.setTag(position);
-		holder.iv.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
+//		holder.iv.setOnLongClickListener(new OnLongClickListener() {
+//			@Override
+//			public boolean onLongClick(View v) {
 //				activity.startActivityForResult(
 //						(new Intent(activity, ContextMenu.class)).putExtra("position", position).putExtra("type",
 //								EMMessage.Type.IMAGE.ordinal()), ChatActivity.REQUEST_CODE_CONTEXT_MENU);
-				return true;
-			}
-		});
+//				return true;
+//			}
+//		});
 
 		// 接收方向的消息
 		if (message.direct == EMMessage.Direct.RECEIVE) {
@@ -811,7 +813,7 @@ public class MessageAdapter extends BaseAdapter{
 				// "!!!! back receive";
 				holder.iv.setImageResource(R.drawable.default_image);
 				showDownloadImageProgress(message, holder);
-				// downloadImage(message, holder);
+//				 downloadImage(message, holder);
 			} else {
 				// "!!!! not back receive, show image directly");
 				holder.pb.setVisibility(View.GONE);
@@ -1520,32 +1522,32 @@ public class MessageAdapter extends BaseAdapter{
 			iv.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					EMLog.d(TAG, "image view on click");
-//					Intent intent = new Intent(activity, ShowBigImage.class);
-//					File file = new File(localFullSizePath);
-//					if (file.exists()) {
-//						Uri uri = Uri.fromFile(file);
-//						intent.putExtra("uri", uri);
-//						EMLog.d(TAG, "here need to check why download everytime");
-//					} else {
-//						// The local full size pic does not exist yet.
-//						// ShowBigImage needs to download it from the server
-//						// first
-//						// intent.putExtra("", message.get);
-//						ImageMessageBody body = (ImageMessageBody) message.getBody();
-//						intent.putExtra("secret", body.getSecret());
-//						intent.putExtra("remotepath", remote);
-//					}
-//					if (message != null && message.direct == EMMessage.Direct.RECEIVE && !message.isAcked
-//							&& message.getChatType() != ChatType.GroupChat && message.getChatType() != ChatType.ChatRoom) {
-//						try {
-//							EMChatManager.getInstance().ackMessageRead(message.getFrom(), message.getMsgId());
-//							message.isAcked = true;
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//					}
-//					activity.startActivity(intent);
+					EMLog.d(TAG, "image view on click");
+					Intent intent = new Intent(activity, ShowBigImage.class);
+					File file = new File(localFullSizePath);
+					if (file.exists()) {
+						Uri uri = Uri.fromFile(file);
+						intent.putExtra("uri", uri);
+						EMLog.d(TAG, "here need to check why download everytime");
+					} else {
+						// The local full size pic does not exist yet.
+						// ShowBigImage needs to download it from the server
+						// first
+						// intent.putExtra("", message.get);
+						ImageMessageBody body = (ImageMessageBody) message.getBody();
+						intent.putExtra("secret", body.getSecret());
+						intent.putExtra("remotepath", remote);
+					}
+					if (message != null && message.direct == EMMessage.Direct.RECEIVE && !message.isAcked
+							&& message.getChatType() != ChatType.GroupChat && message.getChatType() != ChatType.ChatRoom) {
+						try {
+							EMChatManager.getInstance().ackMessageRead(message.getFrom(), message.getMsgId());
+							message.isAcked = true;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					activity.startActivity(intent);
 				}
 			});
 			return true;

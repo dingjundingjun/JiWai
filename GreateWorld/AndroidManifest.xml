@@ -51,7 +51,7 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="54c9faabfd98c5a24c000525" >
+            android:value="56458a1467e58ea56b0009d5" >
         </meta-data>
 
         <meta-data
@@ -281,7 +281,11 @@
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        
+         <activity
+            android:name="com.easemob.chatuidemo.activity.ShowBigImage"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" >
+        </activity>
 		<service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" />
