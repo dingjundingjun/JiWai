@@ -1,0 +1,39 @@
+<resources>
+    <dimen name="title_scrool_label_text_size">18sp</dimen>
+    <dimen name="title_scrool_label_text_press_size">20sp</dimen>
+    <dimen name="loading_text_size">50sp</dimen>
+    <dimen name="comment_name_text_size">18sp</dimen>
+    <dimen name="comment_data_text_size">14sp</dimen>
+    <dimen name="comment_content_text_size">18sp</dimen>
+    <dimen name="more_comment_text_size">35sp</dimen>
+    <dimen name="like_text_size">14sp</dimen>
+    <dimen name="seeworld_layout_comment_text_size">12sp</dimen>
+
+    <dimen name="title_scrool_label_text_view_height">50dip</dimen>
+    <dimen name="title_scrool_label_text_min_width">200dip</dimen>
+    <dimen name="comment_parent_layout_padding_bottom">10dip</dimen>
+    <dimen name="comment_name_textview_margin_left">15dip</dimen>
+    <dimen name="comment_content_textview_margin_left">15dip</dimen>
+    <dimen name="comment_content_textview_line_spacing">3dip</dimen>
+    <dimen name="comment_content_textview_margin_top">5dip</dimen>
+    <dimen name="like_text_margin_right">10dip</dimen>
+    <dimen name="like_text_drawablePadding">2dip</dimen>
+    <dimen name="comment_text_margin_right">20dip</dimen>
+    <dimen name="share_text_margin_right">20dip</dimen>
+    <dimen name="comment_text_padding">3dip</dimen>
+    <dimen name="seeworld_layout_comment_text_margin_left">10dip</dimen>
+    <dimen name="seeworld_layout_relative_height">45dp</dimen>
+    <dimen name="commnet_dialog_layout_comment_edit_width">500dip</dimen>
+    <dimen name="commnet_dialog_layout_comment_edit_height">350dip</dimen>
+    <dimen name="comment_item_avatar_width">50dip</dimen>
+	<dimen name="comment_item_avatar_height">50dip</dimen>
+	<dimen name="ad_height">120dip</dimen>  
+	  
+	<dimen name="seeworld_title_height">70dp</dimen>
+    <dimen name="main_layout_title_height">90sp</dimen>
+    
+    <dimen name="main_list_text_size">25sp</dimen>
+ 	<dimen name="game_layout_list_item_text_size">25sp</dimen>
+    <dimen name="game_layout_list_item_image_width">224dp</dimen>
+    <dimen name="game_layout_list_item_image_height">126dp</dimen>
+</resources>

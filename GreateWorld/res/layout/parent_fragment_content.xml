@@ -5,7 +5,8 @@
     <com.org.great.world.Views.TitleScroolView
         android:id="@+id/titlescrool"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/seeworld_title_height"
         android:background="@color/main_bottom_tab_button_bg"/>
     <com.org.great.world.Views.FragmentViewPaper
         android:id="@+id/viewpager"

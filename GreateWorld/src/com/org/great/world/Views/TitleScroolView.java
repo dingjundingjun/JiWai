@@ -117,7 +117,7 @@ public class TitleScroolView extends LinearLayout{
                                 	}
                                 	else
                                 	{
-                                		am = new ScaleAnimation(1.1f,1.0f,1.1f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                		am = new ScaleAnimation(1.2f,1.0f,1.2f,1.0f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                                 	}
                                     am.setFillAfter(true);
                                     am.setDuration(ANIM_DURATION);
@@ -138,7 +138,7 @@ public class TitleScroolView extends LinearLayout{
                                 }
                                 else
                                 {
-                                	am = new ScaleAnimation(1.0f,1.1f,1.0f,1.1f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                                	am = new ScaleAnimation(1.0f,1.2f,1.0f,1.2f,Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                                 }
                                 am.setFillAfter(true);
                                 am.setDuration(ANIM_DURATION);
@@ -146,7 +146,6 @@ public class TitleScroolView extends LinearLayout{
                                 tempView.setTag(LABEL_STATUS_PRESS);
                             }
                         }
-
                     }
                 }
             });

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="11"
-    android:versionName="4.0.1"
+    android:versionCode="12"
+    android:versionName="4.1.1"
     package="com.org.great.wrold" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -72,7 +72,8 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
-            android:name="com.org.great.world.activities.MainActivity">
+            android:name="com.org.great.world.activities.MainActivity"
+            android:screenOrientation="portrait">
             <!-- 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,7 +87,8 @@
             android:name="com.org.great.world.activities.ActivityRegister">
         </activity>
         <activity
-            android:name="com.org.great.world.activities.SeeWorldActivity">
+            android:name="com.org.great.world.activities.SeeWorldActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.org.great.world.activities.GameActivity">

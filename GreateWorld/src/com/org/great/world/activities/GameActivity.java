@@ -41,7 +41,7 @@ public class GameActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.savePlayGameTime(this);
+        
         setContentView(R.layout.game_layout);
         init();
     }

@@ -36,7 +36,7 @@ import android.widget.RelativeLayout;
 public class AllAD 
 {
 	private Activity mActivity;
-	private static RelativeLayout mAdLayout;
+	public static RelativeLayout mAdLayout;
 	public static boolean bShowAD = false;
 	public AllAD(Activity ac) {
 		super();
@@ -111,7 +111,8 @@ public class AllAD
 
 			// ���ع��ʧ��ʱ�Ļص�
 			public void onNoAd(int errorCode) {
-				Log.d("bannerLayout", "onNoAd");
+				Log.d("bannerLayout", "onNoAd error");
+				bShowAD = false;
 			}
 
 			// ���ع��ɹ�ʱ�Ļص�
@@ -140,7 +141,8 @@ public class AllAD
 			// �������ʱ����
 			public void onAdClicked() {
 				Log.d("bannerLayout", "onAdClicked");
-				Util.resetPlayGameTime(context);
+//				Util.resetPlayGameTime(context);
+				Util.savePlayGameTime(context);
 			}
 		});
 		adv.fetchAd(adr);

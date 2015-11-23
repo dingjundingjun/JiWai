@@ -326,17 +326,17 @@ public static byte[] readStream(InputStream inStream) throws Exception{
     		if(PLAY_GAME_INTERVAL - minute > 0)
     		{
     			int dur = (int) (PLAY_GAME_INTERVAL - minute);
-    			Toast.makeText(context, "再过" + dur + "分钟才可以玩哦!如果点击广告，马上可以进游戏", Toast.LENGTH_SHORT).show();
-    			return false;
+    			//Toast.makeText(context, "再过" + dur + "分钟才可以玩哦!如果点击广告，马上可以进游戏", Toast.LENGTH_SHORT).show();
+    			return true;
     		}
     		else
     		{
-    			return true;
+    			return false;
     		}
     	}
     	else
     	{
-    		return true;
+    		return false;
     	}
     }
     

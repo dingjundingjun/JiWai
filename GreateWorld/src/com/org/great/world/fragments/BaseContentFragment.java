@@ -3,6 +3,7 @@ package com.org.great.world.fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
@@ -97,6 +98,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     {
         TextView view = new TextView(mBaseActivity);
         view.setId(MORE_COMMENT_ID);
+        view.setBackgroundColor(Color.LTGRAY);
         view.setText(mBaseActivity.getString(R.string.more_comments));
         view.setTextSize(mBaseActivity.getResources().getDimension(R.dimen.more_comment_text_size));
         view.setGravity(Gravity.CENTER);
@@ -401,7 +403,14 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
             }
             case MORE_COMMENT_ID:
             {
-                getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
+            	if(mComments != null && mComments.size() > 1)
+            	{
+            		getCommentFromUM(mComments.get(mComments.size() -1 ).mDt);
+            	}
+            	else
+            	{
+            		Toast.makeText(mBaseActivity, "没有评论了", Toast.LENGTH_SHORT).show();
+            	}
                 break;
             }
             case R.id.comment:

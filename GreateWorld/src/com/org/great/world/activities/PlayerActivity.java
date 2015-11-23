@@ -9,9 +9,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.baseproject.utils.Logger;
+import com.org.great.world.data.AllAD;
 import com.org.great.wrold.R;
 import com.youku.player.ApiManager;
 import com.youku.player.VideoQuality;
@@ -166,8 +169,17 @@ public class PlayerActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		basePlayerManager.onResume();
+		addAd();
 	}
 
+	public void addAd()
+	{
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		addContentView(AllAD.getGDTBannerView(this), layoutParams);
+	}
+	
 	@Override
 	public boolean onSearchRequested() { // android系统调用
 		return basePlayerManager.onSearchRequested();

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.org.great.world.data.CatalogPojo;
+import com.org.great.wrold.R;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class SeeWorldAdapter extends BAdapter
         view.setWidth(500);
         view.setHeight(100);
         view.setGravity(Gravity.CENTER);
-        view.setTextSize(30);
+        view.setTextSize(mContext.getResources().getDimension(R.dimen.main_list_text_size));
         return view;
     }
 

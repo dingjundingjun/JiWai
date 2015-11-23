@@ -138,34 +138,34 @@ public class MeFragment extends BaseFragment
 
     private void initView()
     {
-        mNormalLayout = (RelativeLayout) mMainView.findViewById(R.id.person_baseinfo);
-        mChangeLayout = (RelativeLayout) mMainView.findViewById(R.id.person_changeinfo);
-
-        mSetBt = (ImageButton) mMainView.findViewById(R.id.person_change);
-        mPhotoView = (ImageView) mMainView.findViewById(R.id.person_photo);
-        mPhotoLayout = mMainView.findViewById(R.id.person_photo_layout);
-
-        mNickTextView = (TextView) mMainView.findViewById(R.id.person_name);
-        mGrade = (TextView) mMainView.findViewById(R.id.person_grade);
-        mSexPic = (ImageView) mMainView.findViewById(R.id.person_sex);
-        mPersonAccount = (TextView) mMainView.findViewById(R.id.person_account);
-
-        mChangeNickName = (EditText) mMainView.findViewById(R.id.person_changename);
-        mRadioGroup = (RadioGroup) mMainView.findViewById(R.id.layout_sex);
-        mRadioGroup.setOnCheckedChangeListener(this);
-
-        mGirl = (RadioButton) mMainView.findViewById(R.id.girl);
-        mBoy = (RadioButton) mMainView.findViewById(R.id.boy);
-
-        mChangeGrade = (TextView) mMainView.findViewById(R.id.person_set_grade);
-        mChangeGradePull = (ImageView) mMainView.findViewById(R.id.person_gradearrorw);
-
-        mFeedback = (TextView)mMainView.findViewById(R.id.person_feedback);
-        mFeedback.setOnClickListener(this);
-        mQuit = (TextView)mMainView.findViewById(R.id.person_exit);
-        mQuit.setOnClickListener(this);
-        mMyPic = (TextView)mMainView.findViewById(R.id.person_picture);
-        mMyPic.setOnClickListener(this);
+//        mNormalLayout = (RelativeLayout) mMainView.findViewById(R.id.person_baseinfo);
+//        mChangeLayout = (RelativeLayout) mMainView.findViewById(R.id.person_changeinfo);
+//
+//        mSetBt = (ImageButton) mMainView.findViewById(R.id.person_change);
+//        mPhotoView = (ImageView) mMainView.findViewById(R.id.person_photo);
+//        mPhotoLayout = mMainView.findViewById(R.id.person_photo_layout);
+//
+//        mNickTextView = (TextView) mMainView.findViewById(R.id.person_name);
+//        mGrade = (TextView) mMainView.findViewById(R.id.person_grade);
+//        mSexPic = (ImageView) mMainView.findViewById(R.id.person_sex);
+//        mPersonAccount = (TextView) mMainView.findViewById(R.id.person_account);
+//
+//        mChangeNickName = (EditText) mMainView.findViewById(R.id.person_changename);
+//        mRadioGroup = (RadioGroup) mMainView.findViewById(R.id.layout_sex);
+//        mRadioGroup.setOnCheckedChangeListener(this);
+//
+//        mGirl = (RadioButton) mMainView.findViewById(R.id.girl);
+//        mBoy = (RadioButton) mMainView.findViewById(R.id.boy);
+//
+//        mChangeGrade = (TextView) mMainView.findViewById(R.id.person_set_grade);
+//        mChangeGradePull = (ImageView) mMainView.findViewById(R.id.person_gradearrorw);
+//
+//        mFeedback = (TextView)mMainView.findViewById(R.id.person_feedback);
+//        mFeedback.setOnClickListener(this);
+//        mQuit = (TextView)mMainView.findViewById(R.id.person_exit);
+//        mQuit.setOnClickListener(this);
+//        mMyPic = (TextView)mMainView.findViewById(R.id.person_picture);
+//        mMyPic.setOnClickListener(this);
 
 
         mChangeGrade.setOnClickListener(this);
@@ -239,47 +239,47 @@ public class MeFragment extends BaseFragment
         switch(view.getId())
         {
 
-            case R.id.person_change:
-            {
-                isEditMode = !isEditMode;
-                initMyInfo();
-                if( !isEditMode ){
-                    new Thread() {
-                        public void run() {
-                            boolean r = savePersonInfo();
-                            if(r)
-                            {
-                                mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
-                            }
-                            else
-                            {
-                                mUIHandler.sendEmptyMessage(UPDATE_INFO_FAILED);
-                            }
-                        };
-                    }.start();
-                }
-                break;
-            }
-
-            case R.id.person_set_grade:
-            case R.id.person_gradearrorw:
-            {
-                popPhotoSelection();
-                break;
-            }
-
-            case R.id.person_photo:
-            {
-                //goto set icon
-                setCrop();
-                break;
-            }
-
-            case R.id.person_photo_layout:
-            {
-                clickPhoto();
-                break;
-            }
+//            case R.id.person_change:
+//            {
+//                isEditMode = !isEditMode;
+//                initMyInfo();
+//                if( !isEditMode ){
+//                    new Thread() {
+//                        public void run() {
+//                            boolean r = savePersonInfo();
+//                            if(r)
+//                            {
+//                                mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
+//                            }
+//                            else
+//                            {
+//                                mUIHandler.sendEmptyMessage(UPDATE_INFO_FAILED);
+//                            }
+//                        };
+//                    }.start();
+//                }
+//                break;
+//            }
+//
+//            case R.id.person_set_grade:
+//            case R.id.person_gradearrorw:
+//            {
+//                popPhotoSelection();
+//                break;
+//            }
+//
+//            case R.id.person_photo:
+//            {
+//                //goto set icon
+//                setCrop();
+//                break;
+//            }
+//
+//            case R.id.person_photo_layout:
+//            {
+//                clickPhoto();
+//                break;
+//            }
 
             case R.id.person_feedback:
             {
@@ -481,11 +481,11 @@ public class MeFragment extends BaseFragment
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (checkedId == R.id.boy) {
-            mSex = "2";
-        } else {
-            mSex = "1";
-        }
+//        if (checkedId == R.id.boy) {
+//            mSex = "2";
+//        } else {
+//            mSex = "1";
+//        }
     }
 
     private void popPhotoSelection() {
@@ -497,8 +497,8 @@ public class MeFragment extends BaseFragment
             LayoutInflater layoutInflater = (LayoutInflater) getActivity()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mPopview = layoutInflater.inflate(R.layout.popwindow_grade, null);
-            mPopupWindow1 = new PopupWindow(mPopview, (int)getResources().getDimension(R.dimen.personinfo_popwidth),
-                    (int)getResources().getDimension(R.dimen.personinfo_popheight));
+//            mPopupWindow1 = new PopupWindow(mPopview, (int)getResources().getDimension(R.dimen.personinfo_popwidth),
+//                    (int)getResources().getDimension(R.dimen.personinfo_popheight));
 
             mPopList = (ListView) mPopview.findViewById(R.id.pop_grade_list);
         }
@@ -509,8 +509,8 @@ public class MeFragment extends BaseFragment
         mPopupWindow1.setOutsideTouchable(true);
         mPopupWindow1.setBackgroundDrawable(new BitmapDrawable());
 
-        mPopupWindow1.showAsDropDown(mChangeGradePull, (int)getResources().getDimension(R.dimen.personinfo_pop_margin_x),
-                (int)getResources().getDimension(R.dimen.personinfo_pop_margin_y_port));
+//        mPopupWindow1.showAsDropDown(mChangeGradePull, (int)getResources().getDimension(R.dimen.personinfo_pop_margin_x),
+//                (int)getResources().getDimension(R.dimen.personinfo_pop_margin_y_port));
 
     }
 

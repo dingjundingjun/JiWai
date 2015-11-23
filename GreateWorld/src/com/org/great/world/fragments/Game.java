@@ -2,13 +2,17 @@ package com.org.great.world.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -44,8 +48,10 @@ import java.util.ArrayList;
  */
 public class Game extends SeeWorldAndJokeChildBaseFragment
 {
+	private TextView mTimeLastView;
     private GameAdapter mGameAdapter;
     private ArrayList<GamePojo> mGamePojos;
+    private UpdateHandle mUpdateHandle = new UpdateHandle();
     public Game() {
         mTitle = "小游戏";
     }
@@ -66,6 +72,10 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
 	                intent.putExtra("bundle",bundle);
 	                startActivity(intent);
             	}
+            	else
+            	{
+            		Toast.makeText(mBaseActivity, "如果点击广告，可以获得30分钟的游戏时间哦", Toast.LENGTH_SHORT).show();
+            	}
             }
         });
         
@@ -76,6 +86,7 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
 			}
 		});
         
+        
         return view;
     }
     
@@ -83,7 +94,10 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
     @Override
 	public void onResume() {
 		super.onResume();
-		
+		if(mUpdateHandle != null)
+		{
+			mUpdateHandle.sendEmptyMessageDelayed(1, 1000);
+		}
 	}
 
 	@Override
@@ -252,5 +266,73 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
                 return arg0;
             }
         });
+    }
+    
+    private void updateTimeLast()
+    {
+    	if(mTimeLastView == null)
+		{
+			mTimeLastView = new TextView(mBaseActivity);
+			mTimeLastView.setTextColor(Color.RED);
+			android.widget.RelativeLayout.LayoutParams params = new android.widget.RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT, android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+			params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			mMainLayout.addView(mTimeLastView, params);
+		}
+    	if(AllAD.bShowAD == false)
+    	{
+    		mTimeLastView.setVisibility(View.GONE);
+    	}
+    	else
+    	{
+    		mTimeLastView.setVisibility(View.VISIBLE);
+    	}
+    	if(Util.isCanPlaygame(mBaseActivity))
+    	{
+    		String lastTimeStr = (String)Util.getPlayGameTime(mBaseActivity);
+    		long lastTime = Long.decode(lastTimeStr);
+    		long last = 30*60 - (System.currentTimeMillis()/1000 - lastTime);
+    		int minute = ((int)last/60);
+    		int second = (int)last%60;
+    		Debug.d("minute = " + minute + " second = " + second);
+    		if(last <= 0)
+    		{
+    			mTimeLastView.setText("点击广告将获得游戏时间！");
+    			return;
+    		}
+    		Debug.d("minute = " + minute + " second = " + second);
+    		if(minute > 0)
+    		{
+    			mTimeLastView.setText(minute + "分"+second + "秒");
+    		}
+    		else
+    		{
+    			mTimeLastView.setText(second + "秒");
+    		}
+    	}
+    	else
+    	{
+    		if(AllAD.bShowAD == true)
+    		{
+    			mTimeLastView.setText("点击广告将获得游戏时间！");
+    		}
+    	}
+    }
+    
+    public class UpdateHandle extends Handler
+    {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch(msg.what)
+			{
+			case 1:
+			{
+				updateTimeLast();
+				sendEmptyMessageDelayed(1, 1000);
+				break;
+			}
+			}
+		}
+    	
     }
 }

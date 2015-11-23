@@ -94,7 +94,7 @@ public class ActivityRegister extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_register);
+//		setContentView(R.layout.activity_register);
 		ICON_PATH = getFilesDir().getAbsolutePath() + File.separator + "head.png";
 		initView();
 		initUserInfo();
@@ -103,10 +103,10 @@ public class ActivityRegister extends Activity{
 
 	private void initView() {
 		
-		nameEdit = (EditText)findViewById(R.id.register_name);
-		passwordEdit = (EditText)findViewById(R.id.register_password);
-		forgetWord = (TextView)findViewById(R.id.register_text_forgetpassword);
-		goIntoBt = (Button)findViewById(R.id.register_bt_login);
+//		nameEdit = (EditText)findViewById(R.id.register_name);
+//		passwordEdit = (EditText)findViewById(R.id.register_password);
+//		forgetWord = (TextView)findViewById(R.id.register_text_forgetpassword);
+//		goIntoBt = (Button)findViewById(R.id.register_bt_login);
 		nameEdit.addTextChangedListener(new SearchWather(nameEdit ));
 		passwordEdit.addTextChangedListener(new SearchWather(passwordEdit ));
 		goIntoBt.setOnClickListener(new View.OnClickListener() {
@@ -141,8 +141,8 @@ public class ActivityRegister extends Activity{
             TextView mPopview = new TextView(this);
             mPopview.setTextSize(20);
             mPopview.setText(getResources().getString(R.string.forget_remaind));
-            mPopupWindow1 = new PopupWindow(mPopview, (int)getResources().getDimension(R.dimen.forget_popwidth),
-            		(int)getResources().getDimension(R.dimen.forget_popheight));
+//            mPopupWindow1 = new PopupWindow(mPopview, (int)getResources().getDimension(R.dimen.forget_popwidth),
+//            		(int)getResources().getDimension(R.dimen.forget_popheight));
 
         }
 
@@ -150,8 +150,8 @@ public class ActivityRegister extends Activity{
         mPopupWindow1.setOutsideTouchable(true);
         mPopupWindow1.setBackgroundDrawable(new BitmapDrawable());
 
-        mPopupWindow1.showAsDropDown(forgetWord, (int)getResources().getDimension(R.dimen.personinfo_pop_margin_x),
-        		(int)getResources().getDimension(R.dimen.personinfo_pop_margin_y_port));
+//        mPopupWindow1.showAsDropDown(forgetWord, (int)getResources().getDimension(R.dimen.personinfo_pop_margin_x),
+//        		(int)getResources().getDimension(R.dimen.personinfo_pop_margin_y_port));
 	}
 
     public void closeIME() {

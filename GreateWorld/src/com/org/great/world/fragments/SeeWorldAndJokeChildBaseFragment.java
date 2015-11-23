@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -46,7 +47,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
     private Titanic mTitanic;
     public AutoListView mAutoListView;
     private TitanicTextView mTitanicTextView;
-
+    public RelativeLayout mMainLayout;
     protected String mCatalogUrl;
     public Button mReloadBtn;
     @Override
@@ -95,6 +96,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
         mTitanicTextView = (TitanicTextView)layout.findViewById(R.id.titanic_text);
         mReloadBtn = (Button)layout.findViewById(R.id.reload);
         mAutoListView = (AutoListView)layout.findViewById(R.id.auto_list);
+        mMainLayout = (RelativeLayout)layout.findViewById(R.id.main_layout);
         mReloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
