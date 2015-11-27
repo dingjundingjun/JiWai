@@ -91,7 +91,7 @@ public class AllAD
 		// appId : �� http://e.qq.com/dev/ �ܿ�����appΨһ�ַ���
 		// posId : �� http://e.qq.com/dev/ ���ɵ����ִ������� appid ���� appkey
 		com.qq.e.ads.AdView adv = new com.qq.e.ads.AdView((Activity) context,
-				AdSize.BANNER, "1104859259", "6000908664471278");
+				AdSize.BANNER, "1104988362", "7090508780698117");
 		mAdLayout.addView(adv, layoutParams);
 //		layout.addView(adv);
 		// ����������ݣ��������ù���ֲ�ʱ�䣬Ĭ��Ϊ30s
