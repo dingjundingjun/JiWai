@@ -53,7 +53,7 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
     private ArrayList<GamePojo> mGamePojos;
     private UpdateHandle mUpdateHandle = new UpdateHandle();
     public Game() {
-        mTitle = "小游戏";
+        mTitle = "益智游戏";
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

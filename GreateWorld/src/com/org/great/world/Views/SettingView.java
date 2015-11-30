@@ -1,5 +1,8 @@
 package com.org.great.world.Views;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.client.HttpClient;
 
 import android.app.ProgressDialog;
@@ -8,6 +11,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,9 +31,13 @@ import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.DemoHXSDKModel;
 import com.easemob.chatuidemo.activity.OfflinePushNickActivity;
 import com.easemob.chatuidemo.activity.UserProfileActivity;
+import com.google.android.gms.plus.model.people.Person;
+import com.org.great.world.Utils.PersonalUtil;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.RegisterView.OnRegisterCallback;
+import com.org.great.world.data.UserInfo;
 import com.org.great.wrold.R;
+import com.umeng.fb.FeedbackAgent;
 
 public class SettingView implements OnClickListener
 {
@@ -100,6 +108,9 @@ public class SettingView implements OnClickListener
 	 * 退出按钮
 	 */
 	private Button logoutBtn;
+	/**反馈按钮*/
+	private Button feedBackBtn;
+	private FeedbackAgent mFeedBackAgent;
 	
 
 //	private RelativeLayout rl_switch_chatroom_leave;
@@ -207,8 +218,29 @@ public class SettingView implements OnClickListener
 			iv_switch_open_speaker.setVisibility(View.INVISIBLE);
 			iv_switch_close_speaker.setVisibility(View.VISIBLE);
 		}
+		
+		feedBackBtn = (Button)mMainView.findViewById(R.id.btn_feedback);
+		feedBackBtn.setOnClickListener(this);
+		mFeedBackAgent = new FeedbackAgent(mContext);
+		com.umeng.fb.model.UserInfo uif;
+		uif = mFeedBackAgent.getUserInfo();
+		if(uif == null)
+		{
+			uif = new com.umeng.fb.model.UserInfo();
+		}
+		Map<String, String> contact = uif.getContact();
+		if(contact == null)
+		{
+			contact = new HashMap<String, String>();
+		}
+		contact.put("nickname", PersonalUtil.mSnsAccount.getUserName());
+		contact.put("SERIAL", PersonalUtil.mSnsAccount.getUsid());
+		uif.setContact(contact);
+		
+		mFeedBackAgent.setUserInfo(uif);
+		mFeedBackAgent.sync();
 	}
-	
+	 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -287,6 +319,11 @@ public class SettingView implements OnClickListener
 		case R.id.ll_user_profile:
 			mContext.startActivity(new Intent(mContext, UserProfileActivity.class).putExtra("setting", true));
 			break;
+		case R.id.btn_feedback:
+		{
+			mFeedBackAgent.startFeedbackActivity();
+			break;
+		}
 		default:
 			break;
 		}

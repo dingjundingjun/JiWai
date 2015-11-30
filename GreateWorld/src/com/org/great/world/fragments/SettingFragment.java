@@ -54,6 +54,7 @@ public class SettingFragment extends BaseFragment
 		// 如果用户名密码都有，直接进入主页面
 		Debug.d("onCreateView mMainView = " + mMainView);
 		mMainView = (RelativeLayout) RelativeLayout.inflate(mBaseActivity, R.layout.setting_main_layout, null);
+		mBaseActivity = getActivity();
 		init(mMainView);
 	    return mMainView;
 	}

@@ -179,12 +179,12 @@ public class MessageAdapter extends BaseAdapter{
 				refreshList();
 				break;
 			case HANDLER_MESSAGE_SELECT_LAST:
-//				if (activity instanceof ChatActivity) {
-//					ListView listView = ((ChatActivity)activity).getListView();
-//					if (messages.length > 0) {
-//						listView.setSelection(messages.length - 1);
-//					}
-//				}
+				if (activity instanceof ChatActivity) {
+					ListView listView = ((ChatActivity)activity).getListView();
+					if (messages.length > 0) {
+						listView.setSelection(messages.length - 1);
+					}
+				}
 				break;
 			case HANDLER_MESSAGE_SEEK_TO:
 //				int position = message.arg1;

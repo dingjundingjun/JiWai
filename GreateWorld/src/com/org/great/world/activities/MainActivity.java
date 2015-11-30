@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        RegisterAndLogin.getInstance(this);    
+           
         init();
     }
 
@@ -109,6 +109,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        RegisterAndLogin.getInstance(this); 
         Util.createDB(this);
         checkWifi();
         if(mAdView != null)
@@ -206,8 +207,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
 	@Override
 	protected void onDestroy() {
+		RegisterAndLogin.free();
 		super.onDestroy();
-		Util.closeDB();
+		
 	}
     
     

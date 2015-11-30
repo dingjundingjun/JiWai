@@ -1,6 +1,7 @@
 package com.org.great.world.Views;
 
 import com.easemob.chatuidemo.utils.CommonUtils;
+import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Utils.RegisterAndLogin.onCallBack;
@@ -105,6 +106,7 @@ public class LoginView
 		final RegisterAndLogin ra = RegisterAndLogin.getInstance(mContext);
 		new Thread(new Runnable() {
 			public void run() {
+					Debug.d("login111111111111");
 	            	Util.hideSoftKeyboard(mContext, passwordEditText);
 	            	ra.loginFromSever(false,currentUsername, currentPassword);
 			}

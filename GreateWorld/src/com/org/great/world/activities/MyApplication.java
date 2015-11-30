@@ -154,5 +154,5 @@ public class MyApplication extends Application {
 	    hxSDKHelper.logout(isGCM,emCallBack);
 	}
 
-
+	
 }

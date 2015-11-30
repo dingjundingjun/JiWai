@@ -20,6 +20,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
@@ -79,22 +80,27 @@ public class RegisterAndLogin
 	
 	public static RegisterAndLogin getInstance(Context c)
 	{
+		Log.d("JIWAI","Context = " + c);
 		if(gRegisterAndLogin == null)
 		{
+			Log.d("JIWAI","gRegisterAndLogin == null");
 			gRegisterAndLogin = new RegisterAndLogin(c);
 			gRegisterAndLogin.getHttpClient();
-			
 		}
 		return gRegisterAndLogin;
 	}
 	
-	public RegisterAndLogin(Context c) {
-		super();
+	public static void free()
+	{
+		gRegisterAndLogin = null;
+	}
+	
+	private RegisterAndLogin(Context c) {
 		this.mContext = c;
 		ICON_PATH = mContext.getFilesDir().getAbsolutePath() + File.separator + "head.png";
 	}
 
-
+	
 	public void setCallBack(onCallBack oc)
 	{
 		mOnCallBack = oc;
@@ -113,7 +119,7 @@ public class RegisterAndLogin
 	            /* 添加请求参数到请求对象 */  
 	            httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
 	            /* 发送请求并等待响应 */  
-	            HttpResponse httpResponse = mHttpClient.execute(httpRequest);  
+	            HttpResponse httpResponse = mHttpClient.execute(httpRequest); 
 	            /* 若状态码为200 ok */  
 	            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
 	                /* 读返回数据 */  
@@ -152,6 +158,10 @@ public class RegisterAndLogin
 	                System.out.println("链接失败.........");  
 	            }  
 	        } catch (Exception e) {  
+	        	Message msg = mUIHandler.obtainMessage();
+				msg.what = LOGIN_ERROR_MSG;
+				msg.obj = "404";
+				mUIHandler.sendMessage(msg);
 	            e.printStackTrace();  
 	        }  
 	    } 
@@ -179,8 +189,8 @@ public class RegisterAndLogin
 		}
         mHttpParams = new BasicHttpParams();  
         // 设置连接超时和 Socket 超时，以及 Socket 缓存大小  
-        HttpConnectionParams.setConnectionTimeout(mHttpParams, 20 * 1000);  
-        HttpConnectionParams.setSoTimeout(mHttpParams, 20 * 1000);  
+        HttpConnectionParams.setConnectionTimeout(mHttpParams, 10 * 1000);  
+        HttpConnectionParams.setSoTimeout(mHttpParams, 10 * 1000);  
         HttpConnectionParams.setSocketBufferSize(mHttpParams, 8192);  
         // 设置重定向，缺省为 true  
         HttpClientParams.setRedirecting(mHttpParams, true);  
@@ -190,7 +200,6 @@ public class RegisterAndLogin
         mHttpClient = new DefaultHttpClient(mHttpParams);  
         return mHttpClient;  
     }
-	
 	
 	public void loginForHX(final String userName,final String pwd) {
 		Debug.d("login userName = " + userName + " pwd = " + pwd);

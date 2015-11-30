@@ -45,6 +45,7 @@ import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -369,9 +370,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		                                         } else {
 		                                             haveMoreData = false;
 		                                         }
-		                                         
 		                                         isloading = false;
-
 		                                 }else{
 		                                     Toast.makeText(ChatActivity.this, getResources().getString(R.string.no_more_messages), Toast.LENGTH_SHORT).show();
 		                                 }
@@ -1543,6 +1542,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				this,
 				new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage,EMNotifierEvent.Event.EventOfflineMessage,
 						EMNotifierEvent.Event.EventDeliveryAck, EMNotifierEvent.Event.EventReadAck });
+		Log.d("ddd","adapter count = " + adapter.getCount());
+//		listView.setSelection(adapter.getCount() - 1);
 	}
 
 	@Override
