@@ -124,6 +124,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
 								return;
 							}
+							else if(nickString.length() > 15)
+							{
+								Toast.makeText(UserProfileActivity.this, R.string.User_name_is_too_long, Toast.LENGTH_SHORT).show();
+								return;
+							}
 							updateRemoteNick(nickString);
 						}
 					}).setNegativeButton(R.string.dl_cancel, null).show();

@@ -37,6 +37,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.org.great.world.data.AllAD;
@@ -704,4 +706,86 @@ public static byte[] readStream(InputStream inStream) throws Exception{
         }  
         return bitmap;  
     }
+    
+    /**
+	 * @param url
+	 *            要下载的文件URL
+	 * @throws Exception
+	 */
+	public static void downloadFile(final Context context, final String nameSuffix, final String url) 
+	{
+		if(TextUtils.isEmpty(url))
+		{
+			Toast.makeText(context, "图片链接有问题，稍后重试。", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		/*if( !isSDMounted() ) 
+		{
+			Toast.makeText(context, "已连接USB，请关闭后重试。", Toast.LENGTH_SHORT).show();
+			return;
+		}*/
+		
+		System.out.println("==========nameSuffix >> " + nameSuffix);
+		System.out.println("==========url >> " + url);
+		
+		AsyncHttpClient client = new AsyncHttpClient();
+		client.get(url, new AsyncHttpResponseHandler() 
+		{
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] binaryData) 
+			{
+				System.out.println("==========statusCode >> " + statusCode);
+				int idx = url.lastIndexOf(".");
+				String ext = url.substring(idx);
+					
+				String sdcard = Environment.getExternalStorageDirectory().toString();
+				File file = new File(sdcard + "/叽歪/");
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				
+				OutputStream outputStream = null;
+		
+				Bitmap bmp = BitmapFactory.decodeByteArray(binaryData, 0, binaryData.length);
+				CompressFormat format = Bitmap.CompressFormat.JPEG;				
+				int quality = 100;
+				
+				try 
+				{
+					file = new File(file.getAbsolutePath(), "图片_" + System.currentTimeMillis() + ext);
+					outputStream = new FileOutputStream(file);
+					bmp.compress(format, quality, outputStream);
+					
+					Toast.makeText(context, "图片已保存至：" + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+				} 
+				catch (IOException e) 
+				{					
+					e.printStackTrace();
+					Toast.makeText(context, "下载失败，稍后重试。" + e.toString(), Toast.LENGTH_SHORT).show();
+				} 
+				finally 
+				{
+					if(outputStream != null) 
+					{
+						try 
+						{
+							outputStream.close();
+						} 
+						catch (IOException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			public void onFailure(int statusCode, Header[] headers, byte[] binaryData, Throwable error) 
+			{
+				Toast.makeText(context, "下载失败，稍后重试。" + error.toString(), Toast.LENGTH_SHORT).show();
+			}
+
+		});
+	}
 }

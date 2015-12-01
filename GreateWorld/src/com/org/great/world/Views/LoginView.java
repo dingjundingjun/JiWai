@@ -103,6 +103,11 @@ public class LoginView
 			Toast.makeText(mContext, R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		if(currentUsername.length() > 15)
+		{
+			Toast.makeText(mContext, R.string.User_name_is_too_long, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		final RegisterAndLogin ra = RegisterAndLogin.getInstance(mContext);
 		new Thread(new Runnable() {
 			public void run() {

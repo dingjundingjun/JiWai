@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -68,6 +71,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
     private CommentAdapter mCommentAdapter;
     private final int MORE_COMMENT_ID = 0;
     private int mLastCommentExpandNum = 0;
+    private String mImgurl = "";
     private final UMSocialService mController = UMServiceFactory
             .getUMSocialService(Util.Constants.DESCRIPTOR);
     public BaseContentFragment() {
@@ -444,5 +448,43 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
         mCommentDialog.show();
     }
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuItem.OnMenuItemClickListener handler = new MenuItem.OnMenuItemClickListener() 
+		{
+			public boolean onMenuItemClick(MenuItem item) 
+			{
+				if (item.getTitle() == "保存图片") 
+				{
+					Util.downloadFile(mBaseActivity, mCatalogPojo.getTitle(), mImgurl);
+				} 
+				else 
+				{
+					return false;
+				}
+				
+				return true;
+			}
+		};
+		
+		if (v instanceof WebView) 
+		{
+			WebView.HitTestResult result = ((WebView) v).getHitTestResult();
+			if (result != null) 
+			{
+				int type = result.getType();
+				if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) 
+				{
+					mImgurl = result.getExtra();	
+					menu.setHeaderTitle("目录：/叽歪/");
+					menu.add(0, v.getId(), 0, "保存图片").setOnMenuItemClickListener(handler);
+				}
+			}
+		}
+	}
 
+
+    
 }
