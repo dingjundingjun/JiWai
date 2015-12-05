@@ -247,6 +247,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		emojiIconContainer = (LinearLayout) findViewById(R.id.ll_face_container);
 		btnContainer = (LinearLayout) findViewById(R.id.ll_btn_container);
 		locationImgview = (ImageView) findViewById(R.id.btn_location);
+		if(Build.CPU_ABI.endsWith("mips"))
+		{
+			findViewById(R.id.location_layout).setVisibility(View.GONE);
+		}
 		iv_emoticons_normal = (ImageView) findViewById(R.id.iv_emoticons_normal);
 		iv_emoticons_checked = (ImageView) findViewById(R.id.iv_emoticons_checked);
 		loadmorePB = (ProgressBar) findViewById(R.id.pb_load_more);

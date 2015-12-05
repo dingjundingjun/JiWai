@@ -1,6 +1,7 @@
 package com.org.great.world.fragments;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -21,19 +22,24 @@ public class GreatWorldFragment extends BaseFragment{
         mSeeWorld = new SeeWorld();
         mJoke = new Joke();
         mGame = new Game();
-        mVideo = new Video();
+        
         mFragmentList.clear();
         mFragmentList.add(mSeeWorld);
         mFragmentList.add(mJoke);
         mFragmentList.add(mGame);
-        mFragmentList.add(mVideo);
+        
         mTitleListStr.clear();
         Debug.d("mSeeworld title = " + mSeeWorld.getTitle());
         Debug.d("mJoke title = " + mJoke.getTitle());
         mTitleListStr.add(mSeeWorld.getTitle());
         mTitleListStr.add(mJoke.getTitle());
         mTitleListStr.add(mGame.getTitle());
-        mTitleListStr.add(mVideo.getTitle());
+        if(!Build.CPU_ABI.equals("mips"))
+        {
+        	mVideo = new Video();
+        	mFragmentList.add(mVideo);
+        	mTitleListStr.add(mVideo.getTitle());
+        }
         updateFragmentList();
     }
 

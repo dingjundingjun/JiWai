@@ -50,7 +50,7 @@ public class PersonalUtil {
 		if(pi == null)
 		{
 			mSnsAccount.setUserName("起个名字真难");
-			mSnsAccount.setUsid(Build.SERIAL);
+			mSnsAccount.setUsid(""+System.currentTimeMillis());
 			mSnsAccount.setAccountIconUrl(null);
 			pi = new PersonalInfoPojo();
 			pi.nickName = "起个名字真难";
@@ -62,7 +62,7 @@ public class PersonalUtil {
 		Debug.d("pi = " + pi);
 		mSnsAccount = new SnsAccount(pi.getNickName(), Gender.MALE, pi.getPhotoPath(),pi.getAccountId());
 		mSnsAccount.setUserName(pi.getNickName());
-		mSnsAccount.setUsid(Build.SERIAL);
+		mSnsAccount.setUsid(""+System.currentTimeMillis());
 		mSnsAccount.setAccountIconUrl(pi.getPhotoPath());
 		return true;
 	}
