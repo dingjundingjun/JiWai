@@ -34,6 +34,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -138,8 +139,10 @@ public class RegisterAndLogin
 	                	}
 	                	else
 	                	{
+	                		Debug.d("loginForHX " + System.currentTimeMillis());
 		                	//成功以后登录环信
 		                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+		                	Debug.d("loginForHX " + System.currentTimeMillis());
 	                	}
 	                }
 	                else if(status.equals("201"))
@@ -200,9 +203,12 @@ public class RegisterAndLogin
         mHttpClient = new DefaultHttpClient(mHttpParams);  
         return mHttpClient;  
     }
+	long timeP = 0;
 	
 	public void loginForHX(final String userName,final String pwd) {
 		Debug.d("login userName = " + userName + " pwd = " + pwd);
+		timeP = System.currentTimeMillis();
+		Debug.d("loginForHX + " + timeP);
 		// 调用sdk登陆方法登陆聊天服务器
 		EMChatManager.getInstance().login(userName, pwd, new EMCallBack() {
 			@Override
@@ -211,6 +217,8 @@ public class RegisterAndLogin
 				MyApplication.getInstance().setUserName(userName);
 				MyApplication.getInstance().setPassword(pwd);
 				try {
+					long tx = System.currentTimeMillis() - timeP;
+					Debug.d("1111111111111 + " + tx);
 					// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
 					// ** manually load all local groups and
 				    EMGroupManager.getInstance().loadAllGroups();
@@ -229,6 +237,7 @@ public class RegisterAndLogin
 
 			@Override
 			public void onProgress(int progress, String status) {
+				Debug.d("progress + " + progress);
 			}
 
 			@Override
@@ -242,6 +251,8 @@ public class RegisterAndLogin
 	}
 	
 	private void initializeContacts() {
+		long tx = System.currentTimeMillis() - timeP;
+		Debug.d("initializeContacts = " + tx);
 		Map<String, User> userlist = new HashMap<String, User>();
 		// 添加user"申请与通知"
 		User newFriends = new User();
@@ -275,6 +286,8 @@ public class RegisterAndLogin
 		dao.saveContactList(users);
 		
 		List<EMGroup> grouplistHasJoin;
+		tx = System.currentTimeMillis() - timeP;
+		Debug.d("begin login group + " + tx);
 		try {
 			grouplistHasJoin = EMGroupManager.getInstance().getGroupsFromServer();
 			EMGroup emGroup = null;
@@ -347,6 +360,8 @@ public class RegisterAndLogin
 			e1.printStackTrace();
 			Debug.d("join group failed");
 		}
+		tx = System.currentTimeMillis() - timeP;
+		Debug.d("finish login group + " + tx);
 	}
 	
 	/**
