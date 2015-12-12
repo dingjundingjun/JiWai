@@ -36,7 +36,6 @@ import com.org.great.world.Utils.Util;
 import com.org.great.wrold.R;
 import com.soundcloud.android.crop.Crop;
 import com.soundcloud.android.crop.CropImageActivity;
-import com.squareup.picasso.Picasso;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
 	
