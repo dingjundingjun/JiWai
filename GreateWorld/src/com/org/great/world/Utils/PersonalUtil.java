@@ -100,7 +100,6 @@ public class PersonalUtil {
 	{
 		SharedPreferences preferences;
 		Editor prefsEditor;
-		
 		preferences = context.getSharedPreferences("personalinfo", Context.MODE_PRIVATE);
 		prefsEditor = preferences.edit();
 		prefsEditor.clear();

@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private TabView mGreatWorldBtn;
     private TabView mMeBtn;
     private TabView mCommunionBtn;
-    private TabView mCommunityBtn;
+//    private TabView mCommunityBtn;
     private List<TabView> mTabViewList = new ArrayList<TabView>();
     private FragmentManager mFragmentManager = null;
     private FragmentTransaction mTransaction = null;
@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private final int GREAT_WORLD = 0;
     private final int ME = 1;
     private final int COMMU = 2;
-    private final int COMMUNITY = 3;
+//    private final int COMMUNITY = 3;
     private LinearLayout mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.activity_main);
            
         init();
+        if(Util.getLogined(this))
+        {
+        	final RegisterAndLogin ra = RegisterAndLogin.getInstance(MainActivity.this);
+        	Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					ra.loginCommunityInBack(MainActivity.this);
+				}
+			});
+        	thread.start();
+        	
+        }
     }
 
     private void init() {
@@ -63,19 +75,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mGreatWorldBtn = (TabView) findViewById(R.id.btn_great_world);
         mMeBtn = (TabView) findViewById(R.id.btn_me);
         mCommunionBtn = (TabView)findViewById(R.id.btn_communion);
-        mCommunityBtn = (TabView)findViewById(R.id.btn_community);
+//        mCommunityBtn = (TabView)findViewById(R.id.btn_community);
         
         mAdView = (LinearLayout)findViewById(R.id.ad_layout);
         
         mGreatWorldBtn.setOnClickListener(this);
         mMeBtn.setOnClickListener(this);
         mCommunionBtn.setOnClickListener(this);
-        mCommunityBtn.setOnClickListener(this);
+//        mCommunityBtn.setOnClickListener(this);
         
         mTabViewList.add(mGreatWorldBtn);
         mTabViewList.add(mMeBtn);
         mTabViewList.add(mCommunionBtn);
-        mTabViewList.add(mCommunityBtn);
+//        mTabViewList.add(mCommunityBtn);
         setDefaultFragment();
     }
 
@@ -168,7 +180,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
             case R.id.btn_communion:
             {
-            	if(DemoHXSDKHelper.getInstance().isLogined() == false)
+            	if(Util.getLogined(this) == false)
             	{
             		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
             		if (mFrontFragment != ME) {
@@ -185,32 +197,31 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     mFrontFragment = COMMU;
 //                	changeFragment();
                 }
-            	enterChatRoom();
-            	return;
-            }
-            case R.id.btn_community:
-            {
-            	
-            	if(DemoHXSDKHelper.getInstance().isLogined() == false)
-            	{
-            		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
-            		if (mFrontFragment != ME) {
-                        mFrontFragment = ME;
-                        changeFragment();
-                        Debug.d("match id = R.id.btn_communiton");
-//                        mMeBtn.setSelected(true);
-                        changeTabViewStatus(R.id.btn_me);
-                        return;
-                    }
-            		return;
-            	}
-            	if (mFrontFragment != COMMUNITY) {
-                    mFrontFragment = COMMUNITY;
-//                	changeFragment();
-                }
             	enterCommunity();
+//            	enterChatRoom();
             	return;
             }
+//            case R.id.btn_community:
+//            {
+//            	
+//            	if(Util.getLogined(this) == false)
+//            	{
+//            		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+//            		if (mFrontFragment != ME) {
+//                        mFrontFragment = ME;
+//                        changeFragment();
+//                        Debug.d("match id = R.id.btn_communiton");
+//                        changeTabViewStatus(R.id.btn_me);
+//                        return;
+//                    }
+//            		return;
+//            	}
+//            	if (mFrontFragment != COMMUNITY) {
+//                    mFrontFragment = COMMUNITY;
+//                }
+//            	enterCommunity();
+//            	return;
+//            }
         }
         changeTabViewStatus(id);
     }

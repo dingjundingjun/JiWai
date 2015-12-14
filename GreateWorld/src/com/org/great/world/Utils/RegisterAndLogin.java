@@ -114,8 +114,7 @@ public class RegisterAndLogin
 	}
 	
 	public void loginFromSever(boolean isRegister,String userName, String password) {
-		
-		mUIHandler.sendEmptyMessage(SHOW_PROGRESS);
+		 mUIHandler.sendEmptyMessage(SHOW_PROGRESS);
 		 List<NameValuePair> params = new ArrayList<NameValuePair>();  
 	        params.add(new BasicNameValuePair("loginName", userName));  
 	        params.add(new BasicNameValuePair("password", password));  
@@ -137,7 +136,7 @@ public class RegisterAndLogin
 	                Debug.d("status = " + status);
 	                Debug.d("data = " + data);
 	                mPersonalInfoPojo = JsonTools.GsonToObj(data, PersonalInfoPojo.class);
-	                if(status.equals("200"))
+	                if(status.equals("200") || status.equals("201"))
 	                {
 	                	if(isRegister)
 	                	{
@@ -147,17 +146,20 @@ public class RegisterAndLogin
 	                	{
 	                		Debug.d("loginForHX " + System.currentTimeMillis());
 		                	//成功以后登录环信
-		                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+//		                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+		                	PersonalUtil.savePersonInfo(mContext,  mPersonalInfoPojo);
+							Debug.d("photoPath = " + mPersonalInfoPojo.photoPath);
+							Util.saveHeadIcon(mContext,mPersonalInfoPojo.photoPath);
 		                	loginCommunity(mContext, mPersonalInfoPojo.getNickName(), mPersonalInfoPojo.getAccountId());
 		                	Debug.d("loginForHX " + System.currentTimeMillis());
 	                	}
 	                }
-	                else if(status.equals("201"))
-	                {
+//	                else if(status.equals("201"))
+//	                {
 	                	//注册成功以后登录环形
-	                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
-	                	loginCommunity(mContext, mPersonalInfoPojo.getNickName(), mPersonalInfoPojo.getAccountId());
-	                }
+//	                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+//	                	loginCommunity(mContext, mPersonalInfoPojo.getNickName(), mPersonalInfoPojo.getAccountId());
+//	                }
 	                else if(status.equals("404"))
 	                {
 	                	Message msg = mUIHandler.obtainMessage();
@@ -165,8 +167,9 @@ public class RegisterAndLogin
 	    				msg.obj = "404";
 	    				mUIHandler.sendMessage(msg);
 	                }
-	            } else {  
-	                System.out.println("链接失败.........");  
+	            } 
+	            else { 
+	            	mUIHandler.sendEmptyMessage(LOGIN_ERROR_MSG_F);
 	            }  
 	        } catch (Exception e) {  
 	        	Message msg = mUIHandler.obtainMessage();
@@ -287,7 +290,7 @@ public class RegisterAndLogin
 		userlist.put(Constant.CHAT_ROBOT, robotUser);
 		
 		// 存入内存
-		((DemoHXSDKHelper)HXSDKHelper.getInstance()).setContactList(userlist);
+//		((DemoHXSDKHelper)HXSDKHelper.getInstance()).setContactList(userlist);
 		// 存入db
 		UserDao dao = new UserDao(mContext);
 		List<User> users = new ArrayList<User>(userlist.values());
@@ -445,42 +448,60 @@ public class RegisterAndLogin
 			case LOGIN_SUCCESS_MSG:
 			{
 				sendEmptyMessage(HODE_PROGRESS);
-				mOnCallBack.onLoginSuccess();
+				if(mOnCallBack != null)
+				{
+					mOnCallBack.onLoginSuccess();
+				}
 				break;
 			}
 			case LOGIN_ERROR_MSG:
 			{
 				sendEmptyMessage(HODE_PROGRESS);
-				DemoHXSDKHelper.getInstance().logout(true,null);
+//				DemoHXSDKHelper.getInstance().logout(true,null);
 				Toast.makeText(mContext, mContext.getString(R.string.Login_failed), 1).show();
-				mOnCallBack.onLoginError(mContext.getString(R.string.Login_failed));
+				if(mOnCallBack != null)
+				{
+					mOnCallBack.onLoginError(mContext.getString(R.string.Login_failed));
+				}
 				break;
 			}
 			case LOGIN_ERROR_MSG_F:
 			{
 				sendEmptyMessage(HODE_PROGRESS);
-				DemoHXSDKHelper.getInstance().logout(true,null);
+//				DemoHXSDKHelper.getInstance().logout(true,null);
 				Toast.makeText(mContext, mContext.getString(R.string.login_failure_failed) + (String)msg.obj, 1).show();
-				mOnCallBack.onLoginError(mContext.getString(R.string.login_failure_failed));
+				if(mOnCallBack != null)
+				{
+					mOnCallBack.onLoginError(mContext.getString(R.string.login_failure_failed));
+				}
 				break;
 			}
 			case REGISTER_SUCCESS_MSG:
 			{
 				sendEmptyMessage(HODE_PROGRESS);
-				mOnCallBack.onRegisterSuccess();
+				if(mOnCallBack != null)
+				{
+					mOnCallBack.onRegisterSuccess();
+				}
 				break;
 			}
 			case REGISTER_ERROR_MSG:
 			{
 				sendEmptyMessage(HODE_PROGRESS);
-				mOnCallBack.onRegisterError();
+				if(mOnCallBack != null)
+				{
+					mOnCallBack.onRegisterError();
+				}
 				break;
 			}
 			case REGISTER_HAS_EXSIT:
 			{
 				sendEmptyMessage(HODE_PROGRESS);
 				Toast.makeText(mContext, mContext.getString(R.string.register_name_is_exist), 1).show();
-				mOnCallBack.onRegisterError();
+				if(mOnCallBack != null)
+				{
+					mOnCallBack.onRegisterError();
+				}
 				break;
 			}
 			case SHOW_PROGRESS:
@@ -513,6 +534,7 @@ public class RegisterAndLogin
 		}
 	}
 	
+	/**登录微社区*/
 	private void loginCommunity(Context context,String name,String id)
     {
     	CommunitySDK sdk = CommunityFactory.getCommSDK(context);
@@ -529,10 +551,139 @@ public class RegisterAndLogin
             public void onComplete(int stCode, CommUser commUser) {
                 if (ErrorCode.NO_ERROR==stCode) {
                 	Debug.d("登录社区成功");
+                	mUIHandler.sendEmptyMessage(LOGIN_SUCCESS_MSG);
+                	commUser.iconUrl = PersonalUtil.mSnsAccount.getAccountIconUrl();
+                }
+                else
+                {
+                	mUIHandler.sendEmptyMessage(LOGIN_ERROR_MSG_F);
                 }
 
            }
         });
     }
 	
+	
+	/**登录微社区*/
+	public void loginCommunityInBack(Context context)
+    {
+		PersonalInfoPojo pu = PersonalUtil.getPersonInfo(context);
+		String name = pu.getNickName();
+		String id = pu.getAccountId();
+    	
+    	CommunitySDK sdk = CommunityFactory.getCommSDK(context);
+        CommUser user = new CommUser();
+        user.name = name;
+        user.id = id;
+        sdk.loginToUmengServer(context, user, new LoginListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onComplete(int stCode, CommUser commUser) {
+                if (ErrorCode.NO_ERROR==stCode) {
+                	Debug.d("登录社区成功");
+                	commUser.iconUrl = PersonalUtil.mSnsAccount.getAccountIconUrl();
+                	Util.setLogin(mContext, true);
+                }
+                else
+                {
+                	mUIHandler.sendEmptyMessage(LOGIN_ERROR_MSG_F);
+                }
+
+           }
+        });
+    }
+	
+	/**登录微社区*/
+	public void loginCommunityInBack(Context context,String name,String id)
+    {
+    	CommunitySDK sdk = CommunityFactory.getCommSDK(context);
+        CommUser user = new CommUser();
+        user.name = name;
+        user.id = id;
+        sdk.loginToUmengServer(context, user, new LoginListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onComplete(int stCode, CommUser commUser) {
+                if (ErrorCode.NO_ERROR==stCode) {
+                	Debug.d("登录社区成功");
+                	commUser.iconUrl = PersonalUtil.mSnsAccount.getAccountIconUrl();
+                	Util.setLogin(mContext, true);
+                }
+                else
+                {
+                	mUIHandler.sendEmptyMessage(LOGIN_ERROR_MSG_F);
+                }
+
+           }
+        });
+    }
+	
+	/**
+	 * 后台自动登录
+	 * @param userName
+	 * @param password
+	 */
+	public void loginInBack(Context context)
+	{
+		Debug.d("loginInBack11111111111");
+    	PersonalInfoPojo pu = PersonalUtil.getPersonInfo(context);
+    	String userName = pu.getLoginName();
+    	String password = pu.getPassword();
+		 	List<NameValuePair> params = new ArrayList<NameValuePair>();  
+	        params.add(new BasicNameValuePair("loginName", userName));  
+	        params.add(new BasicNameValuePair("password", password));  
+		 /* 建立HTTPPost对象 */  
+	        HttpPost httpRequest = new HttpPost("http://121.40.93.89:13080/users/login");
+	        String strResult = "doPostError"; 
+	        try {  
+	            /* 添加请求参数到请求对象 */  
+	            httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
+	            /* 发送请求并等待响应 */  
+	            HttpResponse httpResponse = mHttpClient.execute(httpRequest); 
+	            /* 若状态码为200 ok */  
+	            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
+	                /* 读返回数据 */  
+	                strResult = EntityUtils.toString(httpResponse.getEntity()); 
+	                JSONObject jsonObject = new JSONObject(strResult);
+	                String status = jsonObject.getString("code");
+	                String data = jsonObject.getString("data");
+	                Debug.d("status = " + status);
+	                Debug.d("data = " + data);
+	                mPersonalInfoPojo = JsonTools.GsonToObj(data, PersonalInfoPojo.class);
+	                if(status.equals("200") || status.equals("201"))
+	                {
+		                	//成功以后登录环信
+//		                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+		                	PersonalUtil.savePersonInfo(mContext,  mPersonalInfoPojo);
+							Debug.d("photoPath = " + mPersonalInfoPojo.photoPath);
+							Util.saveHeadIcon(mContext,mPersonalInfoPojo.photoPath);
+							loginCommunityInBack(mContext, mPersonalInfoPojo.getNickName(), mPersonalInfoPojo.getAccountId());
+	                }
+	                else if(status.equals("404"))
+	                {
+	                	Message msg = mUIHandler.obtainMessage();
+	    				msg.what = LOGIN_ERROR_MSG;
+	    				msg.obj = "404";
+	    				mUIHandler.sendMessage(msg);
+	                }
+	            } 
+	            else { 
+	            	mUIHandler.sendEmptyMessage(LOGIN_ERROR_MSG_F);
+	            }  
+	        } catch (Exception e) {  
+	        	Message msg = mUIHandler.obtainMessage();
+				msg.what = LOGIN_ERROR_MSG;
+				msg.obj = "404";
+				mUIHandler.sendMessage(msg);
+	            e.printStackTrace();  
+	        }  
+	}
 }

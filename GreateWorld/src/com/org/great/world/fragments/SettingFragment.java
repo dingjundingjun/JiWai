@@ -12,31 +12,40 @@ import org.apache.http.params.HttpProtocolParams;
 
 import android.content.Intent;
 import android.content.Loader;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.Debug;
+import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.LoginView;
+import com.org.great.world.Views.MyInfomationView;
+import com.org.great.world.Views.MyInfomationView.OnSettingCallback;
 import com.org.great.world.Views.SettingView;
 import com.org.great.world.Views.LoginView.OnLoginCallback;
 import com.org.great.world.Views.RegisterView;
 import com.org.great.world.Views.RegisterView.OnRegisterCallback;
-import com.org.great.world.Views.SettingView.OnSettingCallback;
 import com.org.great.wrold.R;
+import com.soundcloud.android.crop.Crop;
+import com.soundcloud.android.crop.CropImageActivity;
 
 public class SettingFragment extends BaseFragment
 {
 	private boolean autoLogin = false;
 	private LoginView mLoginView;
 	private RegisterView mRegisterView;
-	private SettingView mSettingView;
+//	private SettingView mSettingView;
+	private MyInfomationView mMyInfomationView;
 	private RelativeLayout mMainView;
 	private View mAttachView;
 	
@@ -61,9 +70,10 @@ public class SettingFragment extends BaseFragment
 	
 	private void init(View view)
 	{
-		if (DemoHXSDKHelper.getInstance().isLogined()) {
+		if (Util.getLogined(mBaseActivity)) {
 			autoLogin = true;
-			showSettingView();
+//			showSettingView();
+			showMyInfomationView();
 		}
 		else
 		{
@@ -96,7 +106,8 @@ public class SettingFragment extends BaseFragment
 			
 			@Override
 			public void onSuccess() {
-				showSettingView();
+//				showSettingView();
+				showMyInfomationView();
 			}
 			
 			@Override
@@ -136,7 +147,8 @@ public class SettingFragment extends BaseFragment
 			
 			@Override
 			public void onSuccess() {
-				showSettingView();
+//				showSettingView();
+				showMyInfomationView();
 			}
 			
 			@Override
@@ -150,34 +162,107 @@ public class SettingFragment extends BaseFragment
 		});
 	}
 	
-	/**
-	 * 显示详细界面
-	 * @return
-	 */
-	private void showSettingView()
+	private void showMyInfomationView()
 	{
-		Debug.d("showSettingView :" + mSettingView);
-		if(mSettingView == null)
+		Debug.d("showSettingView :" + mMyInfomationView);
+		if(mMyInfomationView == null)
 		{
-			mSettingView = new SettingView(mBaseActivity);
+			mMyInfomationView = new MyInfomationView(mBaseActivity);
 		}
-		mSettingView.update();
-//		mMainView.removeAllViews();
+//		mSettingView.update();
 		mMainView.removeAllViewsInLayout();
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		mAttachView = mSettingView.getView();
+		mAttachView = mMyInfomationView.getView();
 		ViewGroup vg = (ViewGroup)mAttachView.getParent();
 		if(vg != null)
 		{
 			vg.removeAllViewsInLayout();
 		}
 		mMainView.addView(mAttachView,lp);
-		mSettingView.setOnSettingListener(new OnSettingCallback() {
+		mMyInfomationView.setOnSettingListener(new OnSettingCallback() {
 			@Override
 			public void onLoginOut() {
 				showLoginView();
 			}
+
+			@Override
+			public void onSettingHead() {
+				gotoSelectHead();
+			}
 		});
 	}
+	
+	private void gotoSelectHead()
+	{
+		Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 111);
+	}
+	
+    private void beginCrop(Uri source) {
+    	String ICON_PATH = mBaseActivity.getFilesDir().getAbsolutePath() + File.separator + "head_temp.png";
+        Uri destination = Uri.fromFile(new File(ICON_PATH));
+        Intent cropIntent = new Intent();
+        cropIntent.setData(source);
+        cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, destination);
+        cropIntent.setClass(this.getActivity(), CropImageActivity.class);
+        startActivityForResult(cropIntent, Crop.REQUEST_CROP);
+    }
+    
+    private void handleCrop(int resultCode, Intent result) {
+
+        if (resultCode == mBaseActivity.RESULT_OK && result != null) {
+        	mMyInfomationView.uploadInfo();
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(mBaseActivity, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 111)
+        {
+            if(data != null)
+            {
+                beginCrop(data.getData());
+            }
+        }
+        else if(requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, data);
+        }
+    }
+	
+	/**
+	 * 显示详细界面
+	 * @return
+	 */
+//	private void showSettingView()
+//	{
+//		Debug.d("showSettingView :" + mSettingView);
+//		if(mSettingView == null)
+//		{
+//			mSettingView = new SettingView(mBaseActivity);
+//		}
+//		mSettingView.update();
+//		mMainView.removeAllViewsInLayout();
+//		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+//				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+//		mAttachView = mSettingView.getView();
+//		ViewGroup vg = (ViewGroup)mAttachView.getParent();
+//		if(vg != null)
+//		{
+//			vg.removeAllViewsInLayout();
+//		}
+//		mMainView.addView(mAttachView,lp);
+//		mSettingView.setOnSettingListener(new OnSettingCallback() {
+//			@Override
+//			public void onLoginOut() {
+//				showLoginView();
+//			}
+//		});
+//	}
 }

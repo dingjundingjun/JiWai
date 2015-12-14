@@ -88,7 +88,7 @@ public class LoginView
 	 * @param view
 	 */
 	public void login() {
-		if (!CommonUtils.isNetWorkConnected(mContext)) {
+		if (!Util.isNetWorkConnected(mContext)) {
 			Toast.makeText(mContext, R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -111,7 +111,6 @@ public class LoginView
 		final RegisterAndLogin ra = RegisterAndLogin.getInstance(mContext);
 		new Thread(new Runnable() {
 			public void run() {
-					Debug.d("login111111111111");
 	            	Util.hideSoftKeyboard(mContext, passwordEditText);
 	            	ra.loginFromSever(false,currentUsername, currentPassword);
 			}
@@ -128,12 +127,13 @@ public class LoginView
 			
 			@Override
 			public void onLoginSuccess() {
+				Util.setLogin(mContext, true);
 				mOnLoginCallback.onSuccess();
 			}
 			
 			@Override
 			public void onLoginError(String errorMsg) {
-				// TODO Auto-generated method stub
+				Util.setLogin(mContext, false);
 				mOnLoginCallback.onError();
 				mShowError.setText(errorMsg);
 			}

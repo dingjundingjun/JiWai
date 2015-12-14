@@ -388,6 +388,23 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 		return preferences.getString("last_fresh_time", "-1");
     }
     
+    public static void setLogin(Context context,boolean logined)
+    {
+    	SharedPreferences preferences;
+		Editor prefsEditor;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		prefsEditor = preferences.edit();
+		prefsEditor.putBoolean("isLogined",logined);
+		prefsEditor.commit();
+    }
+    
+    public static boolean getLogined(Context context)
+    {
+    	SharedPreferences preferences;
+		preferences = context.getSharedPreferences("JIWAI", Context.MODE_PRIVATE);
+		return preferences.getBoolean("isLogined", false);
+    }
+    
     public static void saveSeeWorldJson(Context context,String json)
     {
     	SharedPreferences preferences;

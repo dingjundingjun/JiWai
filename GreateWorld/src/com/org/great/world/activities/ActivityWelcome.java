@@ -26,6 +26,7 @@ import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.DensityUtil;
 import com.org.great.world.Utils.PersonalUtil;
+import com.org.great.world.Utils.RegisterAndLogin;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
@@ -80,7 +81,6 @@ public class ActivityWelcome extends FragmentActivity implements ViewPager.OnPag
 
         mWelcomeImg = (ImageView)findViewById(R.id.welcomebg);
         mPager = (ViewPager) findViewById(R.id.pager);
-
         initActivity( );
     }
 
