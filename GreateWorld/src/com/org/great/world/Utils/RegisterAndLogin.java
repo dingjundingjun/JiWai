@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Handler;
 import android.os.Message;
@@ -53,6 +54,11 @@ import com.easemob.exceptions.EaseMobException;
 import com.org.great.world.activities.MyApplication;
 import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.login.LoginListener;
 
 
 /*
@@ -142,6 +148,7 @@ public class RegisterAndLogin
 	                		Debug.d("loginForHX " + System.currentTimeMillis());
 		                	//成功以后登录环信
 		                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+		                	loginCommunity(mContext, mPersonalInfoPojo.getNickName(), mPersonalInfoPojo.getAccountId());
 		                	Debug.d("loginForHX " + System.currentTimeMillis());
 	                	}
 	                }
@@ -149,6 +156,7 @@ public class RegisterAndLogin
 	                {
 	                	//注册成功以后登录环形
 	                	loginForHX(mPersonalInfoPojo.hxUser,mPersonalInfoPojo.hxPassword);
+	                	loginCommunity(mContext, mPersonalInfoPojo.getNickName(), mPersonalInfoPojo.getAccountId());
 	                }
 	                else if(status.equals("404"))
 	                {
@@ -504,5 +512,27 @@ public class RegisterAndLogin
 			}
 		}
 	}
+	
+	private void loginCommunity(Context context,String name,String id)
+    {
+    	CommunitySDK sdk = CommunityFactory.getCommSDK(context);
+        CommUser user = new CommUser();
+        user.name = name;
+        user.id = id;
+        sdk.loginToUmengServer(context, user, new LoginListener() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onComplete(int stCode, CommUser commUser) {
+                if (ErrorCode.NO_ERROR==stCode) {
+                	Debug.d("登录社区成功");
+                }
+
+           }
+        });
+    }
 	
 }

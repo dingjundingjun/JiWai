@@ -37,6 +37,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -788,4 +789,23 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 
 		});
 	}
+	
+	/**
+	 * 检测网络是否可用
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static boolean isNetWorkConnected(Context context) {
+		if (context != null) {
+			ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+			if (mNetworkInfo != null) {
+				return mNetworkInfo.isAvailable();
+			}
+		}
+
+		return false;
+	}
+
 }

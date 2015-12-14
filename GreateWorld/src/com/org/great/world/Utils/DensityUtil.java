@@ -13,7 +13,6 @@ public class DensityUtil {
     private  DisplayMetrics dm;
     private  float scale = 0.0f;
  
-    
     public DensityUtil(Context context) {
         // ��ȡ��ǰ��Ļ
         dm = new DisplayMetrics();
