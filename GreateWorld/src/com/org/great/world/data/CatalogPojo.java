@@ -15,7 +15,15 @@ public class CatalogPojo implements Serializable {
 	private String url;
 	private String publish;
 	private String articleType;
+	private String snapshot;
 	
+	
+	public String getSnapshot() {
+		return snapshot;
+	}
+	public void setSnapshot(String snapshot) {
+		this.snapshot = snapshot;
+	}
 	public String getArticleId() {
 		return articleId;
 	}

@@ -1,10 +1,9 @@
 package com.org.great.world.Views;
 
-import com.easemob.chatuidemo.utils.CommonUtils;
 import com.org.great.world.Utils.Debug;
-import com.org.great.world.Utils.RegisterAndLogin;
+import com.org.great.world.Utils.LoginUtils;
 import com.org.great.world.Utils.Util;
-import com.org.great.world.Utils.RegisterAndLogin.onCallBack;
+import com.org.great.world.Utils.LoginUtils.onCallBack;
 import com.org.great.world.activities.MyApplication;
 import com.org.great.wrold.R;
 
@@ -77,9 +76,6 @@ public class LoginView
 
 			}
 		});
-		if (MyApplication.getInstance().getUserName() != null) {
-			usernameEditText.setText(MyApplication.getInstance().getUserName());
-		}
 	}
 	
 	/**
@@ -88,7 +84,7 @@ public class LoginView
 	 * @param view
 	 */
 	public void login() {
-		if (!Util.isNetWorkConnected(mContext)) {
+		if (!Util.checkWifiConnected(mContext)) {
 			Toast.makeText(mContext, R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -108,7 +104,7 @@ public class LoginView
 			Toast.makeText(mContext, R.string.User_name_is_too_long, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		final RegisterAndLogin ra = RegisterAndLogin.getInstance(mContext);
+		final LoginUtils ra = LoginUtils.getInstance(mContext);
 		new Thread(new Runnable() {
 			public void run() {
 	            	Util.hideSoftKeyboard(mContext, passwordEditText);

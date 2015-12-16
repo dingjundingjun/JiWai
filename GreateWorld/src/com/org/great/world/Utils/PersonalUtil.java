@@ -25,9 +25,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.easemob.applib.controller.HXSDKHelper;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.easemob.chatuidemo.domain.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.org.great.world.data.PersonalInfoPojo;
@@ -106,6 +103,11 @@ public class PersonalUtil {
 		prefsEditor.commit();
 	}
 	
+	/**
+	 * 从配置中读取个人信息，包括登录名、密码、昵称、头像地址等
+	 * @param context
+	 * @return
+	 */
 	public static PersonalInfoPojo getPersonInfo(Context context)
 	{
 		PersonalInfoPojo personnalInfo = null;

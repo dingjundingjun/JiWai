@@ -7,8 +7,8 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.org.great.world.Utils.RegisterAndLogin;
-import com.org.great.world.Utils.RegisterAndLogin.onCallBack;
+import com.org.great.world.Utils.LoginUtils;
+import com.org.great.world.Utils.LoginUtils.onCallBack;
 import com.org.great.world.Utils.Util;
 import com.org.great.wrold.R;
 
@@ -80,7 +80,7 @@ public class RegisterView
 			return;
 		}
 		if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
-			final RegisterAndLogin ra = RegisterAndLogin.getInstance(mContext);
+			final LoginUtils ra = LoginUtils.getInstance(mContext);
 			new Thread(new Runnable() {
 				public void run() {
 		            	Util.hideSoftKeyboard(mContext, passwordEditText);

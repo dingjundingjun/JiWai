@@ -46,6 +46,7 @@
     <string name="find_black_person">发现黑户</string>
     <string name="forget_remaind">加客服MM QQ : 1950499049 找回密码\n不找密码的同学可以找客服MM聊天，不保证一定回复啊</string>
     <string name="please_login">请先登录</string>
+    <string name="update_failed_user_name_exist">更新失败，昵称已经存在!</string>
     <!-- emsemobchar -->
     <string name="text_ack_msg">已读</string>
     <string name="text_delivered_msg">送达</string>

@@ -91,7 +91,7 @@ public class Util
 		{
 			bmp = BitmapFactory.decodeResource(c.getResources(), R.drawable.default_avatar);
 		}
-			bmp.compress(CompressFormat.PNG, 100, new FileOutputStream(RegisterAndLogin.ICON_PATH));
+			bmp.compress(CompressFormat.PNG, 100, new FileOutputStream(LoginUtils.ICON_PATH));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -725,6 +725,79 @@ public static byte[] readStream(InputStream inStream) throws Exception{
         return bitmap;  
     }
     
+    public static void downloadCatalogPic(final Context context,final String name,final String url)
+    {
+    	if(TextUtils.isEmpty(url))
+		{
+			Toast.makeText(context, "图片链接有问题，稍后重试。", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+//		if( !isSDMounted() ) 
+//		{
+//			Toast.makeText(context, "已连接USB，请关闭后重试。", Toast.LENGTH_SHORT).show();
+//			return;
+//		}
+		
+		
+		AsyncHttpClient client = new AsyncHttpClient();
+		client.get(url, new AsyncHttpResponseHandler() 
+		{
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, byte[] binaryData) 
+			{
+				System.out.println("==========statusCode >> " + statusCode);
+				int idx = url.lastIndexOf(".");
+				String ext = url.substring(idx);
+					
+				String sdcard = Environment.getExternalStorageDirectory().toString();
+				File file = new File(sdcard + "/叽歪/目录");
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				
+				OutputStream outputStream = null;
+		
+				Bitmap bmp = BitmapFactory.decodeByteArray(binaryData, 0, binaryData.length);
+				CompressFormat format = Bitmap.CompressFormat.JPEG;				
+				int quality = 100;
+				
+				try 
+				{
+					file = new File(sdcard + "/叽歪/目录/" + name);
+					outputStream = new FileOutputStream(file);
+					bmp.compress(format, quality, outputStream);
+//					Toast.makeText(context, "图片已保存至：" + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+				} 
+				catch (IOException e) 
+				{					
+					e.printStackTrace();
+//					Toast.makeText(context, "下载失败，稍后重试。" + e.toString(), Toast.LENGTH_SHORT).show();
+				} 
+				finally 
+				{
+					if(outputStream != null) 
+					{
+						try 
+						{
+							outputStream.close();
+						} 
+						catch (IOException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			public void onFailure(int statusCode, Header[] headers, byte[] binaryData, Throwable error) 
+			{
+				Toast.makeText(context, "下载失败，稍后重试。" + error.toString(), Toast.LENGTH_SHORT).show();
+			}
+
+		});
+    }
+    
     /**
 	 * @param url
 	 *            要下载的文件URL
@@ -806,23 +879,4 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 
 		});
 	}
-	
-	/**
-	 * 检测网络是否可用
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static boolean isNetWorkConnected(Context context) {
-		if (context != null) {
-			ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-			if (mNetworkInfo != null) {
-				return mNetworkInfo.isAvailable();
-			}
-		}
-
-		return false;
-	}
-
 }

@@ -88,7 +88,6 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
         }
         mTitanic.cancel();
         view.setVisibility(View.GONE);
-        Debug.d("hideLoading");
     }
 
     private void init(View layout)
@@ -182,7 +181,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
 	                    BaseCatalogPojo pojo = gson.fromJson(arg2, BaseCatalogPojo.class);
 	                    if(pojo.getStatus().equals("success"))
 	                    {
-//	                        Debug.d("json = " + arg2);
+	                        Debug.d("json = " + arg2);
 	                        ArrayList<CatalogPojo> tempList = pojo.getMessage();
 	                        if(tempList != null )
 	                        {

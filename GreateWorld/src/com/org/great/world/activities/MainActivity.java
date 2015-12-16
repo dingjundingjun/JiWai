@@ -1,10 +1,8 @@
 package com.org.great.world.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -13,20 +11,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.easemob.chatuidemo.activity.ChatActivity;
-import com.easemob.exceptions.EaseMobException;
 import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.PersonalUtil;
-import com.org.great.world.Utils.RegisterAndLogin;
+import com.org.great.world.Utils.LoginUtils;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
 import com.org.great.world.data.AllAD;
-//import com.org.great.world.fragments.ChatFragment;
-import com.org.great.world.fragments.CommunionFragment;
-import com.org.great.world.fragments.GreatWorldFragment;
-import com.org.great.world.fragments.MeFragment;
+import com.org.great.world.fragments.ReadFragment;
 import com.org.great.world.fragments.SettingFragment;
 import com.org.great.wrold.R;
 
@@ -34,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
-    private GreatWorldFragment mGreatWorldFragment;
+	/**看世界的fragment*/
+    private ReadFragment mGreatWorldFragment;
+    /**个人设置fragment*/
     private SettingFragment mMeFragment;
-//    private ChatFragment mChatFragment;
     private TabView mGreatWorldBtn;
     private TabView mMeBtn;
     private TabView mCommunionBtn;
-//    private TabView mCommunityBtn;
     private List<TabView> mTabViewList = new ArrayList<TabView>();
     private FragmentManager mFragmentManager = null;
     private FragmentTransaction mTransaction = null;
@@ -48,25 +39,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private final int GREAT_WORLD = 0;
     private final int ME = 1;
     private final int COMMU = 2;
-//    private final int COMMUNITY = 3;
     private LinearLayout mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-           
         init();
         if(Util.getLogined(this))
         {
-        	final RegisterAndLogin ra = RegisterAndLogin.getInstance(MainActivity.this);
-        	Thread thread = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					ra.loginCommunityInBack(MainActivity.this);
-				}
-			});
-        	thread.start();
-        	
+        	LoginUtils ra = LoginUtils.getInstance(MainActivity.this);
+        	ra.loginCommunityInBack(MainActivity.this);
         }
     }
 
@@ -75,19 +57,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mGreatWorldBtn = (TabView) findViewById(R.id.btn_great_world);
         mMeBtn = (TabView) findViewById(R.id.btn_me);
         mCommunionBtn = (TabView)findViewById(R.id.btn_communion);
-//        mCommunityBtn = (TabView)findViewById(R.id.btn_community);
-        
         mAdView = (LinearLayout)findViewById(R.id.ad_layout);
         
         mGreatWorldBtn.setOnClickListener(this);
         mMeBtn.setOnClickListener(this);
         mCommunionBtn.setOnClickListener(this);
-//        mCommunityBtn.setOnClickListener(this);
         
         mTabViewList.add(mGreatWorldBtn);
         mTabViewList.add(mMeBtn);
         mTabViewList.add(mCommunionBtn);
-//        mTabViewList.add(mCommunityBtn);
         setDefaultFragment();
     }
 
@@ -100,7 +78,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mTransaction = mFragmentManager.beginTransaction();
         if (mFrontFragment == GREAT_WORLD) {
             if (mGreatWorldFragment == null) {
-                mGreatWorldFragment = new GreatWorldFragment();
+                mGreatWorldFragment = new ReadFragment();
             }
             mTransaction.replace(R.id.content, mGreatWorldFragment);
             mGreatWorldBtn.setSelected(true);
@@ -113,15 +91,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
         else if(mFrontFragment == COMMU)
         {
-        	if(DemoHXSDKHelper.getInstance().isLogined() == false)
+        	if(Util.getLogined(this) == false)
         	{
         		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
         		return;
         	}
-//        	if (mChatFragment == null) {
-//        		mChatFragment = new ChatFragment();
-//            }
-//            mTransaction.replace(R.id.content, mChatFragment);
             mCommunionBtn.setSelected(true);
         }
         mTransaction.commit();
@@ -130,7 +104,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        RegisterAndLogin.getInstance(this); 
+        LoginUtils.getInstance(this); 
         Util.createDB(this);
         checkWifi();
         if(mAdView != null)
@@ -186,8 +160,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             		if (mFrontFragment != ME) {
                         mFrontFragment = ME;
                         changeFragment();
-                        Debug.d("match id = R.id.btn_communiton");
-//                        mMeBtn.setSelected(true);
                         changeTabViewStatus(R.id.btn_me);
                         return;
                     }
@@ -195,33 +167,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             	}
             	if (mFrontFragment != COMMU) {
                     mFrontFragment = COMMU;
-//                	changeFragment();
                 }
             	enterCommunity();
-//            	enterChatRoom();
             	return;
             }
-//            case R.id.btn_community:
-//            {
-//            	
-//            	if(Util.getLogined(this) == false)
-//            	{
-//            		Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
-//            		if (mFrontFragment != ME) {
-//                        mFrontFragment = ME;
-//                        changeFragment();
-//                        Debug.d("match id = R.id.btn_communiton");
-//                        changeTabViewStatus(R.id.btn_me);
-//                        return;
-//                    }
-//            		return;
-//            	}
-//            	if (mFrontFragment != COMMUNITY) {
-//                    mFrontFragment = COMMUNITY;
-//                }
-//            	enterCommunity();
-//            	return;
-//            }
         }
         changeTabViewStatus(id);
     }
@@ -236,32 +185,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     
     private void enterCommunity()
     {
-		// 进入群聊
 		Intent intent = new Intent(this, com.umeng.community.example.MainActivity.class);
-		// it is group chat
-//		intent.putExtra("chatType", ChatActivity.CHATTYPE_CHATROOM);
 		intent.putExtra("username", PersonalUtil.mSnsAccount.getUserName());
 		intent.putExtra("userid", PersonalUtil.mSnsAccount.getUsid());
-		startActivity(intent);
-    }
-    
-    private void enterChatRoom()
-    {
-    	//需异步处理
-//    	String charId = "122980374539141604";
-    	String charId = Util.getGroupId(this);
-		// 进入群聊
-		Intent intent = new Intent(this, ChatActivity.class);
-		// it is group chat
-//		intent.putExtra("chatType", ChatActivity.CHATTYPE_CHATROOM);
-		intent.putExtra("chatType", ChatActivity.CHATTYPE_GROUP);
-		intent.putExtra("groupId", charId);
 		startActivity(intent);
     }
 
 	@Override
 	protected void onDestroy() {
-		RegisterAndLogin.free();
+		LoginUtils.free();
 		super.onDestroy();
 		
 	}

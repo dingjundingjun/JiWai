@@ -36,4 +36,5 @@
  	<dimen name="game_layout_list_item_text_size">25sp</dimen>
     <dimen name="game_layout_list_item_image_width">224dp</dimen>
     <dimen name="game_layout_list_item_image_height">126dp</dimen>
+    <dimen name="seeworld_list_item_padding">10dip</dimen>
 </resources>

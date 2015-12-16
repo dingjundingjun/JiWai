@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="12"
-    android:versionName="4.1.1"
+    android:versionCode="13"
+    android:versionName="5.0.0"
     package="com.org.great.wrold" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -185,24 +185,6 @@
             </intent-filter>
         </activity>
         
-        <!-- 设置环信应用的appkey -->
-        <meta-data
-            android:name="EASEMOB_APPKEY"
-            android:value="ff313976#jiwai" />
-        <!-- 声明sdk所需的service -->
-        <service android:name="com.easemob.chat.EMChatService"/>
-        <!-- 声明sdk所需的receiver -->
-        <receiver android:name="com.easemob.chat.EMMonitorReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-                <data android:scheme="package"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-
         <!-- 百度地图所需的service -->
         <service
             android:name="com.baidu.location.f" 
@@ -211,85 +193,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
-        <!-- 开机自启动服务 -->
-        <receiver android:name="com.easemob.chat.StartServiceReceiver" >
-            <intent-filter android:priority="1000" >
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </receiver>
         
-        <!-- gcm start -->
-        <receiver
-            android:name="com.easemob.chat.EMGCMBroadcastReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.easemob.chatuidemo" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name="com.easemob.chat.EMGCMListenerService"
-            android:exported="false" >
-        </service>
-        
-        <receiver 
-            android:name="com.easemob.chatuidemo.receiver.GCMPushBroadCast"
-            android:exported="false">
-            <intent-filter >
-                <action android:name="com.easemob.sdk.push"/>
-                <category android:name="com.easemob.chatuidemo"/>
-            </intent-filter>
-        </receiver>
-        <!-- iOS offline push nick -->
-        <activity
-            android:name="com.easemob.chatuidemo.activity.OfflinePushNickActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <!-- user profile -->
-		<activity 
-		    android:name="com.easemob.chatuidemo.activity.UserProfileActivity"
-		    android:screenOrientation="portrait"
-		    android:theme="@style/horizontal_slide"
-		    ></activity>
-		 <!-- 聊天页面 -->
-        <activity
-            android:name="com.easemob.chatuidemo.activity.ChatActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
-		
-		<!-- 聊天室详情 -->
-        <activity
-            android:name="com.easemob.chatuidemo.activity.ChatRoomDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
-		
-		 <!-- 地图 -->
-        <activity
-            android:name="com.easemob.chatuidemo.activity.BaiduMapActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
-		<activity
-            android:name="com.easemob.chatuidemo.activity.ImageGridActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-         <activity
-            android:name="com.easemob.chatuidemo.activity.ShowBigImage"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
 		<service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" />

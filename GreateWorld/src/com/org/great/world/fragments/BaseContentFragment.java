@@ -214,6 +214,7 @@ public class BaseContentFragment extends Fragment implements View.OnClickListene
 
     private void getCommentFromUM(long sinceTime)
     {
+    	Debug.d("====getCommentFromUM==>>> " + sinceTime);
         mSocialService.getComments(mBaseActivity, new SocializeListeners.FetchCommetsListener() {
             @Override
             public void onStart() {

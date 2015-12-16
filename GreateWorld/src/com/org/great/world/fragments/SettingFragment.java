@@ -24,14 +24,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.org.great.world.Utils.Debug;
-import com.org.great.world.Utils.RegisterAndLogin;
+import com.org.great.world.Utils.LoginUtils;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.LoginView;
 import com.org.great.world.Views.MyInfomationView;
 import com.org.great.world.Views.MyInfomationView.OnSettingCallback;
-import com.org.great.world.Views.SettingView;
 import com.org.great.world.Views.LoginView.OnLoginCallback;
 import com.org.great.world.Views.RegisterView;
 import com.org.great.world.Views.RegisterView.OnRegisterCallback;

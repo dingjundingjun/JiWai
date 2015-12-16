@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
@@ -53,23 +54,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easemob.EMCallBack;
-import com.easemob.applib.controller.HXSDKHelper;
-import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMChatOptions;
-import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.easemob.chatuidemo.DemoHXSDKModel;
-import com.easemob.chatuidemo.activity.UserProfileActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.JsonTools;
 import com.org.great.world.Utils.PersonalUtil;
-import com.org.great.world.Utils.RegisterAndLogin;
-import com.org.great.world.Views.SettingView.OnSettingCallback;
-import com.org.great.world.Views.SettingView.UIHandler;
+import com.org.great.world.Utils.LoginUtils;
 import com.org.great.world.activities.ActivityRegister;
 import com.org.great.world.activities.GalleryUrlActivity;
 import com.org.great.world.adapters.PopGridListAdapter;
@@ -77,6 +70,21 @@ import com.org.great.world.data.PersonalInfoPojo;
 import com.org.great.wrold.R;
 import com.soundcloud.android.crop.Crop;
 import com.soundcloud.android.crop.CropImageActivity;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.beans.CommConfig;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
+import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.listeners.Listeners.CommListener;
+import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
+import com.umeng.comm.core.login.LoginListener;
+import com.umeng.comm.core.nets.Response;
+import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
+import com.umeng.comm.core.utils.CommonUtils;
+import com.umeng.comm.core.utils.ResFinder;
+import com.umeng.comm.core.utils.ToastMsg;
+import com.umeng.comm.ui.utils.BroadcastUtils;
 import com.umeng.fb.FeedbackAgent;
 
 public class MyInfomationView implements OnClickListener,MediaScannerConnectionClient{
@@ -120,6 +128,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
     private static String ICON_PATH;
     private static final int UPDATE_INFO_SUCCESS = 0;
     private static final int UPDATE_INFO_FAILED = 1;
+    private static final int UPDATE_INFO_FAILED_USER_NAME_DUMP = 2;
     private MediaScannerConnection conn;
     private String SCAN_PATH ;
     private static final String FILE_TYPE="image/*";
@@ -136,63 +145,6 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	private ProgressDialog mProgressDialog;
 	private OnSettingCallback mOnSettingCallback;
 	/**
-	 * 设置新消息通知布局
-	 */
-	private RelativeLayout rl_switch_notification;
-	/**
-	 * 设置声音布局
-	 */
-	private RelativeLayout rl_switch_sound;
-	/**
-	 * 设置震动布局
-	 */
-	private RelativeLayout rl_switch_vibrate;
-	/**
-	 * 设置扬声器布局
-	 */
-	private RelativeLayout rl_switch_speaker;
-
-	/**
-	 * 打开新消息通知imageView
-	 */
-	private ImageView iv_switch_open_notification;
-	/**
-	 * 关闭新消息通知imageview
-	 */
-	private ImageView iv_switch_close_notification;
-	/**
-	 * 打开声音提示imageview
-	 */
-	private ImageView iv_switch_open_sound;
-	/**
-	 * 关闭声音提示imageview
-	 */
-	private ImageView iv_switch_close_sound;
-	/**
-	 * 打开消息震动提示
-	 */
-	private ImageView iv_switch_open_vibrate;
-	/**
-	 * 关闭消息震动提示
-	 */
-	private ImageView iv_switch_close_vibrate;
-	/**
-	 * 打开扬声器播放语音
-	 */
-	private ImageView iv_switch_open_speaker;
-	/**
-	 * 关闭扬声器播放语音
-	 */
-	private ImageView iv_switch_close_speaker;
-
-	/**
-	 * 声音和震动中间的那条线
-	 */
-	private TextView textview1, textview2;
-
-	private LinearLayout userProfileContainer;
-	
-	/**
 	 * 退出按钮
 	 */
 	private Button logoutBtn;
@@ -205,9 +157,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 //	private ImageView iv_switch_room_owner_leave_allow;
 //	private ImageView iv_switch_room_owner_leave_disallow;
 	
-	private EMChatOptions chatOptions;
  
-	DemoHXSDKModel model;
 	public MyInfomationView(Context context) {
 		mContext = context;
 		mMainView = View.inflate(context, R.layout.fragment_me_layout, null).findViewById(R.id.main_layout);
@@ -224,12 +174,12 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 		return mMainView;
 	}
 	
-	public void update()
-	{
-		if(!TextUtils.isEmpty(EMChatManager.getInstance().getCurrentUser())){
-			logoutBtn.setText(mContext.getString(R.string.button_logout) + "(" + EMChatManager.getInstance().getCurrentUser() + ")");
-		}
-	}
+//	public void update()
+//	{
+//		if(!TextUtils.isEmpty(EMChatManager.getInstance().getCurrentUser())){
+//			logoutBtn.setText(mContext.getString(R.string.button_logout) + "(" + EMChatManager.getInstance().getCurrentUser() + ")");
+//		}
+//	}
 	
 	private void init(View view)
 	{
@@ -268,27 +218,41 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	 
 	
 	void logout() {
-		mProgressDialog = new ProgressDialog(mContext);
-		String st = mContext.getResources().getString(R.string.Are_logged_out);
+//		mProgressDialog = new ProgressDialog(mContext);
+//		String st = mContext.getResources().getString(R.string.Are_logged_out);
 //		mProgressDialog.setMessage(st);
 		mProgressDialog.setCanceledOnTouchOutside(false);
 		mProgressDialog.show();
-		DemoHXSDKHelper.getInstance().logout(true,new EMCallBack() {
+		Thread thread = new Thread(new Runnable() {
 			
 			@Override
-			public void onSuccess() {
-				mUIHandler.sendEmptyMessage(SETTING_LOGIN_OUT_SUCCESS);
-			}
-			
-			@Override
-			public void onProgress(int progress, String status) {
-				
-			}
-			
-			@Override
-			public void onError(int code, String message) {
+			public void run() {
+				CommunitySDK sdk = CommunityFactory.getCommSDK(mContext);
+				sdk.logout(mContext, new LoginListener() {
+					
+					@Override
+					public void onStart() {
+						// TODO Auto-generated method stub
+					}
+					
+					@Override
+					public void onComplete(int arg0, CommUser arg1) {
+						PersonalUtil.delPersonInfo(mContext);
+						File file = new File(mContext.getFilesDir().getAbsolutePath() + File.separator + "head.png");
+						file.delete();
+						if (arg0 == ErrorCode.NO_ERROR)
+						{
+							mUIHandler.sendEmptyMessage(SETTING_LOGIN_OUT_SUCCESS);
+						}
+						else
+						{
+							mUIHandler.sendEmptyMessage(SETTING_LOGIN_OUT_SUCCESS);
+						}
+					}
+				});
 			}
 		});
+		thread.start();
 	}
 	
 	
@@ -375,7 +339,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	                            boolean r = savePersonInfo();
 	                            if(r)
 	                            {
-	                                mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
+	                                
 	                            }
 	                            else
 	                            {
@@ -416,6 +380,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	            case R.id.person_exit:
 	            {
 //	                PersonalUtil.delPersonInfo(mContext);
+	            	logout();
 	                break;
 	            }
 
@@ -503,7 +468,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 
 	            MultipartEntity mpEntity = new MultipartEntity(); //文件传输
 //	            ContentBody cbFile = new FileBody(file);
-	            mPersonInfo.setNickName(mChangeNickName.getText().toString());
+//	            mPersonInfo.setNickName(mChangeNickName.getText().toString());
 //	        	mpEntity.addPart("loginName", new StringBody(mPersonInfo.getLoginName()));
 	            mpEntity.addPart("password", new StringBody(mPersonInfo.getPassword()));
 	            mpEntity.addPart("nickName", new StringBody(mChangeNickName.getText().toString(),Charset.forName("UTF-8")));
@@ -535,8 +500,54 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	                if(status.equals("200"))
 	                {
 	                    System.out.println("更新成功......... message = " + message);
-	                    changeTempFileToFile();
-	                    PersonalUtil.savePersonInfo(mContext, mPersonInfo);
+	                    CommConfig.getConfig().loginedUser.name = mChangeNickName.getText().toString();
+	                    CommConfig.getConfig().loginedUser.iconUrl = mPersonInfo.getPhotoPath();
+	                    Debug.d("CommConfig.getConfig().loginedUser.iconUrl = " + CommConfig.getConfig().loginedUser.iconUrl);
+	                    if(mChangeNickName.getText().toString().equals(mPersonInfo.getNickName()))
+	                    {
+	                    	//没有更改昵称
+	                    	DatabaseAPI.getInstance().getUserDBAPI().saveUserInfoToDB(CommConfig.getConfig().loginedUser);
+                            CommonUtils.saveLoginUserInfo(mContext, CommConfig.getConfig().loginedUser);
+                            BroadcastUtils.sendUserUpdateBroadcast(mContext, CommConfig.getConfig().loginedUser);
+                            if(file.exists())   //只是换了头像
+                            {
+                            	changeTempFileToFile();
+        	                    updateUserPortrait(BitmapFactory.decodeFile(mContext.getFilesDir().getAbsolutePath() + File.separator + "head.png"));
+                            }
+                            else
+                            {
+                            	mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
+                            }
+                            return true;
+	                    }
+	                    CommunitySDK sdk = CommunityFactory.getCommSDK(mContext);
+	                    sdk.updateUserProfile(CommConfig.getConfig().loginedUser, new CommListener() {
+	                        @Override
+	                        public void onStart() {
+	                        	Debug.d("onStart updateUserProfile");
+	                        }
+
+	                        @Override
+	                        public void onComplete(Response response) {
+	                        	Debug.d("respose = " + response);
+	                            if (response.errCode == ErrorCode.NO_ERROR) {
+	                            	mPersonInfo.setNickName(mChangeNickName.getText().toString());
+	        	                    PersonalUtil.savePersonInfo(mContext, mPersonInfo);
+	                            	Debug.d("updateUserProfile");
+//	                                DatabaseAPI.getInstance().getUserDBAPI().saveUserInfoToDB(CommConfig.getConfig().loginedUser);
+//	                                CommonUtils.saveLoginUserInfo(mContext, CommConfig.getConfig().loginedUser);
+//	                                BroadcastUtils.sendUserUpdateBroadcast(mContext, CommConfig.getConfig().loginedUser);
+	                                changeTempFileToFile();
+	        	                    updateUserPortrait(BitmapFactory.decodeFile(mContext.getFilesDir().getAbsolutePath() + File.separator + "head.png"));
+	                                //	                                mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
+	                            } 
+	                            else if(response.errCode == ErrorCode.ERR_CODE_USER_NAME_DUPLICATE)
+	                            {
+	                            	mUIHandler.sendEmptyMessage(UPDATE_INFO_FAILED_USER_NAME_DUMP);
+	                            }
+	                        }
+	                    });
+	                    
 	                    return true;
 	                }
 	                else if(status.equals("404"))
@@ -553,6 +564,39 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	        return false;
 	    }
 
+	    /**
+	     * 更新用户头像
+	     */
+	    private void updateUserPortrait(final Bitmap bmp) {
+	        CommunityFactory.getCommSDK(mContext).updateUserProtrait(bmp,
+	                new SimpleFetchListener<PortraitUploadResponse>() {
+
+	                    @Override
+	                    public void onStart() {
+	                    }
+
+	                    @Override
+	                    public void onComplete(PortraitUploadResponse response) {
+	                        if (response != null && response.errCode == ErrorCode.NO_ERROR) {
+	                            Debug.d("头像更新成功 : " + response.mJsonObject.toString());
+	                            CommUser user = CommConfig.getConfig().loginedUser;
+	                            user.iconUrl = response.mIconUrl;
+
+	                            Debug.d("#### 登录用户的头像 : "
+	                                    + CommConfig.getConfig().loginedUser.iconUrl);
+	                            // 同步到数据库中
+	                            DatabaseAPI.getInstance().getUserDBAPI().saveUserInfoToDB(user);
+	                            CommonUtils.saveLoginUserInfo(mContext, user);
+	                            BroadcastUtils.sendUserUpdateBroadcast(mContext, user);
+	                            mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
+	                        } else {
+	                            ToastMsg.showShortMsgByResName("umeng_comm_update_icon_failed");
+	                        }
+	                    }
+
+	                });
+	    }
+	    
 	    /**
 	     * 上传成功以后，将临时头像替换成正式头像
 	     */
@@ -652,9 +696,8 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	                	{
 	                		mProgressDialog.dismiss();
 	                	}
-	                	final RegisterAndLogin ra = RegisterAndLogin.getInstance(mContext);
+	                	final LoginUtils ra = LoginUtils.getInstance(mContext);
 	                	Thread thread = new Thread(new Runnable() {
-							
 							@Override
 							public void run() {
 								ra.loginInBack(mContext);
@@ -682,6 +725,16 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 						mOnSettingCallback.onLoginOut();
 						break;
 					}
+	                case UPDATE_INFO_FAILED_USER_NAME_DUMP:
+	                {
+	                	if(mProgressDialog != null && mProgressDialog.isShowing())
+	                	{
+	                		mProgressDialog.dismiss();
+	                	}
+	                	initMyInfo();
+	                	Toast.makeText(mContext, R.string.update_failed_user_name_exist, Toast.LENGTH_SHORT).show();
+	                	break;
+	                }
 	            }
 	        }
 	    }
