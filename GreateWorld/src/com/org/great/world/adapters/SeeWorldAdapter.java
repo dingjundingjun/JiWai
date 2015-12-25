@@ -3,6 +3,7 @@ package com.org.great.world.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class SeeWorldAdapter extends BAdapter
     private ImageLoader mLoader;
     private DisplayImageOptions mOptions;
     private List<CatalogPojo> mCatalogList;
+    private int mDisplayWidth;
 
     public void setList(List<CatalogPojo> list)
     {
@@ -47,6 +49,8 @@ public class SeeWorldAdapter extends BAdapter
         mOptions = builder.displayer(new FadeInBitmapDisplayer(200, true, true, true)).build();
         mLoader = ImageLoader.getInstance();
         mLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+        DisplayMetrics display = mContext.getResources().getDisplayMetrics();
+        mDisplayWidth = display.widthPixels;
     }
 
     @Override
@@ -75,11 +79,21 @@ public class SeeWorldAdapter extends BAdapter
             convertView = View.inflate(mContext, R.layout.seeworld_list_item_layout, null);
             viewHolder.catalogText = (TextView) convertView.findViewById(R.id.catalog_text);
             viewHolder.catalogPic = (ImageView) convertView.findViewById(R.id.catalog_pic);
+            viewHolder.catalogTime = (TextView)convertView.findViewById(R.id.catalog_time_text);
+            viewHolder.catalogBrief = (TextView)convertView.findViewById(R.id.brief);
             convertView.setTag(viewHolder);
         }
         CatalogPojo cp = mCatalogList.get(position);
         viewHolder.catalogText.setText(cp.getTitle());
+        String time = cp.getCreateTime();
+        time = time.substring(0, time.indexOf("T"));
+//        viewHolder.catalogTime.setText(cp.getCreateTime());
+//        viewHolder.catalogTime.setVisibility(View.GONE);
+        viewHolder.catalogTime.setText(time);
+        viewHolder.catalogBrief.setText(cp.getBrief());
         String pUrl = cp.getSnapshot();
+        
+        viewHolder.catalogPic.getLayoutParams().height = mDisplayWidth/4;
         if(pUrl != null)
         {
         	//先判断本地是否有缓存，有则从缓存加载，没有则从网络加载并且下载
@@ -106,6 +120,8 @@ public class SeeWorldAdapter extends BAdapter
     {
         TextView catalogText;
         ImageView catalogPic;
+        TextView catalogTime;
+        TextView catalogBrief;
     }
 
 }

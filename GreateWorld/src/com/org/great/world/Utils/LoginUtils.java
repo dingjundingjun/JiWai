@@ -580,6 +580,7 @@ public class LoginUtils
                 }
                 else
                 {
+//                	mUIHandler.sendEmptyMessage(LOGIN_SUCCESS_MSG);
                 	mUIHandler.sendEmptyMessage(LOGIN_ERROR_MSG_F);
                 }
 

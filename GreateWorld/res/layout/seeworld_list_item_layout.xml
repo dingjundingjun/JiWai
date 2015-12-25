@@ -11,17 +11,39 @@
         >
         <TextView 
             android:id="@+id/catalog_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="@dimen/main_list_text_size"
+            />
+        <TextView 
+            android:id="@+id/catalog_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/gray_normal"
+            android:textSize="@dimen/main_list_brief_text_size"
             />
     </LinearLayout>
 	<ImageView 
 	    android:id="@+id/catalog_pic"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
 	    android:layout_gravity="center"
-	    android:scaleType="fitXY"
+	    android:scaleType="centerCrop"
 	    />
+	<TextView 
+            android:id="@+id/brief"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/gray_normal"
+            android:textSize="@dimen/main_list_brief_text_size"
+            />
 </LinearLayout>

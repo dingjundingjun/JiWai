@@ -16,8 +16,22 @@ public class CatalogPojo implements Serializable {
 	private String publish;
 	private String articleType;
 	private String snapshot;
+	private String createTime;
+	private String brief;
 	
 	
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+	public String getBrief() {
+		return brief;
+	}
+	public void setBrief(String brief) {
+		this.brief = brief;
+	}
 	public String getSnapshot() {
 		return snapshot;
 	}

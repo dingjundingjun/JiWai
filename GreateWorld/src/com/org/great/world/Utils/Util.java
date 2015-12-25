@@ -792,7 +792,7 @@ public static byte[] readStream(InputStream inStream) throws Exception{
 			
 			public void onFailure(int statusCode, Header[] headers, byte[] binaryData, Throwable error) 
 			{
-				Toast.makeText(context, "下载失败，稍后重试。" + error.toString(), Toast.LENGTH_SHORT).show();
+//				Toast.makeText(context, "下载失败，稍后重试。" + error.toString(), Toast.LENGTH_SHORT).show();
 			}
 
 		});

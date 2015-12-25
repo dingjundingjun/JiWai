@@ -31,9 +31,11 @@
 	
 	<dimen name="seeworld_title_height">70dp</dimen>
     <dimen name="main_layout_title_height">90sp</dimen>  
-    <dimen name="main_list_text_size">15sp</dimen>
+    <dimen name="main_list_text_size">25sp</dimen>
  	<dimen name="game_layout_list_item_text_size">25sp</dimen>
     <dimen name="game_layout_list_item_image_width">224dp</dimen>
     <dimen name="game_layout_list_item_image_height">126dp</dimen>
-    <dimen name="seeworld_list_item_padding">10dip</dimen>
+    <dimen name="seeworld_list_item_padding">20dip</dimen>
+    <dimen name="main_list_brief_text_size">20sp</dimen>
+    <dimen name="myinfo_view_margin_top">30dp</dimen>
 </resources>

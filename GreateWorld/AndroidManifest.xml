@@ -3,7 +3,7 @@
     android:versionCode="13"
     android:versionName="5.0.0"
     package="com.org.great.wrold" >
-
+<!-- com.org.great.wrold -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

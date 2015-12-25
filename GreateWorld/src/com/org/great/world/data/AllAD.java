@@ -167,7 +167,7 @@ public class AllAD
 				HttpEntity he = responseGet.getEntity();
 				String contentData = EntityUtils.toString(he, "gb2312");
 //				System.out.println("p=================" + contentData);
-				if(contentData.contains("东莞"))
+				if(contentData.contains("东莞111"))
             	{
             		bShowAD = false;
             		myHandler.sendEmptyMessageDelayed(1,3000);

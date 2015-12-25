@@ -1,6 +1,6 @@
 <resources>
-    <dimen name="title_scrool_label_text_size">6sp</dimen>
-    <dimen name="title_scrool_label_text_press_size">8sp</dimen>
+    <dimen name="title_scrool_label_text_size">4sp</dimen>
+    <dimen name="title_scrool_label_text_press_size">6sp</dimen>
     <dimen name="loading_text_size">25sp</dimen>
     <dimen name="comment_name_text_size">18sp</dimen>
     <dimen name="comment_data_text_size">14sp</dimen>
@@ -9,7 +9,7 @@
     <dimen name="like_text_size">14sp</dimen>
     <dimen name="seeworld_layout_comment_text_size">12sp</dimen>
     
-	<dimen name="main_list_text_size">10sp</dimen>
+	<dimen name="main_list_text_size">15sp</dimen>
  	<dimen name="game_layout_list_item_text_size">15sp</dimen>
  
     <dimen name="title_scrool_label_text_view_height">50dip</dimen>
@@ -36,7 +36,8 @@
     <dimen name="main_layout_title_height">50dip</dimen>
     <dimen name="game_layout_list_item_image_width">112dp</dimen>
     <dimen name="game_layout_list_item_image_height">63dp</dimen>
-    <dimen name="seeworld_list_item_padding">10dip</dimen>
-   
+    <dimen name="seeworld_list_item_padding">20dip</dimen>
+    <dimen name="main_list_brief_text_size">12sp</dimen>
+    <dimen name="myinfo_view_margin_top">15dp</dimen>
     
 </resources>
