@@ -17,7 +17,7 @@ import android.widget.LinearLayout.LayoutParams;
 import com.org.great.world.Utils.Debug;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.FragmentViewPaper;
-import com.org.great.world.data.AllAD;
+//import com.org.great.world.data.AllAD;
 import com.org.great.world.data.CatalogPojo;
 import com.org.great.world.data.GamePojo;
 import com.org.great.world.fragments.BaseContentFragment;
@@ -150,9 +150,9 @@ public class GameActivity extends Activity
 
 	public void addAd()
 	{
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		addContentView(AllAD.getGDTBannerView(this), layoutParams);
+//		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//		addContentView(AllAD.getGDTBannerView(this), layoutParams);
 	}
 }

@@ -58,7 +58,7 @@ import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.ToastMsg;
 import com.umeng.comm.ui.activities.GuideActivity;
-import com.umeng.comm.ui.utils.BroadcastUtils;
+//import com.umeng.comm.ui.utils.BroadcastUtils;
 
 
 /*
@@ -611,7 +611,7 @@ public class LoginUtils
                             // 同步到数据库中
                             DatabaseAPI.getInstance().getUserDBAPI().saveUserInfoToDB(user);
                             CommonUtils.saveLoginUserInfo(mContext, user);
-                            BroadcastUtils.sendUserUpdateBroadcast(mContext, user);
+//                            BroadcastUtils.sendUserUpdateBroadcast(mContext, user);
 //                            mUIHandler.sendEmptyMessage(LOGIN_SUCCESS_MSG);
                         } else {
                             ToastMsg.showShortMsgByResName("umeng_comm_update_icon_failed");

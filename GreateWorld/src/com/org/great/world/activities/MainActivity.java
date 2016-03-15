@@ -16,7 +16,7 @@ import com.org.great.world.Utils.PersonalUtil;
 import com.org.great.world.Utils.LoginUtils;
 import com.org.great.world.Utils.Util;
 import com.org.great.world.Views.TabView;
-import com.org.great.world.data.AllAD;
+//import com.org.great.world.data.AllAD;
 import com.org.great.world.fragments.ReadFragment;
 import com.org.great.world.fragments.SettingFragment;
 import com.org.great.wrold.R;
@@ -107,11 +107,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         LoginUtils.getInstance(this); 
         Util.createDB(this);
         checkWifi();
-        if(mAdView != null)
-		{
-        	mAdView.removeAllViews();
-			mAdView.addView(AllAD.getGDTBannerView(this));
-		}
+//        if(mAdView != null)
+//		{
+//        	mAdView.removeAllViews();
+//			mAdView.addView(AllAD.getGDTBannerView(this));
+//		}
     }
 
     private void checkWifi()

@@ -14,7 +14,7 @@ import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.baseproject.utils.Logger;
-import com.org.great.world.data.AllAD;
+//import com.org.great.world.data.AllAD;
 import com.org.great.wrold.R;
 import com.youku.player.ApiManager;
 import com.youku.player.VideoQuality;
@@ -174,10 +174,10 @@ public class PlayerActivity extends Activity {
 
 	public void addAd()
 	{
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		addContentView(AllAD.getGDTBannerView(this), layoutParams);
+//		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//		addContentView(AllAD.getGDTBannerView(this), layoutParams);
 	}
 	
 	@Override

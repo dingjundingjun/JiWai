@@ -50,7 +50,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
-import com.org.great.world.data.AllAD;
+//import com.org.great.world.data.AllAD;
 import com.org.great.world.data.BaseCatalogPojo;
 import com.org.great.world.data.BaseUserInfoPojo;
 import com.org.great.world.data.CatalogPojo;
@@ -316,10 +316,10 @@ public static byte[] readStream(InputStream inStream) throws Exception{
      */
     public static boolean isCanPlaygame(Context context)
     {
-    	if(AllAD.bShowAD == false)
-    	{
-    		return true;
-    	}
+//    	if(AllAD.bShowAD == false)
+//    	{
+//    		return true;
+//    	}
     	String lastTimeStr = getPlayGameTime(context);
     	long lastTime = Long.decode(lastTimeStr);
     	Debug.d("lastTime = " + lastTime);

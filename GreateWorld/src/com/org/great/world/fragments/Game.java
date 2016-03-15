@@ -28,7 +28,7 @@ import com.org.great.world.activities.GameActivity;
 import com.org.great.world.activities.SeeWorldActivity;
 import com.org.great.world.adapters.GameAdapter;
 import com.org.great.world.adapters.SeeWorldAdapter;
-import com.org.great.world.data.AllAD;
+//import com.org.great.world.data.AllAD;
 import com.org.great.world.data.BaseCatalogPojo;
 import com.org.great.world.data.BaseGamePojo;
 import com.org.great.world.data.BasePojo;
@@ -278,14 +278,14 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
 			params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			mMainLayout.addView(mTimeLastView, params);
 		}
-    	if(AllAD.bShowAD == false)
-    	{
-    		mTimeLastView.setVisibility(View.GONE);
-    	}
-    	else
-    	{
-    		mTimeLastView.setVisibility(View.VISIBLE);
-    	}
+//    	if(AllAD.bShowAD == false)
+//    	{
+//    		mTimeLastView.setVisibility(View.GONE);
+//    	}
+//    	else
+//    	{
+//    		mTimeLastView.setVisibility(View.VISIBLE);
+//    	}
     	if(Util.isCanPlaygame(mBaseActivity))
     	{
     		String lastTimeStr = (String)Util.getPlayGameTime(mBaseActivity);
@@ -311,10 +311,10 @@ public class Game extends SeeWorldAndJokeChildBaseFragment
     	}
     	else
     	{
-    		if(AllAD.bShowAD == true)
-    		{
-    			mTimeLastView.setText("点击广告将获得游戏时间！");
-    		}
+//    		if(AllAD.bShowAD == true)
+//    		{
+//    			mTimeLastView.setText("点击广告将获得游戏时间！");
+//    		}
     	}
     }
     

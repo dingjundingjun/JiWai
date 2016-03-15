@@ -162,6 +162,7 @@ public abstract class SeeWorldAndJokeChildBaseFragment extends Fragment{
         {
             return;
         }
+        Debug.d("catalogUrl = " + mCatalogUrl);
 	        RequestHandle handle = mAsyncHttpClient.get(mCatalogUrl, new BaseJsonHttpResponseHandler()
 	        {
 	            @Override

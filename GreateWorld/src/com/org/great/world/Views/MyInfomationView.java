@@ -84,7 +84,6 @@ import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.ToastMsg;
-import com.umeng.comm.ui.utils.BroadcastUtils;
 import com.umeng.fb.FeedbackAgent;
 
 public class MyInfomationView implements OnClickListener,MediaScannerConnectionClient{
@@ -508,7 +507,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	                    	//没有更改昵称
 	                    	DatabaseAPI.getInstance().getUserDBAPI().saveUserInfoToDB(CommConfig.getConfig().loginedUser);
                             CommonUtils.saveLoginUserInfo(mContext, CommConfig.getConfig().loginedUser);
-                            BroadcastUtils.sendUserUpdateBroadcast(mContext, CommConfig.getConfig().loginedUser);
+//                            BroadcastUtils.sendUserUpdateBroadcast(mContext, CommConfig.getConfig().loginedUser);
                             if(file.exists())   //只是换了头像
                             {
                             	changeTempFileToFile();
@@ -587,7 +586,7 @@ public class MyInfomationView implements OnClickListener,MediaScannerConnectionC
 	                            // 同步到数据库中
 	                            DatabaseAPI.getInstance().getUserDBAPI().saveUserInfoToDB(user);
 	                            CommonUtils.saveLoginUserInfo(mContext, user);
-	                            BroadcastUtils.sendUserUpdateBroadcast(mContext, user);
+//	                            BroadcastUtils.sendUserUpdateBroadcast(mContext, user);
 	                            mUIHandler.sendEmptyMessage(UPDATE_INFO_SUCCESS);
 	                        } else {
 	                            ToastMsg.showShortMsgByResName("umeng_comm_update_icon_failed");

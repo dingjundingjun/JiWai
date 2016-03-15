@@ -349,4 +349,11 @@
     <string name="toast_updatephoto_success">更新头像成功!</string>
     <string name="toast_updatephoto_fail">更新头像失败!</string>
     <string name="register_name_is_exist">用户名已经存在</string>
+
+    <string name="feed_detail">feed详情页面</string>
+    <string name="msg">进入友盟社区</string>
+    <string name="user_info">用户信息页面</string>
+    <string name="search_topic">话题搜索</string>
+    <string name="select_location">话题搜索</string>
+    <string name="follow_topic">话题搜索</string>
 </resources>
